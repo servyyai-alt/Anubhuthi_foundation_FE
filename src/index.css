@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Nunito:wght@300;400;500;600;700&family=Tiro+Devanagari+Sanskrit&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-saffron: #e8821a;
+  --color-earth: #8B5E3C;
+  --color-cream: #faf8f0;
+  --color-parchment: #f5efe0;
+  --color-gold: #d99e1a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'Nunito', system-ui, sans-serif;
+  background-color: var(--color-cream);
+  color: #2d1f0f;
+  margin: 0;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.mandala-bg {
+  background-image: radial-gradient(circle at 20% 80%, rgba(232,130,26,0.08) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(139,94,60,0.08) 0%, transparent 50%);
+}
+
+.section-title {
+  position: relative;
+  display: inline-block;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-saffron), transparent);
+  border-radius: 2px;
+}
+
+.sanskrit-text {
+  font-family: 'Tiro Devanagari Sanskrit', serif;
+  letter-spacing: 0.05em;
+}
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-parchment); }
+::-webkit-scrollbar-thumb { background: var(--color-earth); border-radius: 3px; }
+
+/* Card hover effect */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(139, 94, 60, 0.2);
+}
+
+/* Animate on scroll */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Lotus decoration */
+.lotus-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-saffron);
+}
+.lotus-divider::before,
+.lotus-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-saffron), transparent);
+}
