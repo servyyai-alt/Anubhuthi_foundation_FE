@@ -43,6 +43,13 @@ export const programsAPI = {
   create: (data) => api.post('/programs', data),
   update: (id, data) => api.put(`/programs/${id}`, data),
   delete: (id) => api.delete(`/programs/${id}`),
+  uploadImage: (file) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    return api.post('/programs/upload-image', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  },
 };
 
 // Events
@@ -112,6 +119,20 @@ export const mediaAPI = {
   create: (data) => api.post('/media', data),
   update: (id, data) => api.put(`/media/${id}`, data),
   delete: (id) => api.delete(`/media/${id}`),
+  uploadImage: (file) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    return api.post('/media/upload-image', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  },
+  uploadImages: (files) => {
+    const formData = new FormData();
+    Array.from(files).forEach((file) => formData.append('images', file));
+    return api.post('/media/upload-images', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  },
 };
 
 // Analytics

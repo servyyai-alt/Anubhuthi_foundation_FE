@@ -64,174 +64,327 @@ const getMediaActionLabel = (type) => {
 };
 
 // --- About Section ---
+
 export function AboutSection() {
   return (
-    <section className="py-28 bg-white overflow-hidden">
+    <section className="py-24 bg-white overflow-hidden">
 
       <div className="max-w-7xl mx-auto px-6">
 
-        <div className="grid lg:grid-cols-2 gap-20 items-center">
+        {/* Heading */}
+        <div className="text-center max-w-4xl mx-auto">
 
-          {/* LEFT */}
+          <span className="
+          uppercase
+          tracking-[5px]
+          text-orange-500
+          text-sm
+          ">
+            About Foundation
+          </span>
 
-          <div className="relative">
+          <h2 className="
+          text-5xl
+          md:text-6xl
+          font-bold
+          text-[#1d1d1d]
+          mt-6
+          leading-tight
+          ">
+            About Anubhuthi Foundation
+          </h2>
 
-            <img
-              src="https://images.unsplash.com/photo-1506126613408-eca07ce68773"
+          <p className="
+          mt-8
+          text-lg
+          text-gray-600
+          leading-9
+          ">
+            Anubhuthi Foundation was established with a vision to help humanity
+            rediscover their forgotten intelligence within themselves —
+            Natural Intelligence.
+          </p>
+
+          <p className="
+          mt-4
+          text-orange-500
+          text-xl
+          font-medium
+          leading-8
+          ">
+            We believe every human being is born with purpose,
+            awareness, inner intelligence and extraordinary potential.
+          </p>
+
+        </div>
+
+
+        {/* Top Cards */}
+        <div className="
+        grid
+        grid-cols-2
+        md:grid-cols-4
+        gap-6
+        mt-16
+        ">
+
+          {[
+            {
+              image:
+                "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+              title: "Purpose",
+            },
+
+            {
+              image:
+                "https://cdn-icons-png.flaticon.com/512/3774/3774299.png",
+              title: "Awareness",
+            },
+
+            {
+              image:
+                "https://cdn-icons-png.flaticon.com/512/4149/4149647.png",
+              title: "Inner Intelligence",
+            },
+
+            {
+              image:
+                "https://cdn-icons-png.flaticon.com/512/2907/2907253.png",
+              title: "Extraordinary Potential",
+            },
+
+          ].map((item, index) => (
+
+            <div
+              key={index}
               className="
-              rounded-[40px]
-              h-[650px]
-              w-full
-              object-cover
+              bg-[#faf7f2]
+              rounded-[30px]
+              p-8
+              text-center
+              border
+              border-orange-100
+              hover:-translate-y-2
+              transition-all
+              duration-300
               "
-            />
+            >
 
-            {/* floating card */}
+              <img
+                src={item.image}
+                alt={item.title}
+                className="
+                w-20
+                h-20
+                object-contain
+                mx-auto
+                mb-5
+                "
+              />
 
-            <div className="
-            absolute
-            bottom-8
-            left-8
-            bg-white
-            shadow-2xl
-            rounded-3xl
-            p-8
-            ">
-
-              <h2 className="
-              text-5xl
-              font-bold
-              text-orange-500
+              <h3 className="
+              text-xl
+              font-semibold
+              text-[#1d1d1d]
+              leading-8
               ">
-                5000+
-              </h2>
-
-              <p className="text-gray-600">
-                Lives Transformed
-              </p>
+                {item.title}
+              </h3>
 
             </div>
 
-          </div>
+          ))}
+
+        </div>
 
 
+        {/* Vision Mission */}
+        <div className="
+        grid
+        lg:grid-cols-2
+        gap-8
+        mt-20
+        ">
 
-          {/* RIGHT */}
+          {/* Vision */}
+          <div className="
+          bg-[#faf7f2]
+          rounded-[35px]
+          p-10
+          border
+          border-orange-100
+          ">
 
-          <div>
-
-            <span className="
-            uppercase
-            tracking-[5px]
-            text-orange-500
-            text-sm
-            ">
-              About Anubhuthi
-            </span>
-
-
-            <h2 className="
-            text-6xl
-            font-serif
+            <h3 className="
+            text-3xl
             font-bold
-            mt-6
-            text-gray-900
-            leading-tight
+            text-[#1d1d1d]
+            mb-6
             ">
-              Awakening Human
-              Consciousness Through
-              Ancient Wisdom
-            </h2>
-
+              Our Vision
+            </h3>
 
             <p className="
-            mt-8
-            text-lg
             text-gray-600
+            text-lg
             leading-9
             ">
-              Anubhuthi Foundation exists to help
-              individuals reconnect with purpose,
-              awareness and conscious living through
-              meditation, retreats and spiritual
-              education.
+              To build a consciously evolved humanity by awakening
+              inner awareness and reconnecting individuals with
+              their true purpose.
             </p>
 
+          </div>
 
-            <div className="
-            grid
-            grid-cols-2
-            gap-8
-            mt-12
+
+          {/* Mission */}
+          <div className="
+          bg-[#faf7f2]
+          rounded-[35px]
+          p-10
+          border
+          border-orange-100
+          ">
+
+            <h3 className="
+            text-3xl
+            font-bold
+            text-[#1d1d1d]
+            mb-6
+            ">
+              Our Mission
+            </h3>
+
+            <ul className="
+            space-y-4
+            text-gray-600
+            text-lg
+            leading-8
             ">
 
-              <div>
+              <li>• Spread natural intelligence awareness globally</li>
 
-                <h3 className="text-4xl font-bold text-orange-500">
-                  150+
-                </h3>
+              <li>• Create conscious education systems</li>
 
-                <p className="text-gray-600">
-                  Programs Conducted
-                </p>
+              <li>• Guide individuals toward self-realization</li>
 
-              </div>
+              <li>• Restore ancient wisdom and ethical heritage</li>
 
+              <li>• Conduct transformative retreats and trainings</li>
 
-              <div>
+              <li>• Support humanity through awareness-driven solutions</li>
 
-                <h3 className="text-4xl font-bold text-orange-500">
-                  12+
-                </h3>
+            </ul>
 
-                <p className="text-gray-600">
-                  Sacred Retreats
-                </p>
+          </div>
 
-              </div>
+        </div>
 
 
-              <div>
+        {/* Founder Section */}
+        <div className="
+        mt-24
+        bg-[#faf7f2]
+        rounded-[40px]
+        overflow-hidden
+        border
+        border-orange-100
+        ">
 
-                <h3 className="text-4xl font-bold text-orange-500">
-                  9+
-                </h3>
+          <div className="grid lg:grid-cols-2 items-center">
 
-                <p className="text-gray-600">
-                  Years Journey
-                </p>
+            {/* Founder Image */}
+            <div className="relative">
 
-              </div>
-
-
-              <div>
-
-                <h3 className="text-4xl font-bold text-orange-500">
-                  8
-                </h3>
-
-                <p className="text-gray-600">
-                  States Served
-                </p>
-
-              </div>
+              <img
+                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e"
+                alt="Founder"
+                className="
+                w-full
+                h-full
+                min-h-[550px]
+                object-cover
+                "
+              />
 
             </div>
 
 
+            {/* Founder Content */}
+            <div className="p-12 lg:p-16">
 
-            <button className="
-            mt-12
-            bg-orange-500
-            px-8
-            py-4
-            rounded-full
-            text-white
-            ">
-              Explore Our Story
-            </button>
+              <span className="
+              uppercase
+              tracking-[5px]
+              text-orange-500
+              text-sm
+              ">
+                Founder Message
+              </span>
+
+              <h3 className="
+              text-5xl
+              font-bold
+              text-[#1d1d1d]
+              mt-5
+              leading-tight
+              ">
+                Guru Nana
+              </h3>
+
+              <p className="
+              text-orange-500
+              mt-3
+              text-lg
+              ">
+                Founder & Chief Philosophical Guide
+              </p>
+
+              <p className="
+              mt-8
+              text-gray-600
+              text-lg
+              leading-9
+              ">
+                “Human evolution begins when a person understands
+                who they truly are, why they are born, and how they
+                must consciously live with responsibility, awareness
+                and purpose.”
+              </p>
+
+              <button className="
+              mt-10
+              bg-orange-500
+              hover:bg-orange-600
+              transition-all
+              duration-300
+              px-8
+              py-4
+              rounded-full
+              text-white
+              font-semibold
+              shadow-lg
+              ">
+                Explore Journey
+              </button>
+
+            </div>
 
           </div>
+
+        </div>
+
+
+        {/* Bottom Text */}
+        <div className="text-center mt-16">
+
+          <p className="
+          text-orange-500
+          text-xl
+          font-medium
+          ">
+            One Purpose • One Humanity • One Journey • One Evolution
+          </p>
 
         </div>
 
@@ -401,6 +554,7 @@ export function FeaturedProgramsSection({ programs = [] }) {
         icon: programIconMap[program.category] || FaBook,
         category: (program.category || 'program').replace(/-/g, ' '),
         title: program.title,
+        image: program.image,
         duration: program.duration || 'Schedule coming soon',
         level: program.level ? program.level.replace(/(^\w)|(\s\w)/g, (match) => match.toUpperCase()) : 'All Levels',
         price: formatProgramPrice(program),
@@ -429,8 +583,12 @@ export function FeaturedProgramsSection({ programs = [] }) {
             >
               <Card className="h-full flex flex-col">
                 <div className="relative">
-                  <div className="h-40 bg-gradient-to-br from-saffron-100 to-earth-100 flex items-center justify-center">
-                    <prog.icon className="text-saffron-500 text-5xl" />
+                  <div className="h-40 bg-gradient-to-br from-saffron-100 to-earth-100 flex items-center justify-center overflow-hidden">
+                    {prog.image ? (
+                      <img src={prog.image} alt={prog.title} className="h-full w-full object-cover" />
+                    ) : (
+                      <prog.icon className="text-saffron-500 text-5xl" />
+                    )}
                   </div>
                   <span className="absolute top-3 left-3 bg-white text-saffron-600 text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
                     {prog.category}
