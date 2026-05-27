@@ -6,7 +6,7 @@ import {
   FaHeart, FaBriefcase, FaComment, FaEnvelope, FaImages, FaBars,
   FaTimes, FaSignOutAlt, FaChevronRight
 } from 'react-icons/fa';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext.jsx';
 
 const navItems = [
   { label: 'Dashboard', path: '/admin', icon: FaTachometerAlt, exact: true },

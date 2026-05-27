@@ -117,6 +117,9 @@ export default function Footer() {
             {['Legal & Compliance', 'Privacy Policy', 'Terms of Service'].map(item => (
               <Link key={item} to={`/legal`} className="text-earth-400 hover:text-saffron-400 text-xs transition-colors">{item}</Link>
             ))}
+            <Link to="/admin/login" className="text-earth-400 hover:text-saffron-400 text-xs transition-colors">
+              Admin Login
+            </Link>
           </div>
         </div>
       </div>

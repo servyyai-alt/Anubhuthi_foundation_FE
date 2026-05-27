@@ -1,123 +1,417 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaLeaf, FaHeart, FaStar, FaMountain, FaBook, FaUsers, FaHandsHelping, FaOm } from 'react-icons/fa';
+import {
+  FaArrowRight,
+  FaBook,
+  FaCalendarAlt,
+  FaFileAlt,
+  FaHandsHelping,
+  FaHeadphones,
+  FaImages,
+  FaMapMarkerAlt,
+  FaMountain,
+  FaNewspaper,
+  FaOm,
+  FaPlay,
+} from 'react-icons/fa';
 import { SectionTitle, LinkButton, Card } from '../common';
+import meditation from "../../assets/meditation.png";
+import purity from "../../assets/purity.png";
+import service from "../../assets/service.png";
+import truth from "../../assets/truth.png";
+import study from "../../assets/study.png";
+import community from "../../assets/community.png";
+
+const programIconMap = {
+  meditation: FaOm,
+  retreat: FaMountain,
+  certification: FaBook,
+  training: FaBook,
+  workshop: FaHandsHelping,
+  healing: FaHandsHelping,
+  yoga: FaOm,
+};
+
+const mediaIconMap = {
+  video: FaPlay,
+  article: FaNewspaper,
+  podcast: FaHeadphones,
+  gallery: FaImages,
+  document: FaFileAlt,
+};
+
+const formatDate = (value, options = { day: 'numeric', month: 'short', year: 'numeric' }) => {
+  if (!value) return 'Date to be announced';
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return 'Date to be announced';
+
+  return new Intl.DateTimeFormat('en-IN', options).format(date);
+};
+
+const formatProgramPrice = (program) => {
+  if (program?.isFree || !program?.price) return 'Free';
+  return `₹${Number(program.price).toLocaleString('en-IN')}`;
+};
+
+const getMediaActionLabel = (type) => {
+  if (type === 'podcast') return 'Listen Now';
+  if (type === 'article') return 'Read Publication';
+  if (type === 'document') return 'Open Document';
+  if (type === 'gallery') return 'View Gallery';
+  return 'Watch Now';
+};
 
 // --- About Section ---
 export function AboutSection() {
   return (
-    <section className="py-24 bg-parchment mandala-bg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Image side */}
+    <section className="py-28 bg-white overflow-hidden">
+
+      <div className="max-w-7xl mx-auto px-6">
+
+        <div className="grid lg:grid-cols-2 gap-20 items-center">
+
+          {/* LEFT */}
+
           <div className="relative">
-            <div className="aspect-square rounded-3xl overflow-hidden bg-earth-200">
-              <img
-                src="https://images.unsplash.com/photo-1545389336-cf090694435e?w=600&q=80"
-                alt="Meditation"
-                className="w-full h-full object-cover"
-              />
+
+            <img
+              src="https://images.unsplash.com/photo-1506126613408-eca07ce68773"
+              className="
+              rounded-[40px]
+              h-[650px]
+              w-full
+              object-cover
+              "
+            />
+
+            {/* floating card */}
+
+            <div className="
+            absolute
+            bottom-8
+            left-8
+            bg-white
+            shadow-2xl
+            rounded-3xl
+            p-8
+            ">
+
+              <h2 className="
+              text-5xl
+              font-bold
+              text-orange-500
+              ">
+                5000+
+              </h2>
+
+              <p className="text-gray-600">
+                Lives Transformed
+              </p>
+
             </div>
-            <div className="absolute -bottom-6 -right-6 bg-saffron-500 text-white p-6 rounded-2xl shadow-saffron">
-              <div className="font-serif text-3xl font-bold">9+</div>
-              <div className="text-sm">Years of Service</div>
-            </div>
-            <div className="absolute -top-4 -left-4 bg-white p-4 rounded-xl shadow-warm">
-              <FaOm className="text-saffron-500 text-3xl" />
-            </div>
+
           </div>
 
-          {/* Content side */}
+
+
+          {/* RIGHT */}
+
           <div>
-            <SectionTitle
-              subtitle="Who We Are"
-              title="A Sacred Space for Inner Transformation"
-              description="Anubhuthi Foundation is a spiritual organization dedicated to preserving and sharing the profound wisdom of India's ancient Vedic traditions in a way that speaks to the modern seeker."
-            />
-            <div className="space-y-4 mb-8">
-              {[
-                'Rooted in the living tradition of Sanatan Dharma',
-                'Programs designed for both beginners and advanced practitioners',
-                'Integrated approach combining meditation, yoga, philosophy, and service',
-                'Committed to the preservation of Himalayan temples and sacred sites',
-              ].map((item, i) => (
-                <div key={i} className="flex gap-3">
-                  <div className="w-6 h-6 bg-saffron-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <div className="w-2 h-2 bg-saffron-500 rounded-full" />
-                  </div>
-                  <p className="text-earth-600">{item}</p>
-                </div>
-              ))}
+
+            <span className="
+            uppercase
+            tracking-[5px]
+            text-orange-500
+            text-sm
+            ">
+              About Anubhuthi
+            </span>
+
+
+            <h2 className="
+            text-6xl
+            font-serif
+            font-bold
+            mt-6
+            text-gray-900
+            leading-tight
+            ">
+              Awakening Human
+              Consciousness Through
+              Ancient Wisdom
+            </h2>
+
+
+            <p className="
+            mt-8
+            text-lg
+            text-gray-600
+            leading-9
+            ">
+              Anubhuthi Foundation exists to help
+              individuals reconnect with purpose,
+              awareness and conscious living through
+              meditation, retreats and spiritual
+              education.
+            </p>
+
+
+            <div className="
+            grid
+            grid-cols-2
+            gap-8
+            mt-12
+            ">
+
+              <div>
+
+                <h3 className="text-4xl font-bold text-orange-500">
+                  150+
+                </h3>
+
+                <p className="text-gray-600">
+                  Programs Conducted
+                </p>
+
+              </div>
+
+
+              <div>
+
+                <h3 className="text-4xl font-bold text-orange-500">
+                  12+
+                </h3>
+
+                <p className="text-gray-600">
+                  Sacred Retreats
+                </p>
+
+              </div>
+
+
+              <div>
+
+                <h3 className="text-4xl font-bold text-orange-500">
+                  9+
+                </h3>
+
+                <p className="text-gray-600">
+                  Years Journey
+                </p>
+
+              </div>
+
+
+              <div>
+
+                <h3 className="text-4xl font-bold text-orange-500">
+                  8
+                </h3>
+
+                <p className="text-gray-600">
+                  States Served
+                </p>
+
+              </div>
+
             </div>
-            <div className="flex gap-4">
-              <LinkButton to="/about" variant="primary">Our Story</LinkButton>
-              <LinkButton to="/philosophy" variant="outline">Our Philosophy</LinkButton>
-            </div>
+
+
+
+            <button className="
+            mt-12
+            bg-orange-500
+            px-8
+            py-4
+            rounded-full
+            text-white
+            ">
+              Explore Our Story
+            </button>
+
           </div>
+
         </div>
+
       </div>
+
     </section>
   );
 }
 
 // --- Core Values ---
 const values = [
-  { icon: FaOm, title: 'Sadhana', desc: 'Consistent spiritual practice as the foundation of growth and awakening.', color: 'saffron' },
-  { icon: FaLeaf, title: 'Sattva', desc: 'Cultivating purity in mind, body, and action through disciplined living.', color: 'green' },
-  { icon: FaHeart, title: 'Seva', desc: 'Selfless service as a path to liberation and community well-being.', color: 'red' },
-  { icon: FaStar, title: 'Satya', desc: 'Unwavering commitment to truth in all dimensions of existence.', color: 'gold' },
-  { icon: FaBook, title: 'Svadhyaya', desc: 'Self-study through scripture, inquiry, and inner observation.', color: 'blue' },
-  { icon: FaUsers, title: 'Sangha', desc: 'The transformative power of community in the spiritual journey.', color: 'purple' },
+  {
+    image: meditation,
+    title: "Sadhana",
+    desc: "Daily spiritual practice for awakening and inner transformation.",
+  },
+
+  {
+    image: purity,
+    title: "Sattva",
+    desc: "Purity in thought, action and conscious living.",
+  },
+
+  {
+    image: service,
+    title: "Seva",
+    desc: "Selfless service as a path toward liberation.",
+  },
+
+  {
+    image: truth,
+    title: "Satya",
+    desc: "Commitment to truth in all dimensions of life.",
+  },
+
+  {
+    image: study,
+    title: "Svadhyaya",
+    desc: "Self-study through scripture and inner observation.",
+  },
+
+  {
+    image: community,
+    title: "Sangha",
+    desc: "The power of conscious community and growth.",
+  },
 ];
 
+
 export function CoreValuesSection() {
-  const colors = {
-    saffron: 'bg-saffron-50 text-saffron-600 border-saffron-200',
-    green: 'bg-green-50 text-green-600 border-green-200',
-    red: 'bg-red-50 text-red-600 border-red-200',
-    gold: 'bg-yellow-50 text-yellow-600 border-yellow-200',
-    blue: 'bg-blue-50 text-blue-600 border-blue-200',
-    purple: 'bg-purple-50 text-purple-600 border-purple-200',
-  };
   return (
-    <section className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionTitle
-          subtitle="Our Foundation"
-          title="The Six Pillars of Anubhuthi"
-          description="Everything we do flows from these core values, each rooted in the ancient wisdom of the Vedic tradition."
-          center
-        />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {values.map((val, i) => (
-            <motion.div key={val.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-            >
-              <Card className="p-6 h-full">
-                <div className={`w-12 h-12 rounded-xl border flex items-center justify-center mb-4 ${colors[val.color]}`}>
-                  <val.icon size={20} />
-                </div>
-                <h3 className="font-serif text-xl font-bold text-earth-800 mb-2">{val.title}</h3>
-                <p className="text-earth-500 text-sm leading-relaxed">{val.desc}</p>
-              </Card>
-            </motion.div>
-          ))}
+    <section className="py-28 bg-[#faf7f2]">
+
+      <div className="max-w-7xl mx-auto px-6">
+
+        <div className="text-center mb-20">
+
+          <span className="
+          uppercase
+          tracking-[6px]
+          text-orange-500
+          text-sm
+          ">
+            OUR FOUNDATION
+          </span>
+
+          <h2 className="
+          text-5xl
+          font-serif
+          font-bold
+          mt-5
+          text-[#4b2f1f]
+          ">
+            The Six Pillars of Anubhuthi
+          </h2>
+
+          <p className="
+          mt-6
+          text-lg
+          text-gray-600
+          max-w-3xl
+          mx-auto
+          ">
+            Ancient wisdom guiding conscious living,
+            service and human transformation.
+          </p>
+
         </div>
+
+
+
+        <div className="
+        grid
+        md:grid-cols-2
+        lg:grid-cols-3
+        gap-8
+        ">
+
+          {values.map((item) => (
+
+            <div
+              key={item.title}
+              className="
+              bg-white
+              rounded-[30px]
+              overflow-hidden
+              shadow-md
+              hover:-translate-y-3
+              transition
+              duration-300
+              "
+            >
+
+              <img
+                src={item.image}
+                className="
+                h-[240px]
+                w-full
+                object-cover
+                "
+              />
+
+              <div className="p-8">
+
+                <h3 className="
+                text-3xl
+                font-serif
+                font-bold
+                text-[#4b2f1f]
+                ">
+                  {item.title}
+                </h3>
+
+                <p className="
+                mt-4
+                text-gray-600
+                leading-8
+                ">
+                  {item.desc}
+                </p>
+
+              </div>
+
+            </div>
+
+          ))}
+
+        </div>
+
       </div>
+
     </section>
   );
 }
 
 // --- Featured Programs ---
-const programs = [
+const defaultPrograms = [
   { icon: FaOm, category: 'Meditation', title: 'Advanced Vipassana Retreat', duration: '10 Days', level: 'Intermediate', price: 'Free', desc: 'A deep dive into the ancient practice of insight meditation as taught in the Theravada tradition.' },
   { icon: FaMountain, category: 'Retreat', title: 'Kedarnath Pilgrimage', duration: '7 Days', level: 'All Levels', price: '₹25,000', desc: 'Sacred journey to one of the most powerful Jyotirlingas in the Himalayas with guided spiritual practices.' },
   { icon: FaBook, category: 'Training', title: 'DNI Teacher Training', duration: '6 Months', level: 'Advanced', price: '₹85,000', desc: 'Comprehensive certification program in Vedic philosophy, yoga, and conscious leadership.' },
   { icon: FaHandsHelping, category: 'Workshop', title: 'Pranayama & Sound Healing', duration: '3 Days', level: 'Beginner', price: '₹8,000', desc: 'Explore the transformative power of breath and sacred sound to awaken dormant energies.' },
 ];
 
-export function FeaturedProgramsSection() {
+export function FeaturedProgramsSection({ programs = [] }) {
+  const items = programs.length
+    ? programs.slice(0, 4).map((program) => ({
+        icon: programIconMap[program.category] || FaBook,
+        category: (program.category || 'program').replace(/-/g, ' '),
+        title: program.title,
+        duration: program.duration || 'Schedule coming soon',
+        level: program.level ? program.level.replace(/(^\w)|(\s\w)/g, (match) => match.toUpperCase()) : 'All Levels',
+        price: formatProgramPrice(program),
+        desc: program.shortDescription || program.description || 'Details coming soon.',
+        link: program._id ? `/programs/${program._id}` : '/programs',
+      }))
+    : defaultPrograms.map((program) => ({
+        ...program,
+        link: '/programs',
+      }));
+
   return (
     <section className="py-24 bg-parchment">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -129,7 +423,7 @@ export function FeaturedProgramsSection() {
           <LinkButton to="/programs" variant="outline" size="sm">View All Programs</LinkButton>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {programs.map((prog, i) => (
+          {items.map((prog, i) => (
             <motion.div key={prog.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ delay: i * 0.1 }}
             >
@@ -151,7 +445,7 @@ export function FeaturedProgramsSection() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="font-semibold text-saffron-600">{prog.price}</span>
-                    <Link to="/programs" className="text-earth-600 hover:text-saffron-600 text-sm font-medium transition-colors">
+                    <Link to={prog.link} className="text-earth-600 hover:text-saffron-600 text-sm font-medium transition-colors">
                       Learn More →
                     </Link>
                   </div>
@@ -159,6 +453,154 @@ export function FeaturedProgramsSection() {
               </Card>
             </motion.div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function UpcomingEventsSection({ events = [] }) {
+  const items = events.slice(0, 3);
+
+  if (!items.length) return null;
+
+  return (
+    <section className="py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+          <SectionTitle
+            subtitle="Events"
+            title="Upcoming Gatherings"
+            description="Everything your admin team publishes in events will show up here automatically."
+          />
+          <LinkButton to="/events" variant="outline" size="sm">View All Events</LinkButton>
+        </div>
+
+        <div className="grid lg:grid-cols-3 gap-6">
+          {items.map((event, index) => (
+            <motion.div
+              key={event._id || event.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+            >
+              <Card className="h-full flex flex-col p-6">
+                <div className="flex items-start justify-between gap-4 mb-5">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.25em] text-saffron-500 mb-2">
+                      {(event.type || 'event').replace(/-/g, ' ')}
+                    </p>
+                    <h3 className="font-serif text-2xl font-bold text-earth-800 leading-tight">
+                      {event.title}
+                    </h3>
+                  </div>
+                  <div className="w-14 h-14 rounded-2xl bg-saffron-50 text-saffron-600 flex items-center justify-center flex-shrink-0">
+                    <FaCalendarAlt size={20} />
+                  </div>
+                </div>
+
+                <p className="text-earth-500 text-sm leading-relaxed mb-6 flex-1">
+                  {event.shortDescription || event.description || 'More details will be shared soon.'}
+                </p>
+
+                <div className="space-y-3 text-sm text-earth-500 mb-6">
+                  <div className="flex items-center gap-3">
+                    <FaCalendarAlt className="text-saffron-500" />
+                    <span>{formatDate(event.startDate)}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <FaMapMarkerAlt className="text-saffron-500" />
+                    <span>{event.isOnline ? 'Online Event' : event.location || 'Location to be announced'}</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-saffron-600">
+                    {event.isFree ? 'Free Entry' : `₹${Number(event.price || 0).toLocaleString('en-IN')}`}
+                  </span>
+                  <Link to="/events" className="inline-flex items-center gap-2 text-earth-700 hover:text-saffron-600 text-sm font-medium transition-colors">
+                    Explore <FaArrowRight size={12} />
+                  </Link>
+                </div>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function MediaPublicationsSection({ mediaItems = [] }) {
+  const items = mediaItems.slice(0, 3);
+
+  if (!items.length) return null;
+
+  return (
+    <section className="py-24 bg-[#faf7f2]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+          <SectionTitle
+            subtitle="Media & Publications"
+            title="Fresh From The Wisdom Library"
+            description="New videos, articles, podcasts, and documents added by admin will reflect here automatically."
+          />
+          <LinkButton to="/media" variant="outline" size="sm">Browse Media</LinkButton>
+        </div>
+
+        <div className="grid lg:grid-cols-3 gap-6">
+          {items.map((item, index) => {
+            const Icon = mediaIconMap[item.type] || FaNewspaper;
+            const href = item.type === 'video' ? '/media' : item.url || '/media';
+            const isExternal = item.type !== 'video' && item.url;
+
+            return (
+              <motion.div
+                key={item._id || item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Card className="h-full flex flex-col">
+                  <div className="h-44 bg-gradient-to-br from-earth-100 to-saffron-50 flex items-center justify-center">
+                    <Icon className="text-earth-400 text-5xl" />
+                  </div>
+                  <div className="p-6 flex flex-col flex-1">
+                    <p className="text-xs uppercase tracking-[0.25em] text-saffron-500 mb-3">
+                      {(item.type || 'media').replace(/-/g, ' ')}
+                    </p>
+                    <h3 className="font-serif text-2xl font-bold text-earth-800 mb-3 leading-tight">
+                      {item.title}
+                    </h3>
+                    <p className="text-earth-500 text-sm leading-relaxed mb-6 flex-1">
+                      {item.description || 'This publication is now available in our media library.'}
+                    </p>
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="text-xs text-earth-400">
+                        {formatDate(item.publishDate, { day: 'numeric', month: 'short', year: 'numeric' })}
+                      </span>
+                      {isExternal ? (
+                        <a
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 text-earth-700 hover:text-saffron-600 text-sm font-medium transition-colors"
+                        >
+                          {getMediaActionLabel(item.type)} <FaArrowRight size={12} />
+                        </a>
+                      ) : (
+                        <Link to={href} className="inline-flex items-center gap-2 text-earth-700 hover:text-saffron-600 text-sm font-medium transition-colors">
+                          {getMediaActionLabel(item.type)} <FaArrowRight size={12} />
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

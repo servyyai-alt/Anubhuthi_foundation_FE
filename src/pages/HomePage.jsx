@@ -5,19 +5,46 @@ import {
   AboutSection,
   CoreValuesSection,
   FeaturedProgramsSection,
+  MediaPublicationsSection,
+  UpcomingEventsSection,
   WhyJoinUsSection,
   TestimonialsPreview,
   CTABanner
 } from '../components/sections/HomeSections';
-import { testimonialsAPI } from '../services/api';
+import { eventsAPI, mediaAPI, programsAPI, testimonialsAPI } from '../services/api';
 
 export default function HomePage() {
+  const [programs, setPrograms] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [mediaItems, setMediaItems] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
 
   useEffect(() => {
-    testimonialsAPI.getAll({ featured: true })
-      .then(res => setTestimonials(res.data.data || []))
-      .catch(() => {});
+    Promise.allSettled([
+      programsAPI.getAll({ featured: true, limit: 4 }),
+      eventsAPI.getAll({ featured: true, limit: 3 }),
+      mediaAPI.getAll({ featured: true, limit: 3 }),
+      testimonialsAPI.getAll({ featured: true, limit: 3 }),
+    ]).then(([programsRes, eventsRes, mediaRes, testimonialsRes]) => {
+      if (programsRes.status === 'fulfilled') {
+        setPrograms(programsRes.value.data.data || []);
+      }
+
+      if (eventsRes.status === 'fulfilled') {
+        const upcomingEvents = (eventsRes.value.data.data || [])
+          .slice()
+          .sort((a, b) => new Date(a.startDate || 0) - new Date(b.startDate || 0));
+        setEvents(upcomingEvents);
+      }
+
+      if (mediaRes.status === 'fulfilled') {
+        setMediaItems(mediaRes.value.data.data || []);
+      }
+
+      if (testimonialsRes.status === 'fulfilled') {
+        setTestimonials(testimonialsRes.value.data.data || []);
+      }
+    });
   }, []);
 
   return (
@@ -31,7 +58,9 @@ export default function HomePage() {
       <HeroSection />
       <AboutSection />
       <CoreValuesSection />
-      <FeaturedProgramsSection />
+      <FeaturedProgramsSection programs={programs} />
+      <UpcomingEventsSection events={events} />
+      <MediaPublicationsSection mediaItems={mediaItems} />
       <WhyJoinUsSection />
       <TestimonialsPreview testimonials={testimonials} />
       <CTABanner />
