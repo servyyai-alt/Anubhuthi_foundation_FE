@@ -22,6 +22,11 @@ import service from "../../assets/service.png";
 import truth from "../../assets/truth.png";
 import study from "../../assets/study.png";
 import community from "../../assets/community.png";
+import purpose from "../../assets/purpose.png";
+import awareness from "../../assets/awareness.png";
+import intelligence from "../../assets/intelligence.png";
+import potential from "../../assets/potential.png";
+import founder from "../../assets/hero-section.png";
 
 const programIconMap = {
   meditation: FaOm,
@@ -66,335 +71,515 @@ const getMediaActionLabel = (type) => {
 // --- About Section ---
 
 export function AboutSection() {
-  return (
-    <section className="py-24 bg-white overflow-hidden">
 
-      <div className="max-w-7xl mx-auto px-6">
+const pillars = [
 
-        {/* Heading */}
-        <div className="text-center max-w-4xl mx-auto">
+{
+image: purpose,
+title:"Purpose",
+desc:"Discover why you exist and align life with meaning."
+},
 
-          <span className="
-          uppercase
-          tracking-[5px]
-          text-orange-500
-          text-sm
-          ">
-            About Foundation
-          </span>
+{
+image: awareness,
+title:"Awareness",
+desc:"Observe consciously and understand yourself deeply."
+},
 
-          <h2 className="
-          text-5xl
-          md:text-6xl
-          font-bold
-          text-[#1d1d1d]
-          mt-6
-          leading-tight
-          ">
-            About Anubhuthi Foundation
-          </h2>
+{
+image: intelligence,
+title:"Inner Intelligence",
+desc:"Awaken natural wisdom beyond conditioning."
+},
 
-          <p className="
-          mt-8
-          text-lg
-          text-gray-600
-          leading-9
-          ">
-            Anubhuthi Foundation was established with a vision to help humanity
-            rediscover their forgotten intelligence within themselves —
-            Natural Intelligence.
-          </p>
-
-          <p className="
-          mt-4
-          text-orange-500
-          text-xl
-          font-medium
-          leading-8
-          ">
-            We believe every human being is born with purpose,
-            awareness, inner intelligence and extraordinary potential.
-          </p>
-
-        </div>
-
-
-        {/* Top Cards */}
-        <div className="
-        grid
-        grid-cols-2
-        md:grid-cols-4
-        gap-6
-        mt-16
-        ">
-
-          {[
-            {
-              image:
-                "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-              title: "Purpose",
-            },
-
-            {
-              image:
-                "https://cdn-icons-png.flaticon.com/512/3774/3774299.png",
-              title: "Awareness",
-            },
-
-            {
-              image:
-                "https://cdn-icons-png.flaticon.com/512/4149/4149647.png",
-              title: "Inner Intelligence",
-            },
-
-            {
-              image:
-                "https://cdn-icons-png.flaticon.com/512/2907/2907253.png",
-              title: "Extraordinary Potential",
-            },
-
-          ].map((item, index) => (
-
-            <div
-              key={index}
-              className="
-              bg-[#faf7f2]
-              rounded-[30px]
-              p-8
-              text-center
-              border
-              border-orange-100
-              hover:-translate-y-2
-              transition-all
-              duration-300
-              "
-            >
-
-              <img
-                src={item.image}
-                alt={item.title}
-                className="
-                w-20
-                h-20
-                object-contain
-                mx-auto
-                mb-5
-                "
-              />
-
-              <h3 className="
-              text-xl
-              font-semibold
-              text-[#1d1d1d]
-              leading-8
-              ">
-                {item.title}
-              </h3>
-
-            </div>
-
-          ))}
-
-        </div>
-
-
-        {/* Vision Mission */}
-        <div className="
-        grid
-        lg:grid-cols-2
-        gap-8
-        mt-20
-        ">
-
-          {/* Vision */}
-          <div className="
-          bg-[#faf7f2]
-          rounded-[35px]
-          p-10
-          border
-          border-orange-100
-          ">
-
-            <h3 className="
-            text-3xl
-            font-bold
-            text-[#1d1d1d]
-            mb-6
-            ">
-              Our Vision
-            </h3>
-
-            <p className="
-            text-gray-600
-            text-lg
-            leading-9
-            ">
-              To build a consciously evolved humanity by awakening
-              inner awareness and reconnecting individuals with
-              their true purpose.
-            </p>
-
-          </div>
-
-
-          {/* Mission */}
-          <div className="
-          bg-[#faf7f2]
-          rounded-[35px]
-          p-10
-          border
-          border-orange-100
-          ">
-
-            <h3 className="
-            text-3xl
-            font-bold
-            text-[#1d1d1d]
-            mb-6
-            ">
-              Our Mission
-            </h3>
-
-            <ul className="
-            space-y-4
-            text-gray-600
-            text-lg
-            leading-8
-            ">
-
-              <li>• Spread natural intelligence awareness globally</li>
-
-              <li>• Create conscious education systems</li>
-
-              <li>• Guide individuals toward self-realization</li>
-
-              <li>• Restore ancient wisdom and ethical heritage</li>
-
-              <li>• Conduct transformative retreats and trainings</li>
-
-              <li>• Support humanity through awareness-driven solutions</li>
-
-            </ul>
-
-          </div>
-
-        </div>
-
-
-        {/* Founder Section */}
-        <div className="
-        mt-24
-        bg-[#faf7f2]
-        rounded-[40px]
-        overflow-hidden
-        border
-        border-orange-100
-        ">
-
-          <div className="grid lg:grid-cols-2 items-center">
-
-            {/* Founder Image */}
-            <div className="relative">
-
-              <img
-                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e"
-                alt="Founder"
-                className="
-                w-full
-                h-full
-                min-h-[550px]
-                object-cover
-                "
-              />
-
-            </div>
-
-
-            {/* Founder Content */}
-            <div className="p-12 lg:p-16">
-
-              <span className="
-              uppercase
-              tracking-[5px]
-              text-orange-500
-              text-sm
-              ">
-                Founder Message
-              </span>
-
-              <h3 className="
-              text-5xl
-              font-bold
-              text-[#1d1d1d]
-              mt-5
-              leading-tight
-              ">
-                Guru Nana
-              </h3>
-
-              <p className="
-              text-orange-500
-              mt-3
-              text-lg
-              ">
-                Founder & Chief Philosophical Guide
-              </p>
-
-              <p className="
-              mt-8
-              text-gray-600
-              text-lg
-              leading-9
-              ">
-                “Human evolution begins when a person understands
-                who they truly are, why they are born, and how they
-                must consciously live with responsibility, awareness
-                and purpose.”
-              </p>
-
-              <button className="
-              mt-10
-              bg-orange-500
-              hover:bg-orange-600
-              transition-all
-              duration-300
-              px-8
-              py-4
-              rounded-full
-              text-white
-              font-semibold
-              shadow-lg
-              ">
-                Explore Journey
-              </button>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        {/* Bottom Text */}
-        <div className="text-center mt-16">
-
-          <p className="
-          text-orange-500
-          text-xl
-          font-medium
-          ">
-            One Purpose • One Humanity • One Journey • One Evolution
-          </p>
-
-        </div>
-
-      </div>
-
-    </section>
-  );
+{
+image: potential,
+title:"Extraordinary Potential",
+desc:"Unlock the highest version of yourself."
 }
 
-// --- Core Values ---
+];
+
+const foundationFocusAreas = [
+"Human Awareness",
+"Emotional Understanding",
+"Conscious Relationships",
+"Meditation & Self-Realization",
+"Nature-Based Learning",
+"Tourism & Retreat Experiences",
+"Spiritual Awareness",
+"Social Transformation"
+];
+
+
+
+return (
+
+<section className="py-28 bg-[#fffaf5]">
+
+<div className="max-w-7xl mx-auto px-6">
+
+
+{/* Heading */}
+
+<div className="text-center max-w-4xl mx-auto">
+
+<span className="
+uppercase
+tracking-[5px]
+text-orange-500
+text-sm
+">
+
+ABOUT FOUNDATION
+
+</span>
+
+
+<h2 className="
+mt-6
+text-5xl
+md:text-7xl
+font-bold
+leading-tight
+text-[#2f1f10]
+">
+
+What Is <br/>
+Anubhuthi Foundation?
+
+</h2>
+
+
+<p className="
+mt-8
+text-lg
+leading-9
+text-gray-600
+">
+
+Anubhuthi Foundation is a non-profit human evolution organization established to guide individuals toward conscious living through the philosophy of Natural Intelligence.
+
+</p>
+
+<p className="
+mt-6
+text-base
+leading-8
+text-gray-600
+">
+
+The Foundation combines human awareness, emotional understanding, conscious relationships, meditation and self-realization, nature-based learning, tourism and retreat experiences, spiritual awareness, and social transformation.
+
+</p>
+
+</div>
+
+
+<div className="mt-12 max-w-6xl mx-auto">
+
+<p className="
+text-sm
+font-semibold
+tracking-[4px]
+uppercase
+text-orange-500
+text-center
+mb-6
+">
+The Foundation Combines
+</p>
+
+<div className="
+grid
+sm:grid-cols-2
+lg:grid-cols-4
+gap-4
+">
+
+{foundationFocusAreas.map((area) => (
+<div
+key={area}
+className="
+bg-white
+border
+border-orange-100
+rounded-2xl
+px-5
+py-4
+text-center
+text-[#2f1f10]
+font-medium
+shadow-sm
+"
+>
+{area}
+</div>
+))}
+
+</div>
+
+</div>
+
+
+
+
+{/* Cards */}
+
+<div className="
+grid
+md:grid-cols-2
+lg:grid-cols-4
+gap-8
+mt-20
+">
+
+{pillars.map((item,index)=>(
+
+<div
+key={index}
+className="
+bg-white
+rounded-[30px]
+overflow-hidden
+hover:-translate-y-3
+hover:shadow-2xl
+duration-500
+">
+
+<img
+src={item.image}
+alt=""
+className="
+w-full
+h-[250px]
+object-cover
+"
+/>
+
+
+<div className="p-8">
+
+<h3 className="
+text-2xl
+font-bold
+text-[#2f1f10]
+">
+
+{item.title}
+
+</h3>
+
+
+<p className="
+mt-4
+text-gray-600
+leading-8
+">
+
+{item.desc}
+
+</p>
+
+</div>
+
+</div>
+
+))}
+
+</div>
+
+
+
+
+{/* Vision Mission */}
+
+<div className="
+mt-28
+grid
+lg:grid-cols-2
+gap-10
+">
+
+
+{/* Vision */}
+
+<div className="
+bg-orange-50
+rounded-[35px]
+p-12
+border
+border-orange-100
+">
+
+<span className="
+uppercase
+tracking-[5px]
+text-orange-500
+text-sm
+">
+
+OUR VISION
+
+</span>
+
+
+<h2 className="
+mt-5
+text-4xl
+font-bold
+text-[#2f1f10]
+leading-tight
+">
+
+Creating Humanity <br/>
+Rooted In Awareness
+
+</h2>
+
+
+
+<p className="
+mt-8
+text-lg
+leading-9
+text-gray-600
+">
+
+To build a consciously evolved society where every individual lives with awareness, responsibility, emotional clarity, and purpose.
+
+</p>
+
+
+
+<div className="
+mt-10
+border-t
+border-orange-100
+pt-8
+">
+
+<h3 className="
+text-5xl
+font-bold
+text-orange-500
+">
+
+1M+
+
+</h3>
+
+<p className="text-gray-500">
+
+Lives To Impact
+
+</p>
+
+</div>
+
+</div>
+
+
+
+{/* Mission */}
+
+<div className="
+bg-[#1d1d1d]
+text-white
+rounded-[35px]
+p-12
+">
+
+<span className="
+uppercase
+tracking-[5px]
+text-orange-400
+text-sm
+">
+
+OUR MISSION
+
+</span>
+
+
+<h2 className="
+mt-5
+text-4xl
+font-bold
+leading-tight
+">
+
+Transform Humanity Through Awareness
+
+</h2>
+
+
+
+<div className="
+mt-10
+space-y-6
+text-gray-300
+">
+
+<p>• Guide humanity beyond confusion and unconscious living</p>
+
+<p>• Help individuals grow in awareness and responsibility</p>
+
+<p>• Support emotional maturity and conscious relationships</p>
+
+<p>• Create nature-based learning, retreats, and transformation experiences</p>
+
+<p>• Encourage purposeful living and social transformation</p>
+
+</div>
+
+
+
+<button className="
+mt-10
+bg-orange-500
+hover:bg-orange-600
+px-8
+py-4
+rounded-full
+font-semibold
+">
+
+Join Mission
+
+</button>
+
+</div>
+
+</div>
+
+
+
+
+
+{/* Founder */}
+
+<div className="
+mt-28
+grid
+lg:grid-cols-2
+gap-16
+items-center
+">
+
+
+<div>
+
+<img
+src={founder}
+alt=""
+className="
+w-[450px]
+mx-auto
+drop-shadow-2xl
+"
+/>
+
+</div>
+
+
+
+<div>
+
+<span className="
+uppercase
+tracking-[5px]
+text-orange-500
+text-sm
+">
+
+FOUNDER MESSAGE
+
+</span>
+
+
+<h2 className="
+mt-5
+text-5xl
+font-bold
+text-[#2f1f10]
+">
+
+Guru Nana
+
+</h2>
+
+
+<p className="
+mt-8
+text-gray-600
+leading-10
+text-xl
+">
+
+“Human evolution begins when people
+understand who they truly are,
+why they exist and how consciously
+they should live.”
+
+</p>
+
+
+
+<button className="
+mt-10
+bg-orange-500
+hover:bg-orange-600
+px-10
+py-4
+rounded-full
+text-white
+font-semibold
+">
+
+Explore Journey
+
+</button>
+
+</div>
+
+</div>
+
+
+
+
+{/* Bottom */}
+
+<div className="
+mt-24
+text-center
+border-t
+pt-12
+">
+
+<h3 className="
+text-3xl
+font-serif
+text-orange-500
+">
+
+One Purpose • One Humanity • One Evolution
+
+</h3>
+
+</div>
+
+
+
+</div>
+
+</section>
+
+);
+
+}
+
+// --- Core Values -give--
 const values = [
   {
     image: meditation,
