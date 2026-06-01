@@ -203,42 +203,27 @@ const navLinks = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [dropdown, setDropdown] = useState(null);
-  const hoverTimerRef = useRef(null);
+
+  const [mobileDropdown, setMobileDropdown] = useState(null);
+
 
   const location = useLocation();
 
   useEffect(() => {
     setOpen(false);
     setDropdown(null);
+    setMobileDropdown(null);
   }, [location]);
 
-  useEffect(() => {
-    return () => {
-      if (hoverTimerRef.current) {
-        clearTimeout(hoverTimerRef.current);
-      }
-    };
-  }, []);
 
-  const handleDropdownEnter = (label) => {
-    if (hoverTimerRef.current) {
-      clearTimeout(hoverTimerRef.current);
-    }
+  const isRouteActive = (path) =>
+    path !== "#" &&
+    (location.pathname === path || location.pathname.startsWith(`${path}/`));
 
-    hoverTimerRef.current = setTimeout(() => {
-      setDropdown(label);
-    }, 180);
-  };
+  const isLinkActive = (link) =>
+    isRouteActive(link.path) ||
+    link.children?.some((child) => isRouteActive(child.path));
 
-  const handleDropdownLeave = () => {
-    if (hoverTimerRef.current) {
-      clearTimeout(hoverTimerRef.current);
-    }
-
-    hoverTimerRef.current = setTimeout(() => {
-      setDropdown(null);
-    }, 220);
-  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
@@ -273,27 +258,51 @@ export default function Navbar() {
               <div
                 key={link.label}
                 className="relative"
-                onMouseEnter={() => handleDropdownEnter(link.label)}
-                onMouseLeave={handleDropdownLeave}
-              >
 
-                <NavLink
-                  to={link.path}
-                  className={({ isActive }) =>
-                    `flex items-center gap-1 text-sm font-medium transition-colors duration-150
-                     ${
+                onMouseEnter={() =>
+                  link.children && setDropdown(link.label)
+                }
+                onMouseLeave={() =>
+                  setDropdown(null)
+                }
+              >
+                {link.children ? (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setDropdown((current) =>
+                        current === link.label ? null : link.label
+                      )
+                    }
+                    className={`flex items-center gap-1 text-sm font-medium transition ${
+                      isLinkActive(link)
+                        ? "text-orange-500"
+                        : "text-gray-700 hover:text-orange-500"
+                    }`}
+                  >
+                    {link.label}
+                    <FaChevronDown
+                      size={10}
+                      className={`transition-transform ${
+                        dropdown === link.label ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                ) : (
+                  <NavLink
+                    to={link.path}
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 text-sm font-medium transition ${
                         isActive
                           ? "text-orange-500"
                           : "text-gray-700 hover:text-orange-500"
-                     }`
-                  }
-                >
-                  {link.label}
+                      }`
+                    }
+                  >
+                    {link.label}
+                  </NavLink>
+                )}
 
-                  {link.children && (
-                    <FaChevronDown size={10} />
-                  )}
-                </NavLink>
 
                 {/* Dropdown */}
 
@@ -307,34 +316,42 @@ export default function Navbar() {
                     transition={{ duration: 0.18, ease: "easeOut" }}
                     className="
                     absolute
-                    top-8
+                    top-full
                     left-0
-                    bg-white
-                    shadow-lg
-                    rounded-xl
-                    overflow-hidden
-                    min-w-[220px]
+                    z-10
+                    pt-2
                     ">
 
-                      {link.children.map((child) => (
+                      <div className="
+                      bg-white
+                      shadow-lg
+                      rounded-xl
+                      overflow-hidden
+                      min-w-[220px]
+                      border border-orange-100
+                      ">
 
-                        <NavLink
-                          key={child.path}
-                          to={child.path}
-                          className="
-                          block
-                          px-5
-                          py-3
-                          text-sm
-                          text-gray-700
-                          hover:bg-orange-50
-                          hover:text-orange-500
-                          "
-                        >
-                          {child.label}
-                        </NavLink>
+                        {link.children.map((child) => (
 
-                      ))}
+                          <NavLink
+                            key={child.path}
+                            to={child.path}
+                            className="
+                            block
+                            px-5
+                            py-3
+                            text-sm
+                            text-gray-700
+                            hover:bg-orange-50
+                            hover:text-orange-500
+                            "
+                          >
+                            {child.label}
+                          </NavLink>
+
+                        ))}
+
+                      </div>
 
                     </motion.div>
 
@@ -412,19 +429,66 @@ export default function Navbar() {
             <div className="p-5 space-y-3">
 
               {navLinks.map((link) => (
+                <div key={link.label}>
+                  {link.children ? (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setMobileDropdown((current) =>
+                            current === link.label ? null : link.label
+                          )
+                        }
+                        className={`flex w-full items-center justify-between py-2 text-left ${
+                          isLinkActive(link)
+                            ? "text-orange-500"
+                            : "text-gray-700 hover:text-orange-500"
+                        }`}
+                      >
+                        <span>{link.label}</span>
+                        <FaChevronDown
+                          size={12}
+                          className={`transition-transform ${
+                            mobileDropdown === link.label ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
 
-                <NavLink
-                  key={link.path}
-                  to={link.path}
-                  className="
-                  block
-                  text-gray-700
-                  py-2
-                  hover:text-orange-500
-                  "
-                >
-                  {link.label}
-                </NavLink>
+                      {mobileDropdown === link.label && (
+                        <div className="mt-2 space-y-2 border-l border-orange-100 pl-4">
+                          {link.children.map((child) => (
+                            <NavLink
+                              key={child.path}
+                              to={child.path}
+                              className={({ isActive }) =>
+                                `block py-2 text-sm ${
+                                  isActive
+                                    ? "text-orange-500"
+                                    : "text-gray-600 hover:text-orange-500"
+                                }`
+                              }
+                            >
+                              {child.label}
+                            </NavLink>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <NavLink
+                      to={link.path}
+                      className={({ isActive }) =>
+                        `block py-2 ${
+                          isActive
+                            ? "text-orange-500"
+                            : "text-gray-700 hover:text-orange-500"
+                        }`
+                      }
+                    >
+                      {link.label}
+                    </NavLink>
+                  )}
+                </div>
 
               ))}
 
