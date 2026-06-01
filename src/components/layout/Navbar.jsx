@@ -203,9 +203,11 @@ const navLinks = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [dropdown, setDropdown] = useState(null);
-
+<<<<<<<<< Temporary merge branch 1
   const [mobileDropdown, setMobileDropdown] = useState(null);
-
+=========
+  const hoverTimerRef = useRef(null);
+>>>>>>>>> Temporary merge branch 2
 
   const location = useLocation();
 
@@ -215,7 +217,7 @@ export default function Navbar() {
     setMobileDropdown(null);
   }, [location]);
 
-
+<<<<<<<<< Temporary merge branch 1
   const isRouteActive = (path) =>
     path !== "#" &&
     (location.pathname === path || location.pathname.startsWith(`${path}/`));
@@ -223,7 +225,35 @@ export default function Navbar() {
   const isLinkActive = (link) =>
     isRouteActive(link.path) ||
     link.children?.some((child) => isRouteActive(child.path));
+=========
+  useEffect(() => {
+    return () => {
+      if (hoverTimerRef.current) {
+        clearTimeout(hoverTimerRef.current);
+      }
+    };
+  }, []);
 
+  const handleDropdownEnter = (label) => {
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+    }
+
+    hoverTimerRef.current = setTimeout(() => {
+      setDropdown(label);
+    }, 180);
+  };
+
+  const handleDropdownLeave = () => {
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+    }
+
+    hoverTimerRef.current = setTimeout(() => {
+      setDropdown(null);
+    }, 220);
+  };
+>>>>>>>>> Temporary merge branch 2
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
@@ -258,9 +288,9 @@ export default function Navbar() {
               <div
                 key={link.label}
                 className="relative"
-
+<<<<<<<<< Temporary merge branch 1
                 onMouseEnter={() =>
-                  link.children && setDropdown(link.label)
+                  setDropdown(link.label)
                 }
                 onMouseLeave={() =>
                   setDropdown(null)
@@ -302,7 +332,29 @@ export default function Navbar() {
                     {link.label}
                   </NavLink>
                 )}
+=========
+                onMouseEnter={() => handleDropdownEnter(link.label)}
+                onMouseLeave={handleDropdownLeave}
+              >
 
+                <NavLink
+                  to={link.path}
+                  className={({ isActive }) =>
+                    `flex items-center gap-1 text-sm font-medium transition-colors duration-150
+                     ${
+                        isActive
+                          ? "text-orange-500"
+                          : "text-gray-700 hover:text-orange-500"
+                     }`
+                  }
+                >
+                  {link.label}
+
+                  {link.children && (
+                    <FaChevronDown size={10} />
+                  )}
+                </NavLink>
+>>>>>>>>> Temporary merge branch 2
 
                 {/* Dropdown */}
 
@@ -351,9 +403,7 @@ export default function Navbar() {
 
                         ))}
 
-                      </div>
-
-                    </motion.div>
+                    </div>
 
                   )}
 
