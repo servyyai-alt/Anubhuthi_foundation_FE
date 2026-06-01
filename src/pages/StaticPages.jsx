@@ -2,7 +2,46 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
+<<<<<<<<< Temporary merge branch 1
+import {
+  FaBalanceScale,
+  FaBrain,
+  FaBullseye,
+  FaChild,
+  FaDna,
+  FaEye,
+  FaHandsHelping,
+  FaHeartbeat,
+  FaLeaf,
+  FaSeedling,
+  FaUserCheck,
+  FaUsers,
+} from 'react-icons/fa';
+import { PageHeader, SectionTitle, LinkButton } from '../components/common';
+import { AboutSection as HomeAboutSection } from '../components/sections/HomeSections';
+import bg from "../../src/assets/philosophy-bg.png";
+import meditation from "../../src/assets/meditation1.png";
+import human from "../assets/humanbirth.png";
+import awareness from "../assets/awareness.png";
+import emotion from "../assets/emotion.png";
+import dna from "../assets/dna.png";
+import intelligence from "../assets/intelligence.png";
+import evolution from "../assets/evolution.png";
+import purpose from "../assets/purpose.png";
+import dniBg from "../assets/dni-bg.png";
+import whojoin from "../assets/whojoin.png";
+import training from "../assets/training.png";
+
+
+
+=========
 import { PageHeader, SectionTitle, LotusDivider, LinkButton } from '../components/common';
+import heroTempleImage from '../assets/hero-temple-image.png.png';
+import beforeRestorationImage from '../assets/before-restoration.png.png';
+import duringRestorationImage from '../assets/during-restoration.png.png';
+import afterRestorationImage from '../assets/after-restoration.png.png';
+import communityCultureImage from '../assets/community-culture.png.png';
+>>>>>>>>> Temporary merge branch 2
 
 // --- About Page ---
 export function AboutPage() {
@@ -10,16 +49,20 @@ export function AboutPage() {
     <>
       <Helmet><title>About Us - Anubhuthi Foundation</title></Helmet>
       <PageHeader title="About Us" subtitle="Our Story" breadcrumb={[{ label: 'Home', path: '/' }, { label: 'About' }]} />
+<<<<<<<<< Temporary merge branch 1
+
+      <HomeAboutSection />
+=========
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="prose prose-lg max-w-none">
-            <p className="text-saffron-500 text-sm font-semibold tracking-widest uppercase mb-4">✦ Our Origin ✦</p>
+            <p className="text-saffron-500 text-sm font-semibold tracking-widest uppercase mb-4">Our Origin</p>
             <h2 className="font-serif text-4xl font-bold text-earth-800 mb-6">Born from the Mountains, Rooted in Truth</h2>
             <p className="text-earth-600 text-lg leading-relaxed mb-6">
-              Anubhuthi Foundation was born in the sacred atmosphere of Rishikesh in 2015, from the vision of our founder to create a living bridge between India's ancient spiritual wisdom and the modern world's desperate hunger for meaning, stillness, and transcendence.
+              Anubhuthi Foundation was born in the sacred atmosphere of Rishikesh in 2015, from the vision of our founder to create a living bridge between India&apos;s ancient spiritual wisdom and the modern world&apos;s desperate hunger for meaning, stillness, and transcendence.
             </p>
             <p className="text-earth-600 leading-relaxed mb-6">
-              The word "Anubhuthi" (अनुभूति) means direct experience — not intellectual understanding, not second-hand belief, but the raw, immediate, unmediated experience of truth. This is our purpose: to create the conditions in which seekers can have that direct experience, whatever name they call it.
+              The word &quot;Anubhuthi&quot; means direct experience - not intellectual understanding, not second-hand belief, but the raw, immediate, unmediated experience of truth. This is our purpose: to create the conditions in which seekers can have that direct experience, whatever name they call it.
             </p>
             <p className="text-earth-600 leading-relaxed mb-8">
               Over the past decade, we have guided thousands of seekers through programs ranging from introductory meditation workshops to deep, multi-month immersions in Vedic philosophy. We have led pilgrimages to the most sacred sites in the Himalayas and have begun the vital work of restoring ancient temples that were falling into disrepair.
@@ -29,8 +72,12 @@ export function AboutPage() {
           <SectionTitle subtitle="Our People" title="Leadership & Faculty" />
           <div className="grid sm:grid-cols-2 gap-6">
             {team.map((member, i) => (
-              <motion.div key={member.name} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+              <motion.div
+                key={member.name}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
                 className="p-6 bg-parchment rounded-2xl"
               >
                 <div className="w-14 h-14 bg-saffron-200 rounded-full flex items-center justify-center font-serif text-2xl font-bold text-saffron-700 mb-4">
@@ -44,26 +91,342 @@ export function AboutPage() {
           </div>
         </div>
       </section>
+>>>>>>>>> Temporary merge branch 2
     </>
   );
 }
 
 // --- Philosophy Page ---
 export function PhilosophyPage() {
+<<<<<<<<< Temporary merge branch 1
+
+const areas=[
+
+{title:"Human Birth",image:human},
+{title:"Awareness",image:awareness},
+{title:"Emotions",image:emotion},
+{title:"DNA",image:dna},
+{title:"Inner Intelligence",image:intelligence},
+{title:"Self Evolution",image:evolution},
+{title:"Purpose",image:purpose}
+
+]
+
+return(
+
+<section
+className="
+relative
+py-32
+bg-cover
+bg-center
+overflow-hidden
+text-white
+"
+style={{
+backgroundImage:`url(${bg})`
+}}
+>
+
+<div className="
+absolute inset-0
+bg-gradient-to-b
+from-black/60
+via-black/50
+to-black/80
+"/>
+
+
+
+<div className="
+relative z-10
+max-w-7xl
+mx-auto
+px-6
+">
+
+{/* HEADING */}
+
+<div className="text-center">
+
+<p className="
+uppercase
+tracking-[8px]
+text-orange-400
+text-sm
+mb-6
+">
+
+ANUBHUTHI PHILOSOPHY
+
+</p>
+
+
+<h1 className="
+font-serif
+text-6xl
+md:text-8xl
+font-bold
+leading-tight
+">
+
+Conscious Human Evolution
+
+</h1>
+
+
+<p className="
+mt-8
+max-w-2xl
+mx-auto
+text-gray-300
+text-xl
+leading-9
+">
+
+Understanding life through awareness,
+purpose and inner transformation.
+
+</p>
+
+</div>
+
+
+
+{/* TOP CIRCLES */}
+
+<div className="
+grid
+grid-cols-2
+md:grid-cols-4
+lg:grid-cols-7
+gap-10
+mt-24
+">
+
+{areas.map((item,index)=>(
+
+<div
+key={index}
+className="
+text-center
+group
+"
+>
+
+<div className="
+w-28
+h-28
+mx-auto
+rounded-full
+overflow-hidden
+border-2
+border-orange-400
+shadow-xl
+group-hover:scale-110
+duration-500
+">
+
+<img
+src={item.image}
+className="
+w-full
+h-full
+object-cover
+"
+/>
+
+</div>
+
+<h3 className="
+mt-5
+font-semibold
+text-lg
+">
+
+{item.title}
+
+</h3>
+
+</div>
+
+))}
+
+</div>
+
+
+
+{/* MIDDLE */}
+
+<div className="
+grid
+lg:grid-cols-2
+gap-24
+items-center
+mt-32
+">
+
+<div>
+
+<p className="
+uppercase
+tracking-[6px]
+text-orange-400
+mb-5
+">
+
+Conscious Understanding
+
+</p>
+
+
+<h2 className="
+font-serif
+text-6xl
+font-bold
+leading-tight
+">
+
+To Live Meaningfully
+Understand:
+
+</h2>
+
+
+<div className="
+space-y-7
+mt-12
+text-xl
+text-gray-200
+">
+
+<p>✓ Your Body</p>
+
+<p>✓ Your Mind</p>
+
+<p>✓ Your Emotions</p>
+
+<p>✓ Your Experiences</p>
+
+<p>✓ Your Purpose</p>
+
+<p>✓ Your Responsibility</p>
+
+</div>
+
+</div>
+
+
+
+<div className="relative">
+
+<div className="
+absolute
+inset-0
+bg-orange-500/20
+blur-[120px]
+"/>
+
+
+<img
+src={meditation}
+className="
+relative
+rounded-[40px]
+shadow-2xl
+w-full
+"
+/>
+
+</div>
+
+</div>
+
+
+
+
+{/* EVOLUTION QUOTE */}
+
+<div className="
+mt-32
+bg-white/5
+backdrop-blur-xl
+border
+border-white/10
+rounded-[40px]
+p-16
+text-center
+">
+
+<h2 className="
+font-serif
+text-5xl
+font-bold
+leading-tight
+">
+
+One Purpose • One Humanity
+<br/>
+One Evolution
+
+</h2>
+
+
+<p className="
+mt-8
+max-w-3xl
+mx-auto
+text-gray-300
+leading-9
+text-lg
+">
+
+Human transformation begins through
+awareness, responsibility and conscious
+living.
+
+</p>
+
+
+<button className="
+mt-10
+bg-orange-500
+hover:bg-orange-600
+px-10
+py-4
+rounded-full
+font-semibold
+duration-300
+">
+
+Explore Philosophy
+
+</button>
+
+</div>
+
+
+</div>
+
+</section>
+
+)
+
+=========
   const pillars = [
-    { sanskrit: 'सत्', title: 'Sat — Being', desc: 'Existence itself is the foundation. Before all experience is pure being, the unchanging witness that underlies all phenomena.' },
-    { sanskrit: 'चित्', title: 'Chit — Consciousness', desc: 'Awareness is not produced by the brain — it is the very nature of reality. The universe is a self-knowing intelligence.' },
-    { sanskrit: 'आनंद', title: 'Ananda — Bliss', desc: 'Joy is not an emotion — it is our natural state when the obscurations are removed. Happiness is our birthright.' },
+    { sanskrit: 'sat', title: 'Sat - Being', desc: 'Existence itself is the foundation. Before all experience is pure being, the unchanging witness that underlies all phenomena.' },
+    { sanskrit: 'chit', title: 'Chit - Consciousness', desc: 'Awareness is not produced by the brain - it is the very nature of reality. The universe is a self-knowing intelligence.' },
+    { sanskrit: 'ananda', title: 'Ananda - Bliss', desc: 'Joy is not an emotion - it is our natural state when the obscurations are removed. Happiness is our birthright.' },
   ];
 
   return (
     <>
-      <Helmet><title>Philosophy — Anubhuthi Foundation</title></Helmet>
+      <Helmet><title>Philosophy - Anubhuthi Foundation</title></Helmet>
       <PageHeader title="Anubhuthi Philosophy" subtitle="The View" breadcrumb={[{ label: 'Home', path: '/' }, { label: 'Philosophy' }]} />
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <div className="sanskrit-text text-saffron-500 text-5xl mb-4">सत् चित् आनन्द</div>
+            <div className="sanskrit-text text-saffron-500 text-5xl mb-4">sat chit ananda</div>
             <p className="text-earth-500">Existence · Consciousness · Bliss</p>
           </div>
           <p className="text-earth-600 text-lg leading-relaxed mb-10 text-center max-w-3xl mx-auto">
@@ -71,8 +434,12 @@ export function PhilosophyPage() {
           </p>
           <div className="space-y-6 mb-16">
             {pillars.map((p, i) => (
-              <motion.div key={p.title} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }} transition={{ delay: i * 0.15 }}
+              <motion.div
+                key={p.title}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15 }}
                 className="flex gap-6 p-6 bg-parchment rounded-2xl"
               >
                 <div className="sanskrit-text text-saffron-500 text-4xl flex-shrink-0">{p.sanskrit}</div>
@@ -90,37 +457,426 @@ export function PhilosophyPage() {
       </section>
     </>
   );
+>>>>>>>>> Temporary merge branch 2
 }
 
 // --- DNI Academy Page ---
 export function DNIAcademyPage() {
-  const courses = [
-    { title: 'Foundation Course in Vedanta', duration: '3 Months', level: 'Beginner', icon: '📿' },
-    { title: 'Advanced Yoga Philosophy', duration: '6 Months', level: 'Intermediate', icon: '🧘' },
-    { title: 'DNI Teacher Certification', duration: '1 Year', level: 'Advanced', icon: '🎓' },
-    { title: 'Himalayan Immersion Training', duration: '21 Days', level: 'All', icon: '🏔️' },
-  ];
 
+<<<<<<<<< Temporary merge branch 1
+const academy = [
+
+"Natural Intelligence",
+"Conscious Awareness",
+"Healthy Relationships",
+"Self Realisation",
+"Meditation",
+"Human Evolution",
+"Purpose Discovery"
+
+]
+
+const trainingFormat=[
+
+"Online Programs",
+"Residential Retreats",
+"Himalayan Camps",
+"Leadership Workshops",
+"Meditation Programs",
+"Student Awareness Camps"
+
+]
+
+const whoCanJoin=[
+
+"Students",
+"Professionals",
+"Couples",
+"Families",
+"Entrepreneurs",
+"Teachers"
+
+]
+
+
+return(
+
+<section className="bg-[#faf6ef]">
+
+{/* HERO */}
+
+<section
+className="
+relative
+min-h-[90vh]
+bg-cover
+bg-center
+text-white
+"
+style={{
+backgroundImage:`url(${dniBg})`
+}}
+>
+
+<div className="absolute inset-0 bg-black/65"/>
+
+<div className="
+relative z-10
+max-w-7xl
+mx-auto
+px-6
+py-28
+">
+
+<p className="
+uppercase
+tracking-[8px]
+text-orange-400
+">
+
+Decode of Natural Intelligence
+
+</p>
+
+
+<h1 className="
+text-6xl
+md:text-8xl
+font-serif
+font-bold
+mt-6
+leading-tight
+">
+
+DNI Academy
+
+</h1>
+
+
+<p className="
+mt-8
+text-xl
+max-w-3xl
+leading-10
+text-gray-300
+">
+
+Structured learning ecosystem helping
+individuals awaken intelligence,
+purpose and conscious living.
+
+</p>
+
+
+<div className="
+grid
+md:grid-cols-3
+gap-8
+mt-20
+">
+
+{academy.map((item,index)=>(
+
+<div
+key={index}
+className="
+bg-white/10
+backdrop-blur
+rounded-3xl
+p-6
+text-center
+"
+>
+
+{item}
+
+</div>
+
+))}
+
+</div>
+
+</div>
+
+</section>
+
+
+
+{/* WHO CAN JOIN */}
+
+<section className="py-28">
+
+<div className="
+max-w-7xl
+mx-auto
+grid
+lg:grid-cols-2
+gap-20
+px-6
+">
+
+<div>
+
+<h2 className="
+text-5xl
+font-bold
+font-serif
+mb-12
+">
+
+Who Can Join?
+
+</h2>
+
+
+<div className="space-y-5">
+
+{whoCanJoin.map((item,index)=>(
+
+<p key={index}
+className="text-xl">
+
+✓ {item}
+
+</p>
+
+))}
+
+</div>
+
+
+<img
+src={whojoin}
+className="
+rounded-[30px]
+mt-10
+"
+/>
+
+</div>
+
+
+
+
+<div>
+
+<h2 className="
+text-5xl
+font-bold
+font-serif
+mb-12
+">
+
+Training Format
+
+</h2>
+
+
+<div className="space-y-5">
+
+{trainingFormat.map((item,index)=>(
+
+<p key={index}
+className="text-xl">
+
+✓ {item}
+
+</p>
+
+))}
+
+</div>
+
+
+<img
+src={training}
+className="
+rounded-[30px]
+mt-10
+"
+/>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+
+{/* PROGRAMS */}
+
+<section className="
+py-28
+bg-white
+">
+
+<div className="
+max-w-7xl
+mx-auto
+px-6
+">
+
+<h2 className="
+text-center
+text-6xl
+font-serif
+font-bold
+">
+
+DNI Programs
+
+</h2>
+
+
+<div className="
+grid
+md:grid-cols-2
+lg:grid-cols-4
+gap-8
+mt-20
+">
+
+{[
+"Foundation Course",
+"Leadership Program",
+"Meditation Intensive",
+"Himalayan Immersion"
+
+].map((item,index)=>(
+
+<div
+key={index}
+className="
+bg-[#faf6ef]
+rounded-[30px]
+p-8
+hover:-translate-y-3
+duration-500
+shadow-lg
+"
+>
+
+<h3 className="
+text-2xl
+font-bold
+mb-4
+">
+
+{item}
+
+</h3>
+
+<p className="text-gray-600">
+
+Transformative experiential learning.
+
+</p>
+
+<button className="
+mt-8
+bg-orange-500
+text-white
+px-8
+py-3
+rounded-full
+">
+
+Explore
+
+</button>
+
+</div>
+
+))}
+
+</div>
+
+</div>
+
+</section>
+
+
+
+
+{/* CTA */}
+
+<section className="
+py-28
+bg-[#1d1208]
+text-center
+text-white
+">
+
+<h2 className="
+text-6xl
+font-serif
+font-bold
+">
+
+One Purpose • One Humanity
+<br/>
+
+One Education
+
+</h2>
+
+
+<p className="
+max-w-3xl
+mx-auto
+mt-8
+leading-9
+text-gray-300
+">
+
+DNI Academy creates conscious
+leaders through awareness,
+intelligence and purpose.
+
+</p>
+
+
+<button className="
+mt-10
+bg-orange-500
+px-10
+py-4
+rounded-full
+">
+
+Apply Now
+
+</button>
+
+</section>
+
+</section>
+
+)
+
+=========
   return (
     <>
-      <Helmet><title>DNI Academy — Anubhuthi Foundation</title></Helmet>
+      <Helmet><title>DNI Academy - Anubhuthi Foundation</title></Helmet>
       <PageHeader title="DNI Academy" subtitle="Divinity · Nature · Intelligence" breadcrumb={[{ label: 'Home', path: '/' }, { label: 'DNI Academy' }]} />
       <section className="py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
             <div>
-              <p className="text-saffron-500 text-sm font-semibold tracking-widest uppercase mb-3">✦ Academic Excellence ✦</p>
+              <p className="text-saffron-500 text-sm font-semibold tracking-widest uppercase mb-3">Academic Excellence</p>
               <h2 className="font-serif text-4xl font-bold text-earth-800 mb-5">A Living University of Ancient Wisdom</h2>
               <p className="text-earth-600 leading-relaxed mb-4">
-                DNI Academy is our flagship educational initiative — a structured, rigorous, yet deeply experiential approach to studying and living the ancient sciences of consciousness.
+                DNI Academy is our flagship educational initiative - a structured, rigorous, yet deeply experiential approach to studying and living the ancient sciences of consciousness.
               </p>
               <p className="text-earth-600 leading-relaxed mb-6">
-                DNI stands for Divinity, Nature, and Intelligence — the three dimensions through which we explore reality. Our curriculum integrates textual study, contemplative practice, embodied inquiry, and seva (service) into a holistic transformative program.
+                DNI stands for Divinity, Nature, and Intelligence - the three dimensions through which we explore reality. Our curriculum integrates textual study, contemplative practice, embodied inquiry, and seva (service) into a holistic transformative program.
               </p>
               <LinkButton to="/programs" variant="primary">Browse Courses</LinkButton>
             </div>
             <div className="bg-gradient-to-br from-earth-900 to-amber-950 rounded-3xl p-10 text-center text-white">
-              <div className="sanskrit-text text-saffron-400 text-6xl mb-4">ॐ</div>
+              <div className="sanskrit-text text-saffron-400 text-6xl mb-4">Om</div>
               <div className="font-serif text-2xl font-bold mb-2">DNI Academy</div>
               <p className="text-earth-300 text-sm">Divinity · Nature · Intelligence</p>
               <div className="grid grid-cols-3 gap-4 mt-8 pt-8 border-t border-white/10">
@@ -134,7 +890,12 @@ export function DNIAcademyPage() {
           <SectionTitle subtitle="Our Courses" title="DNI Academy Programs" center />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {courses.map((c, i) => (
-              <motion.div key={c.title} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+              <motion.div
+                key={c.title}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
                 className="text-center p-6 bg-parchment rounded-2xl"
               >
                 <div className="text-5xl mb-4">{c.icon}</div>
@@ -148,6 +909,7 @@ export function DNIAcademyPage() {
       </section>
     </>
   );
+>>>>>>>>> Temporary merge branch 2
 }
 
 // --- Temple Restoration Page ---
