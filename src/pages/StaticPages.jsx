@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { PageHeader, SectionTitle, LotusDivider, LinkButton } from '../components/common';
@@ -273,6 +274,13 @@ export function TempleRestorationPage() {
               style={{ zIndex: 20 }}
             >
               <div className="w-full max-w-[600px] text-left">
+                {/* Breadcrumb */}
+                <nav className="text-sm text-white/50 mb-4 flex items-center gap-1.5 font-sans">
+                  <Link to="/" className="hover:text-[#D8A24A] transition-colors">Home</Link>
+                  <span>›</span>
+                  <span className="text-white/80">Temple Restoration</span>
+                </nav>
+
                 {/* Title */}
                 <h1 className="font-sans text-[36px] font-bold uppercase leading-[0.98] tracking-[-0.03em] text-white sm:text-[48px] lg:text-[56px] xl:text-[60px]">
                   TEMPLE RESTORATION MISSION

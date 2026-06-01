@@ -155,7 +155,7 @@
 //   );
 // }
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
@@ -203,6 +203,7 @@ const navLinks = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [dropdown, setDropdown] = useState(null);
+  const hoverTimerRef = useRef(null);
 
   const location = useLocation();
 
@@ -210,6 +211,34 @@ export default function Navbar() {
     setOpen(false);
     setDropdown(null);
   }, [location]);
+
+  useEffect(() => {
+    return () => {
+      if (hoverTimerRef.current) {
+        clearTimeout(hoverTimerRef.current);
+      }
+    };
+  }, []);
+
+  const handleDropdownEnter = (label) => {
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+    }
+
+    hoverTimerRef.current = setTimeout(() => {
+      setDropdown(label);
+    }, 180);
+  };
+
+  const handleDropdownLeave = () => {
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+    }
+
+    hoverTimerRef.current = setTimeout(() => {
+      setDropdown(null);
+    }, 220);
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
@@ -244,22 +273,18 @@ export default function Navbar() {
               <div
                 key={link.label}
                 className="relative"
-                onMouseEnter={() =>
-                  setDropdown(link.label)
-                }
-                onMouseLeave={() =>
-                  setDropdown(null)
-                }
+                onMouseEnter={() => handleDropdownEnter(link.label)}
+                onMouseLeave={handleDropdownLeave}
               >
 
                 <NavLink
                   to={link.path}
                   className={({ isActive }) =>
-                    `flex items-center gap-1 text-sm font-medium transition
+                    `flex items-center gap-1 text-sm font-medium transition-colors duration-150
                      ${
-                       isActive
-                         ? "text-orange-500"
-                         : "text-gray-700 hover:text-orange-500"
+                        isActive
+                          ? "text-orange-500"
+                          : "text-gray-700 hover:text-orange-500"
                      }`
                   }
                 >
@@ -275,7 +300,12 @@ export default function Navbar() {
                 {dropdown === link.label &&
                   link.children && (
 
-                    <div className="
+                    <motion.div
+                     initial={{ opacity: 0, y: 4 }}
+                     animate={{ opacity: 1, y: 0 }}
+                     exit={{ opacity: 0, y: 4 }}
+                    transition={{ duration: 0.18, ease: "easeOut" }}
+                    className="
                     absolute
                     top-8
                     left-0
@@ -306,7 +336,7 @@ export default function Navbar() {
 
                       ))}
 
-                    </div>
+                    </motion.div>
 
                   )}
 
@@ -371,6 +401,10 @@ export default function Navbar() {
             exit={{
               opacity: 0,
               height: 0,
+            }}
+            transition={{
+              duration: 0.15,
+              ease: "easeOut",
             }}
             className="bg-white border-t"
           >
