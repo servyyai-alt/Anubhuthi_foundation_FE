@@ -155,7 +155,7 @@
 //   );
 // }
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
@@ -203,7 +203,9 @@ const navLinks = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [dropdown, setDropdown] = useState(null);
+
   const [mobileDropdown, setMobileDropdown] = useState(null);
+
 
   const location = useLocation();
 
@@ -213,6 +215,7 @@ export default function Navbar() {
     setMobileDropdown(null);
   }, [location]);
 
+
   const isRouteActive = (path) =>
     path !== "#" &&
     (location.pathname === path || location.pathname.startsWith(`${path}/`));
@@ -220,6 +223,7 @@ export default function Navbar() {
   const isLinkActive = (link) =>
     isRouteActive(link.path) ||
     link.children?.some((child) => isRouteActive(child.path));
+
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
@@ -254,6 +258,7 @@ export default function Navbar() {
               <div
                 key={link.label}
                 className="relative"
+
                 onMouseEnter={() =>
                   link.children && setDropdown(link.label)
                 }
@@ -298,12 +303,18 @@ export default function Navbar() {
                   </NavLink>
                 )}
 
+
                 {/* Dropdown */}
 
                 {dropdown === link.label &&
                   link.children && (
 
-                    <div className="
+                    <motion.div
+                     initial={{ opacity: 0, y: 4 }}
+                     animate={{ opacity: 1, y: 0 }}
+                     exit={{ opacity: 0, y: 4 }}
+                    transition={{ duration: 0.18, ease: "easeOut" }}
+                    className="
                     absolute
                     top-full
                     left-0
@@ -342,7 +353,7 @@ export default function Navbar() {
 
                       </div>
 
-                    </div>
+                    </motion.div>
 
                   )}
 
@@ -407,6 +418,10 @@ export default function Navbar() {
             exit={{
               opacity: 0,
               height: 0,
+            }}
+            transition={{
+              duration: 0.15,
+              ease: "easeOut",
             }}
             className="bg-white border-t"
           >
