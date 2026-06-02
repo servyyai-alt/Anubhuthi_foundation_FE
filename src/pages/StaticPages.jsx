@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import {
   FaBalanceScale,
   FaBrain,
@@ -29,6 +30,11 @@ import purpose from "../assets/purpose.png";
 import dniBg from "../assets/dni-bg.png";
 import whojoin from "../assets/whojoin.png";
 import training from "../assets/training.png";
+import heroTempleImage from "../assets/hero-temple-image.png.png";
+import beforeRestorationImage from "../assets/before-restoration.png.png";
+import duringRestorationImage from "../assets/during-restoration.png.png";
+import afterRestorationImage from "../assets/after-restoration.png.png";
+import communityCultureImage from "../assets/community-culture.png.png";
 
 
 
@@ -761,41 +767,214 @@ Apply Now
 
 // --- Temple Restoration Page ---
 export function TempleRestorationPage() {
+  const objectives = [
+    {
+      title: 'Restore ancient temple structures',
+      icon: (
+        <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M4 20h16" />
+          <path d="M6 20V10h12v10" />
+          <path d="M3 10l9-6 9 6" />
+          <path d="M10 20v-6h4v6" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Promote awareness through spiritual spaces',
+      icon: (
+        <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M4 20l16-16" />
+          <path d="M14 4l6 6" />
+          <path d="M4 10l4-4 3 3-4 4" />
+          <path d="M10 20l4-4 3 3-4 4" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Support local communities',
+      icon: (
+        <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="2.5" />
+          <circle cx="16" cy="8" r="2.5" />
+          <circle cx="12" cy="14" r="2.5" />
+          <path d="M3.5 19c.6-2.5 2.5-4 4.5-4s3.9 1.5 4.5 4" />
+          <path d="M11.5 19c.6-2.5 2.5-4 4.5-4s3.9 1.5 4.5 4" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Create meditation and learning centers',
+      icon: (
+        <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z" />
+          <path d="M4 5.5v15" />
+          <path d="M12 7h5" />
+          <path d="M12 11h5" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Preserve cultural and philosophical heritage',
+      icon: (
+        <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M18 5c-4.5.2-8.5 2.8-10.4 6.8A7.7 7.7 0 0 0 7 15c0 3 2 5 5 5 1 0 2.1-.2 3.2-.7C19.2 17.5 21.8 13.5 22 9c-1.8 1.1-4 1.6-6.3 1.4-.2-2.3.3-4.5 1.3-6.4Z" />
+          <path d="M4 20c3.5-1 6-3.5 7-7" />
+        </svg>
+      ),
+    },
+  ];
+
+  const galleryCards = [
+    {
+      title: 'Before Restoration',
+      image: beforeRestorationImage,
+      alt: 'Ancient temple in a damaged state before restoration work',
+    },
+    {
+      title: 'During Restoration',
+      image: duringRestorationImage,
+      alt: 'Temple restoration work with workers and scaffolding',
+    },
+    {
+      title: 'After Restoration',
+      image: afterRestorationImage,
+      alt: 'Fully restored temple in warm daylight',
+    },
+    {
+      title: 'Community & Culture',
+      image: communityCultureImage,
+      alt: 'Community gathering around a temple cultural activity',
+    },
+  ];
+
   return (
     <>
-      <Helmet><title>Temple Restoration Mission — Anubhuthi Foundation</title></Helmet>
-      <PageHeader title="Temple Restoration Mission" subtitle="Preserving Sacred Heritage" breadcrumb={[{ label: 'Home', path: '/' }, { label: 'Temple Restoration' }]} />
-      <section className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <div className="text-7xl mb-4">🕌</div>
-            <h2 className="font-serif text-4xl font-bold text-earth-800 mb-5">Restoring India's Sacred Soul</h2>
-            <p className="text-earth-600 text-lg leading-relaxed max-w-3xl mx-auto">
-              Hundreds of ancient temples across the Himalayas lie in states of neglect — crumbling walls, broken idols, discontinued rituals. These are not merely buildings. They are living repositories of consciousness technology, built by enlightened beings to serve as portals of transformation.
-            </p>
-          </div>
-          <div className="grid sm:grid-cols-3 gap-6 mb-12">
-            {[
-              { num: '15+', label: 'Temples Restored', icon: '🏛️' },
-              { num: '₹50L+', label: 'Funds Mobilized', icon: '💛' },
-              { num: '200+', label: 'Volunteers Engaged', icon: '🤝' },
-            ].map(item => (
-              <div key={item.label} className="text-center p-6 bg-saffron-50 rounded-2xl">
-                <div className="text-4xl mb-2">{item.icon}</div>
-                <div className="font-serif text-3xl font-bold text-saffron-600 mb-1">{item.num}</div>
-                <div className="text-earth-600 text-sm">{item.label}</div>
+      <Helmet><title>Temple Restoration Mission - Anubhuthi Foundation</title></Helmet>
+      
+      <div className="bg-[#F5EFE4] pt-16 sm:pt-20">
+        
+        {/* Combined Hero + Objectives Grid Container */}
+        <section className="bg-[#F5EFE4] relative overflow-hidden">
+          <div 
+            className="relative grid min-h-[auto] w-full grid-cols-1 items-stretch lg:min-h-[960px] lg:grid-cols-[45%_55%] lg:grid-rows-[auto_1fr]"
+          >
+            {/* Left Content Column - Row 1: Hero Content Area */}
+            <div 
+              className="flex flex-col justify-center bg-[#021B3A]/85 px-5 py-10 text-white sm:px-6 sm:py-12 lg:col-start-1 lg:row-start-1 lg:items-end lg:bg-[#021B3A]/80 lg:py-10 lg:pl-12 lg:pr-8 lg:backdrop-blur-[3px]"
+              style={{ zIndex: 20 }}
+            >
+              <div className="w-full max-w-[600px] text-left">
+                {/* Breadcrumb */}
+                <nav className="mb-4 flex flex-wrap items-center gap-1.5 text-xs font-sans text-white/50 sm:text-sm">
+                  <Link to="/" className="hover:text-[#D8A24A] transition-colors">Home</Link>
+                  <span>›</span>
+                  <span className="text-white/80">Temple Restoration</span>
+                </nav>
+
+                {/* Title */}
+                <h1 className="font-sans text-[30px] font-bold uppercase leading-[1.02] tracking-[-0.03em] text-white sm:text-[42px] md:text-[48px] lg:text-[56px] xl:text-[60px]">
+                  TEMPLE RESTORATION MISSION
+                </h1>
+                
+                {/* Subtitle */}
+                <p className="mt-3 font-serif text-lg font-semibold italic text-[#D8A24A] sm:text-xl md:text-2xl">
+                  Reviving Ancient Wisdom
+                </p>
+
+                {/* Hero Paragraph */}
+                <p className="mt-5 max-w-[550px] font-sans text-[15px] leading-[1.6] text-white opacity-90 sm:text-[17px] lg:text-[18px]">
+                  Anubhuthi Foundation works toward restoring ancient temples and spiritual heritage spaces with support from local communities.
+                </p>
+
+                {/* Aims Paragraph */}
+                <p className="mt-4 max-w-[550px] font-sans text-sm leading-[1.6] text-white/80 sm:text-[15px]">
+                  The mission aims to: preserve heritage, revive cultural wisdom, create awareness centers, and support conscious community development.
+                </p>
               </div>
-            ))}
+            </div>
+
+            {/* Left Content Column - Row 2: Objectives Content Area */}
+            <div 
+              className="flex flex-col justify-center border-t border-earth-100 bg-[#F5EFE4]/92 px-5 py-10 text-[#111827] sm:px-6 sm:py-12 lg:col-start-1 lg:row-start-2 lg:items-end lg:bg-[#F5EFE4]/80 lg:py-12 lg:pl-12 lg:pr-8 lg:backdrop-blur-[3px]"
+              style={{ zIndex: 20 }}
+            >
+              <div className="w-full max-w-[600px] text-left">
+                <h2 className="mb-6 font-sans text-[24px] font-bold uppercase tracking-[-0.03em] text-[#12264D] sm:text-[28px] lg:text-[32px]">
+                  OUR OBJECTIVES
+                </h2>
+                
+                <div className="space-y-4 sm:space-y-5">
+                  {objectives.map((item) => (
+                    <div
+                      key={item.title}
+                      className="group flex items-start gap-3 rounded-2xl border border-[#D8A24A]/15 bg-white/70 px-4 py-4 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#D8A24A]/50 hover:bg-white hover:shadow-[0_14px_30px_rgba(15,23,42,0.12)] sm:gap-4"
+                    >
+                      <div className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#FFF6E8] text-[#D8A24A] transition duration-300 group-hover:scale-110 group-hover:bg-[#D8A24A] group-hover:text-white">
+                        {item.icon}
+                      </div>
+                      <p className="font-sans text-[15px] font-medium leading-[1.4] text-[#111827] sm:text-[17px] lg:text-[18px]">
+                        {item.title}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Background Temple Image spanning both columns and rows */}
+            <div 
+              className="absolute inset-0 h-full w-full lg:col-start-1 lg:col-span-2 lg:row-start-1 lg:row-span-2"
+              style={{ zIndex: 1 }}
+            >
+              <img
+                src={heroTempleImage}
+                alt="Temple background"
+                className="h-full w-full object-cover object-center lg:object-right"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-[#021B3A]/55 via-[#021B3A]/20 to-[#F5EFE4]/40 lg:hidden" />
+            </div>
+
           </div>
-          <div className="text-center">
-            <LinkButton to="/donate?purpose=temple-restoration" variant="primary" size="lg">Support Temple Restoration</LinkButton>
+        </section>
+
+        {/* Gallery Cards Section */}
+        <section className="relative bg-[#F5EFE4] py-12 sm:py-14 lg:py-16" style={{ zIndex: 20 }}>
+          <div className="mx-auto w-full px-5 sm:px-6 lg:px-12">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
+              {galleryCards.map((card) => (
+                <div
+                  key={card.title}
+                  className="overflow-hidden rounded-[20px] border-[3px] border-white bg-[#F7F1E7] shadow-[0_12px_34px_rgba(15,23,42,0.14)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_42px_rgba(15,23,42,0.18)]"
+                >
+                  <div className="aspect-[4/3] w-full overflow-hidden">
+                    <img
+                      src={card.image}
+                      alt={card.alt}
+                      className="h-full w-full object-cover transition duration-500 hover:scale-105"
+                    />
+                  </div>
+                  <div className="px-4 py-4 text-center">
+                    <p className="font-sans text-[17px] font-medium leading-tight text-[#14213D] sm:text-[18px] lg:text-[20px]">
+                      {card.title}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Bottom Gold-Text Footer Bar */}
+        <div className="bg-[#021B3A]">
+          <div className="mx-auto w-full px-5 py-5 text-center font-sans text-[16px] font-medium tracking-[0.01em] text-[#D8A24A] sm:px-6 sm:text-[20px] lg:px-12 lg:text-[24px]">
+            One Purpose <span className="mx-2 text-white">•</span> One Humanity <span className="mx-2 text-white">•</span> One Journey <span className="mx-2 text-white">•</span> One Evolution
           </div>
         </div>
-      </section>
+
+      </div>
     </>
   );
 }
-
 // --- Legal Page ---
 export function LegalPage() {
   return (

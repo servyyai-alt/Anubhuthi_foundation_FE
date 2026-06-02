@@ -6,7 +6,7 @@
 // const slides = [
 //   {
 //     title: 'Awaken Your True Self',
-//     subtitle: 'अनुभूति — The Experience Within',
+//     subtitle: 'Anubhuthi - The Experience Within',
 //     description: 'Embark on a profound journey of self-discovery through ancient Vedic wisdom, transformative meditation, and sacred Himalayan retreats.',
 //     cta: 'Join The Movement',
 //     ctaPath: '/about',
@@ -178,10 +178,41 @@
 //     </section>
 //   );
 // }
+import React, { useEffect, useState } from "react";
 import hero from "../../assets/hero-section.png";
 import bg from "../../assets/bg.png";
+import { Link } from "react-router-dom";
+
+const heroStats = [
+  { value: 5000, suffix: "+", label: "Lives Impacted" },
+  { value: 150, suffix: "+", label: "Programs" },
+  { value: 12, suffix: "+", label: "Retreats" },
+];
 
 export default function HeroSection() {
+  const [counts, setCounts] = useState(heroStats.map(() => 0));
+
+  useEffect(() => {
+    let animationFrame;
+    let startTime;
+    const duration = 1800;
+
+    const animateCounts = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+
+      setCounts(heroStats.map((item) => Math.floor(item.value * progress)));
+
+      if (progress < 1) {
+        animationFrame = window.requestAnimationFrame(animateCounts);
+      }
+    };
+
+    animationFrame = window.requestAnimationFrame(animateCounts);
+
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, []);
+
   return (
     <section
       className="relative min-h-screen overflow-hidden bg-cover bg-center"
@@ -288,31 +319,48 @@ export default function HeroSection() {
 
             <div className="
             flex
-            gap-5
+            gap-4
             flex-wrap
-            mt-12
+            mt-10
+            sm:mt-12
             ">
 
-              <button className="
-              bg-orange-500
-              px-10
-              py-4
-              rounded-full
-              font-semibold
-              ">
+              <Link
+                to="/contact"
+                className="
+               inline-flex
+               w-fit
+               items-center
+               justify-center
+                bg-orange-500
+                px-10
+                py-4
+                rounded-full
+                font-semibold
+               leading-none
+              "
+              >
                 Join Movement
-              </button>
+              </Link>
 
 
-              <button className="
-              border
-              border-white/30
-              px-10
-              py-4
-              rounded-full
-              ">
+              <Link
+                to="/retreats"
+                className="
+               inline-flex
+               w-fit
+               items-center
+               justify-center
+                border
+                border-white/30
+                px-10
+                py-4
+                rounded-full
+               leading-none
+              "
+              >
                 Explore Retreats
-              </button>
+              </Link>
 
             </div>
 
@@ -321,56 +369,42 @@ export default function HeroSection() {
             {/* stats */}
 
             <div className="
-            flex
-            gap-12
-            mt-16
+            mt-12
+            grid
+            grid-cols-2
+            gap-4
+            sm:mt-14
+            sm:grid-cols-3
+            sm:gap-5
+            lg:mt-16
             ">
 
-              <div>
+              {heroStats.map((item, index) => (
+                <div
+                  key={item.label}
+                  className="
+                  rounded-[24px]
+                  border
+                  border-white/10
+                  bg-black/20
+                  px-4
+                  py-4
+                  backdrop-blur-sm
+                  "
+                >
+                  <h2 className="
+                  text-3xl
+                  font-bold
+                  text-orange-400
+                  sm:text-4xl
+                  lg:text-5xl
+                  ">
+                    {counts[index]}{item.suffix}
+                  </h2>
 
-                <h2 className="
-                text-5xl
-                font-bold
-                text-orange-400
-                ">
-                  5000+
-                </h2>
-
-                <p>Lives Impacted</p>
-
-              </div>
-
-
-
-              <div>
-
-                <h2 className="
-                text-5xl
-                font-bold
-                text-orange-400
-                ">
-                  150+
-                </h2>
-
-                <p>Programs</p>
-
-              </div>
-
-
-
-              <div>
-
-                <h2 className="
-                text-5xl
-                font-bold
-                text-orange-400
-                ">
-                  12+
-                </h2>
-
-                <p>Retreats</p>
-
-              </div>
+                  <p className="mt-1 text-sm text-white/85 sm:text-base">{item.label}</p>
+                </div>
+              ))}
 
             </div>
 

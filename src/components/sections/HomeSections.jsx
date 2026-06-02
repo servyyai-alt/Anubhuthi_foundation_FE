@@ -115,7 +115,7 @@ const foundationFocusAreas = [
 
 return (
 
-<section className="py-28 bg-[#fffaf5]">
+<section className="pt-28 pb-0 bg-[#fffaf5]">
 
 <div className="max-w-7xl mx-auto px-6">
 
@@ -211,6 +211,13 @@ text-center
 text-[#2f1f10]
 font-medium
 shadow-sm
+ transition-all
+ duration-300
+ cursor-pointer
+ hover:-translate-y-1
+ hover:border-orange-200
+ hover:bg-orange-50
+ hover:shadow-lg
 "
 >
 {area}
@@ -435,19 +442,22 @@ text-gray-300
 
 
 
-<button className="
-mt-10
+<Link to="/contact" className="
+mt-12
+inline-block
+w-fit
 bg-orange-500
 hover:bg-orange-600
 px-8
 py-4
 rounded-full
 font-semibold
+leading-none
 ">
 
 Join Mission
 
-</button>
+</Link>
 
 </div>
 
@@ -460,10 +470,10 @@ Join Mission
 {/* Founder */}
 
 <div className="
-mt-28
+mt-14
 grid
 lg:grid-cols-2
-gap-16
+gap-10
 items-center
 ">
 
@@ -474,7 +484,9 @@ items-center
 src={founder}
 alt=""
 className="
-w-[450px]
+w-[340px]
+w-full
+max-w-[340px]
 mx-auto
 drop-shadow-2xl
 "
@@ -500,7 +512,7 @@ FOUNDER MESSAGE
 
 <h2 className="
 mt-5
-text-5xl
+text-4xl
 font-bold
 text-[#2f1f10]
 ">
@@ -511,10 +523,10 @@ Guru Nana
 
 
 <p className="
-mt-8
+mt-6
 text-gray-600
-leading-10
-text-xl
+leading-8
+text-lg
 ">
 
 “Human evolution begins when people
@@ -526,20 +538,23 @@ they should live.”
 
 
 
-<button className="
-mt-10
+<Link to="/contact" className="
+mt-8
+inline-block
+w-fit
 bg-orange-500
 hover:bg-orange-600
-px-10
-py-4
+px-8
+py-3
 rounded-full
 text-white
 font-semibold
+leading-none
 ">
 
 Explore Journey
 
-</button>
+</Link>
 
 </div>
 
@@ -551,16 +566,19 @@ Explore Journey
 {/* Bottom */}
 
 <div className="
-mt-24
+mt-16
 text-center
 border-t
-pt-12
+pt-10
 ">
 
 <h3 className="
+inline-block
+mx-auto
 text-3xl
 font-serif
 text-orange-500
+mb-12
 ">
 
 One Purpose • One Humanity • One Evolution
@@ -621,7 +639,7 @@ const values = [
 
 export function CoreValuesSection() {
   return (
-    <section className="py-28 bg-[#faf7f2]">
+    <section className="pt-0 pb-28 bg-[#faf7f2]">
 
       <div className="max-w-7xl mx-auto px-6">
 
@@ -1038,7 +1056,6 @@ export function CTABanner() {
     <section className="py-20 bg-gradient-to-r from-saffron-600 to-earth-700 relative overflow-hidden">
       <div className="absolute inset-0 bg-hero-pattern opacity-20" />
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="sanskrit-text text-saffron-200 text-3xl mb-4">ॐ तत् सत्</div>
         <h2 className="font-serif text-4xl md:text-5xl font-bold text-white mb-6">
           Begin Your Sacred Journey Today
         </h2>
