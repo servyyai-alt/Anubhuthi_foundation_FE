@@ -35,13 +35,13 @@ export default function ContactPage() {
     { icon: FaMapMarkerAlt, title: 'Address', lines: ['Anubhuthi Foundation', 'Rishikesh, Uttarakhand 249201', 'India'] },
     { icon: FaPhone, title: 'Phone', lines: ['+91 98765 43210', '+91 135 XXX XXXX'] },
     { icon: FaEnvelope, title: 'Email', lines: ['namaste@anubhuthifoundation.org', 'programs@anubhuthifoundation.org'] },
-    { icon: FaClock, title: 'Hours', lines: ['Mon - Sat: 9:00 AM – 6:00 PM', 'Sunday: 10:00 AM – 2:00 PM'] },
+    { icon: FaClock, title: 'Hours', lines: ['Mon - Sat: 9:00 AM â€“ 6:00 PM', 'Sunday: 10:00 AM â€“ 2:00 PM'] },
   ];
 
   return (
     <>
       <Helmet>
-        <title>Contact Us — Anubhuthi Foundation</title>
+        <title>Contact Us â€” Anubhuthi Foundation</title>
         <meta name="description" content="Get in touch with Anubhuthi Foundation for inquiries about programs, retreats, volunteering, and more." />
       </Helmet>
 
@@ -53,10 +53,10 @@ export default function ContactPage() {
             {/* Left info */}
             <div className="lg:col-span-2 space-y-6">
               <div>
-                <p className="text-saffron-500 text-sm font-semibold tracking-widest uppercase mb-2">✦ Namaste ✦</p>
+                <p className="text-saffron-500 text-sm font-semibold tracking-widest uppercase mb-2">âœ¦ Namaste âœ¦</p>
                 <h2 className="font-serif text-3xl font-bold text-earth-800 mb-4">We'd Love to Hear from You</h2>
                 <p className="text-earth-500 leading-relaxed">
-                  Whether you have questions about our programs, want to collaborate, or simply want to connect with our community — we are here.
+                  Whether you have questions about our programs, want to collaborate, or simply want to connect with our community â€” we are here.
                 </p>
               </div>
 
@@ -77,8 +77,7 @@ export default function ContactPage() {
               ))}
 
               <div className="p-5 bg-saffron-50 border border-saffron-200 rounded-2xl">
-                <div className="sanskrit-text text-saffron-600 text-xl mb-2">अतिथि देवो भव</div>
-                <p className="text-earth-600 text-sm italic">"The guest is God" — You are always welcome here.</p>
+                <p className="text-earth-600 text-sm italic">You are always welcome here.</p>
               </div>
             </div>
 
@@ -88,7 +87,9 @@ export default function ContactPage() {
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
                   className="text-center py-20 bg-saffron-50 rounded-3xl"
                 >
+
                   <div className="text-7xl mb-6">✅</div>
+
                   <h3 className="font-serif text-3xl font-bold text-earth-800 mb-3">Message Received</h3>
                   <p className="text-earth-500 max-w-sm mx-auto">
                     Thank you for reaching out. Our team will respond within 2-3 business days.
@@ -116,6 +117,7 @@ export default function ContactPage() {
                   <FormInput name="subject" label="Subject" placeholder="What is this about?" value={form.subject} onChange={handleChange} />
                   <FormTextarea name="message" label="Your Message *" placeholder="Tell us how we can help..." rows={5} value={form.message} onChange={handleChange} required />
                   <Button type="submit" loading={loading} size="lg" className="w-full">
+
                     Send Message ✅
                   </Button>
                 </form>

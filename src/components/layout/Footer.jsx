@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaOm, FaFacebook, FaInstagram, FaYoutube, FaTwitter, FaLinkedin, FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaYoutube, FaTwitter, FaLinkedin, FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
+import logo from '../../assets/logo-1.png';
 
 export default function Footer() {
   return (
@@ -10,21 +11,18 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-saffron-500 rounded-full flex items-center justify-center">
-                <FaOm className="text-white text-lg" />
-              </div>
-              <div>
-                <div className="font-serif font-bold text-white text-lg">Anubhuthi</div>
-                <div className="text-xs text-saffron-400 tracking-wider uppercase">Foundation</div>
+            <div className="flex items-center gap-4 mb-4">
+              <img src={logo} alt="Anubhuthi Foundation" className="h-20 w-auto" />
+              <div className="leading-none">
+                <div className="text-white text-3xl font-serif font-bold uppercase">Anubhuthi</div>
+                <div className="text-saffron-400 text-xl font-semibold uppercase tracking-[0.2em] mt-2">Foundation</div>
               </div>
             </div>
             <p className="text-earth-300 text-sm leading-relaxed mb-6">
               Awakening consciousness through ancient wisdom, sacred practices, and transformative experiences since 2015.
             </p>
-            <div className="sanskrit-text text-saffron-400 text-lg">सत्यं शिवं सुन्दरम्</div>
             <p className="text-earth-400 text-xs mt-1">Truth, Goodness, Beauty</p>
-            
+
             {/* Social */}
             <div className="flex gap-3 mt-6">
               {[
@@ -102,7 +100,7 @@ export default function Footer() {
               <p className="text-earth-300 text-xs mb-2">Newsletter</p>
               <div className="flex gap-2">
                 <input type="email" placeholder="Your email" className="flex-1 bg-earth-700 text-white text-sm px-3 py-2 rounded-lg outline-none placeholder-earth-500" />
-                <button className="px-3 py-2 bg-saffron-500 text-white rounded-lg text-sm hover:bg-saffron-600 transition-colors">✓</button>
+                <button className="px-3 py-2 bg-saffron-500 text-white rounded-lg text-sm hover:bg-saffron-600 transition-colors">âœ“</button>
               </div>
             </div>
           </div>
@@ -112,7 +110,7 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-earth-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-earth-400 text-sm">© 2024 Anubhuthi Foundation. All rights reserved.</p>
+          <p className="text-earth-400 text-sm">Â© 2024 Anubhuthi Foundation. All rights reserved.</p>
           <div className="flex gap-6">
             {['Legal & Compliance', 'Privacy Policy', 'Terms of Service'].map(item => (
               <Link key={item} to={`/legal`} className="text-earth-400 hover:text-saffron-400 text-xs transition-colors">{item}</Link>

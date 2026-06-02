@@ -126,10 +126,10 @@ import cultural from "../assets/cultural.png";
 
 import himalaya from "../assets/himalaya.png";
 import couples from "../assets/couples.png";
-import natureCamp from "../assets/awareness.png";
-import meditationJourney from "../assets/awareness.png";
-import consciousLiving from "../assets/awareness.png";
-import international from "../assets/awareness.png";
+import natureCamp from "../assets/spiritual-nature-camps.png";
+import meditationJourney from "../assets/meditationJourney.png";
+import consciousLiving from "../assets/conscious-living-programs.png";
+import international from "../assets/international-awareness-tours.png";
 
 import participant from "../assets/awareness.png";
 import { retreatsAPI } from "../services/api";
