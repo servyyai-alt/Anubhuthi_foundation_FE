@@ -145,7 +145,7 @@
 //                 </div>
 //               ))}
 //               <Link to="/donate" className="block mt-4 px-4 py-3 bg-saffron-500 text-white rounded-full text-center text-sm font-semibold">
-//                 Donate Now 🙏
+//                 Donate Now 
 //               </Link>
 //             </div>
 //           </motion.div>

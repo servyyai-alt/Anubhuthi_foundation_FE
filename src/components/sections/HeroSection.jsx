@@ -125,7 +125,7 @@
 //               <Link to="/donate"
 //                 className="px-8 py-4 bg-white/10 border border-saffron-400/50 text-saffron-300 rounded-full font-semibold text-base hover:bg-saffron-500/20 transition-all backdrop-blur-sm"
 //               >
-//                 Donate Now 🙏
+//                 Donate Now 
 //               </Link>
 //             </motion.div>
 

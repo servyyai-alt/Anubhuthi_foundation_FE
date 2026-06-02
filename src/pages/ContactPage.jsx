@@ -87,7 +87,9 @@ export default function ContactPage() {
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
                   className="text-center py-20 bg-saffron-50 rounded-3xl"
                 >
-                  <div className="text-7xl mb-6">ðŸ™</div>
+
+                  <div className="text-7xl mb-6">✅</div>
+
                   <h3 className="font-serif text-3xl font-bold text-earth-800 mb-3">Message Received</h3>
                   <p className="text-earth-500 max-w-sm mx-auto">
                     Thank you for reaching out. Our team will respond within 2-3 business days.
@@ -115,7 +117,8 @@ export default function ContactPage() {
                   <FormInput name="subject" label="Subject" placeholder="What is this about?" value={form.subject} onChange={handleChange} />
                   <FormTextarea name="message" label="Your Message *" placeholder="Tell us how we can help..." rows={5} value={form.message} onChange={handleChange} required />
                   <Button type="submit" loading={loading} size="lg" className="w-full">
-                    Send Message ðŸ™
+
+                    Send Message ✅
                   </Button>
                 </form>
               )}

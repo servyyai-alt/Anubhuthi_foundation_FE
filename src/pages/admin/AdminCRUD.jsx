@@ -42,9 +42,26 @@ export default function AdminCRUD({
   };
 
   const openEdit = (item) => {
+    const dateValues = formFields
+      .filter((field) => field.type === 'date' && item[field.name])
+      .reduce((acc, field) => {
+        acc[field.name] = String(item[field.name]).slice(0, 10);
+        return acc;
+      }, {});
+
+    const arrayValues = formFields
+      .filter((field) => field.isArray && Array.isArray(item[field.name]))
+      .reduce((acc, field) => {
+        acc[field.name] = item[field.name].join(', ');
+        return acc;
+      }, {});
+
     setForm({
       ...defaultValues,
       ...item,
+      ...dateValues,
+      ...arrayValues,
+      instructorName: item.instructor?.name || item.instructorName || '',
       imageFile: null,
       imageFilePreview: '',
       imageFiles: [],
@@ -245,6 +262,7 @@ export default function AdminCRUD({
                           onChange={handleChange}
                           rows={3}
                           required={field.required}
+                          placeholder={field.placeholder || field.label}
                           className="w-full resize-none rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-saffron-400"
                         />
                       ) : field.type === 'select' ? (

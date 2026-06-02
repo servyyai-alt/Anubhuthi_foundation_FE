@@ -85,7 +85,7 @@ export default function DonatePage() {
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
           className="max-w-lg w-full bg-white rounded-3xl shadow-warm-lg p-12 text-center"
         >
-          <div className="text-8xl mb-6">🙏</div>
+          <div className="text-8xl mb-6">🌟</div>
           <h2 className="font-serif text-3xl font-bold text-earth-800 mb-3">Namaste, {success.name}!</h2>
           <p className="text-earth-600 mb-4">Your donation of <strong>₹{success.amount.toLocaleString()}</strong> has been received.</p>
           <p className="text-earth-400 text-sm mb-8">Your generosity ripples outward in countless ways. May it return to you a thousandfold.</p>

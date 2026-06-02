@@ -98,7 +98,7 @@ export default function App() {
               <PublicLayout>
                 <div className="flex items-center justify-center min-h-[60vh] text-center px-4">
                   <div>
-                    <div className="text-8xl mb-6">🙏</div>
+                    <div className="text-8xl mb-6">⚠️</div>
                     <h1 className="font-serif text-5xl font-bold text-earth-800 mb-4">404</h1>
                     <p className="text-earth-500 mb-8">This path doesn't exist — but every path leads within.</p>
                     <a href="/" className="px-8 py-3 bg-saffron-500 text-white rounded-full font-semibold hover:bg-saffron-600 transition-colors">

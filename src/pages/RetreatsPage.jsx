@@ -112,6 +112,8 @@
 // }
 
 
+import React, { useEffect, useMemo, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import bg from "../assets/retreat-bg.png";
 
 import travel from "../assets/travel.png";
@@ -130,8 +132,17 @@ import consciousLiving from "../assets/conscious-living-programs.png";
 import international from "../assets/international-awareness-tours.png";
 
 import participant from "../assets/awareness.png";
+import { retreatsAPI } from "../services/api";
 
 export default function RetreatsPage() {
+  const [adminRetreats, setAdminRetreats] = useState([]);
+
+  useEffect(() => {
+    retreatsAPI.getAll()
+      .then((res) => setAdminRetreats(res.data.data || []))
+      .catch(() => setAdminRetreats([]));
+  }, []);
+
   const topItems = [
     { title: "Travel", image: travel },
     { title: "Meditation", image: meditation },
@@ -142,7 +153,7 @@ export default function RetreatsPage() {
     { title: "Cultural Exploration", image: cultural },
   ];
 
-  const retreats = [
+  const staticRetreats = [
     {
       title: "Himalayan Trekking Retreats",
       image: himalaya,
@@ -169,8 +180,27 @@ export default function RetreatsPage() {
     },
   ];
 
+  const retreats = useMemo(() => {
+    if (!adminRetreats.length) return staticRetreats;
+
+    return adminRetreats.map((retreat) => ({
+      _id: retreat._id,
+      title: retreat.title,
+      image: retreat.image || retreat.gallery?.[0] || himalaya,
+      location: retreat.location,
+      duration: retreat.duration,
+      price: retreat.price,
+      shortDescription: retreat.shortDescription || retreat.description,
+    }));
+  }, [adminRetreats]);
+
   return (
-    <section className="bg-[#f8f2e8]">
+    <>
+      <Helmet>
+        <title>Himalayan Retreats - Anubhuthi Foundation</title>
+        <meta name="description" content="Sacred retreats, nature journeys, and conscious living programs from Anubhuthi Foundation." />
+      </Helmet>
+      <section className="bg-[#f8f2e8]">
 
       {/* HERO */}
 
@@ -281,7 +311,7 @@ export default function RetreatsPage() {
           >
             {retreats.map((item, index) => (
               <div
-                key={index}
+                key={item._id || item.title || index}
                 className="
                 bg-white
                 rounded-xl
@@ -314,6 +344,20 @@ export default function RetreatsPage() {
                   >
                     {item.title}
                   </h4>
+                  {(item.shortDescription || item.location || item.duration || item.price) && (
+                    <div className="mt-3 space-y-2 text-center text-xs text-gray-600">
+                      {item.shortDescription && (
+                        <p className="line-clamp-3 leading-5">
+                          {item.shortDescription}
+                        </p>
+                      )}
+                      <div className="flex flex-wrap justify-center gap-2">
+                        {item.location && <span>{item.location}</span>}
+                        {item.duration && <span>{item.duration}</span>}
+                        {item.price ? <span>Rs {Number(item.price).toLocaleString()}</span> : null}
+                      </div>
+                    </div>
+                  )}
 
                 </div>
 
@@ -415,6 +459,7 @@ export default function RetreatsPage() {
         One Purpose • One Humanity • One Journey • One Evolution
       </div>
 
-    </section>
+      </section>
+    </>
   );
 }

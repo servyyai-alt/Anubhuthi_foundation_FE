@@ -41,9 +41,9 @@ export default function MediaPage() {
     mediaAPI.getAll()
       .then((res) => {
         const data = res.data.data || [];
-        setMedia(data.length ? data : sampleMedia);
+        setMedia(data);
       })
-      .catch(() => setMedia(sampleMedia))
+      .catch(() => setMedia([]))
       .finally(() => setLoading(false));
   }, []);
 

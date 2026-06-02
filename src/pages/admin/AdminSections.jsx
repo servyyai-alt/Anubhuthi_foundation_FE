@@ -31,8 +31,14 @@ export function AdminPrograms() {
       payload.image = uploadRes.data?.data?.url || '';
     }
 
+    payload.instructor = {
+      ...(typeof payload.instructor === 'object' && payload.instructor ? payload.instructor : {}),
+      name: payload.instructorName || payload.instructor?.name || '',
+    };
+
     delete payload.imageFile;
     delete payload.imageFilePreview;
+    delete payload.instructorName;
 
     return payload;
   };
@@ -41,7 +47,7 @@ export function AdminPrograms() {
     <AdminCRUD
       title="Programs"
       // icon={<FaBookOpen />}
-      fetchFn={programsAPI.getAll}
+      fetchFn={programsAPI.getAllAdmin}
       createFn={programsAPI.create}
       updateFn={programsAPI.update}
       deleteFn={programsAPI.delete}
@@ -85,6 +91,7 @@ export function AdminPrograms() {
         image: '',
         imageFile: null,
         imageFilePreview: '',
+        instructorName: '',
         isFree: false,
         isFeatured: false,
         isActive: true,
@@ -137,7 +144,7 @@ export function AdminPrograms() {
           type: 'textarea',
           fullWidth: true,
         },
-        { name: 'instructor', label: 'Instructor Name' },
+        { name: 'instructorName', label: 'Instructor Name' },
         { name: 'location', label: 'Location' },
         {
           name: 'isFree',
@@ -171,7 +178,7 @@ export function AdminEvents() {
     <AdminCRUD
       title="Events"
       // icon={<FaCalendarAlt />}
-      fetchFn={eventsAPI.getAll}
+      fetchFn={eventsAPI.getAllAdmin}
       createFn={eventsAPI.create}
       updateFn={eventsAPI.update}
       deleteFn={eventsAPI.delete}
@@ -239,6 +246,7 @@ export function AdminEvents() {
           placeholder: 'e.g. 7:00 AM – 9:00 AM',
         },
         { name: 'location', label: 'Location' },
+        { name: 'image', label: 'Image URL', fullWidth: true },
         { name: 'price', label: 'Price (₹)', type: 'number' },
         { name: 'maxParticipants', label: 'Max Participants', type: 'number' },
         {
@@ -285,7 +293,7 @@ export function AdminRetreats() {
     <AdminCRUD
       title="Retreats"
       // icon={<FaMountain />}
-      fetchFn={retreatsAPI.getAll}
+      fetchFn={retreatsAPI.getAllAdmin}
       createFn={retreatsAPI.create}
       updateFn={retreatsAPI.update}
       deleteFn={retreatsAPI.delete}
@@ -346,6 +354,7 @@ export function AdminRetreats() {
           label: 'Duration',
           placeholder: 'e.g. 7 Days',
         },
+        { name: 'image', label: 'Image URL', fullWidth: true },
         { name: 'price', label: 'Price (₹)', type: 'number' },
         { name: 'maxParticipants', label: 'Max Participants', type: 'number' },
         {
@@ -392,7 +401,7 @@ export function AdminCareers() {
     <AdminCRUD
       title="Careers"
       // icon={<FaBriefcase />}
-      fetchFn={careersAPI.getAll}
+      fetchFn={careersAPI.getAllAdmin}
       createFn={careersAPI.create}
       updateFn={careersAPI.update}
       deleteFn={careersAPI.delete}
@@ -458,15 +467,32 @@ export function AdminVolunteers() {
     rejected: 'red',
   };
 
+  const prepareVolunteerPayload = (form) => {
+    const payload = {
+      ...form,
+      skills: typeof form.skills === 'string'
+        ? form.skills.split(',').map((skill) => skill.trim()).filter(Boolean)
+        : form.skills,
+      areas: typeof form.areas === 'string'
+        ? form.areas.split(',').map((area) => area.trim()).filter(Boolean)
+        : form.areas,
+    };
+
+    if (payload.age === '') delete payload.age;
+
+    return payload;
+  };
+
   return (
     <AdminCRUD
       title="Volunteers"
       // icon={<FaHandsHelping />}
       fetchFn={() => volunteersAPI.getAll()}
-      createFn={() => Promise.resolve()}
+      createFn={volunteersAPI.create}
       updateFn={volunteersAPI.update}
       deleteFn={volunteersAPI.delete}
       searchKey="name"
+      preparePayload={prepareVolunteerPayload}
       columns={[
         { key: 'name', label: 'Name' },
         { key: 'email', label: 'Email' },
@@ -476,8 +502,64 @@ export function AdminVolunteers() {
         { key: 'status', label: 'Status', render: (v) => <Badge color={statusColors[v] || 'earth'}>{v}</Badge> },
         { key: 'createdAt', label: 'Applied', render: (v) => (v ? format(new Date(v), 'dd MMM yy') : 'â€”') },
       ]}
-      defaultValues={{ status: 'pending', notes: '' }}
+      defaultValues={{
+        name: '',
+        email: '',
+        phone: '',
+        age: '',
+        city: '',
+        country: 'India',
+        education: '',
+        occupation: '',
+        skills: '',
+        availability: '',
+        experience: '',
+        motivation: '',
+        areas: '',
+        type: 'volunteer',
+        status: 'pending',
+        notes: '',
+      }}
       formFields={[
+        { name: 'name', label: 'Name', required: true },
+        { name: 'email', label: 'Email', type: 'email', required: true },
+        { name: 'phone', label: 'Phone' },
+        { name: 'age', label: 'Age', type: 'number' },
+        { name: 'city', label: 'City' },
+        { name: 'country', label: 'Country' },
+        { name: 'education', label: 'Education' },
+        { name: 'occupation', label: 'Occupation' },
+        { name: 'type', label: 'Type', type: 'select', options: ['volunteer', 'intern'] },
+        {
+          name: 'availability',
+          label: 'Availability',
+          type: 'select',
+          options: [
+            { value: 'full-time', label: 'Full-time (40 hrs/week)' },
+            { value: 'part-time', label: 'Part-time (15-20 hrs/week)' },
+            { value: 'weekends', label: 'Weekends only' },
+            { value: 'remote', label: 'Remote / Online only' },
+            { value: 'flexible', label: 'Flexible' },
+          ],
+        },
+        {
+          name: 'skills',
+          label: 'Skills',
+          type: 'textarea',
+          fullWidth: true,
+          isArray: true,
+          placeholder: 'Teaching, design, coordination',
+        },
+        {
+          name: 'areas',
+          label: 'Areas of Interest',
+          type: 'textarea',
+          fullWidth: true,
+          isArray: true,
+          placeholder: 'Events, media, retreats',
+        },
+        { name: 'experience', label: 'Experience', type: 'textarea', fullWidth: true },
+        { name: 'motivation', label: 'Motivation', type: 'textarea', fullWidth: true },
         { name: 'status', label: 'Status', type: 'select', options: ['pending', 'reviewing', 'accepted', 'rejected'] },
         { name: 'notes', label: 'Internal Notes', type: 'textarea', fullWidth: true },
       ]}
@@ -618,7 +700,7 @@ export function AdminTestimonials() {
       title="Testimonials"
       // icon={<FaQuoteLeft />}
       fetchFn={testimonialsAPI.getAllAdmin}
-      createFn={testimonialsAPI.create}
+      createFn={testimonialsAPI.createAdmin}
       updateFn={testimonialsAPI.update}
       deleteFn={testimonialsAPI.delete}
       searchKey="name"
@@ -702,10 +784,9 @@ export function AdminMedia() {
     }
 
     delete payload.imageFile;
-    delete payload.imageFilePreview;
-    delete payload.imageFiles;
-    delete payload.imageFilesPreview;
-    delete payload.url;
+      delete payload.imageFilePreview;
+      delete payload.imageFiles;
+      delete payload.imageFilesPreview;
 
     return payload;
   };
@@ -714,7 +795,7 @@ export function AdminMedia() {
     <AdminCRUD
       title="Media"
       // icon={<FaPhotoVideo />}
-      fetchFn={() => mediaAPI.getAll()}
+      fetchFn={mediaAPI.getAllAdmin}
       createFn={mediaAPI.create}
       updateFn={mediaAPI.update}
       deleteFn={mediaAPI.delete}
@@ -732,6 +813,8 @@ export function AdminMedia() {
         { name: 'title', label: 'Title', required: true },
         { name: 'type', label: 'Type', type: 'select', options: ['video', 'article', 'podcast', 'gallery', 'document'] },
         { name: 'category', label: 'Category' },
+        { name: 'url', label: 'Resource / Video URL', fullWidth: true },
+        { name: 'embedCode', label: 'Embed Code', type: 'textarea', fullWidth: true },
         { name: 'imageFile', label: 'Image Upload', type: 'file', fullWidth: true, urlKey: 'thumbnail', previewKey: 'imageFilePreview' },
         { name: 'imageFiles', label: 'Gallery Images', type: 'file', fullWidth: true, multiple: true, previewKey: 'imageFilesPreview', galleryKey: 'gallery' },
         { name: 'description', label: 'Description', type: 'textarea', fullWidth: true },
