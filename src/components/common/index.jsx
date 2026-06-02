@@ -186,7 +186,7 @@ export const PageHeader = ({ title, subtitle, breadcrumb, bg = 'parchment' }) =>
 );
 
 // Empty State
-export const EmptyState = ({ icon = '🙏', title, description }) => (
+export const EmptyState = ({ icon = '🤷', title, description }) => (
   <div className="text-center py-16">
     <div className="text-6xl mb-4">{icon}</div>
     <h3 className="font-serif text-xl text-earth-700 mb-2">{title}</h3>
