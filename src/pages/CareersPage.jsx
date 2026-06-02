@@ -44,7 +44,7 @@ function ApplicationModal({ career, onClose }) {
         </div>
         {submitted ? (
           <div className="p-12 text-center">
-            <div className="text-7xl mb-4">🙏</div>
+            <div className="text-7xl mb-4">✅</div>
             <h3 className="font-serif text-2xl font-bold text-earth-800 mb-2">Application Submitted!</h3>
             <p className="text-earth-500 mb-6">We'll review your application and get back to you within 7 days.</p>
             <Button onClick={onClose} variant="outline">Close</Button>

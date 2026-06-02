@@ -39,6 +39,7 @@ export const authAPI = {
 // Programs
 export const programsAPI = {
   getAll: (params) => api.get('/programs', { params }),
+  getAllAdmin: () => api.get('/programs/admin/all'),
   getById: (id) => api.get(`/programs/${id}`),
   create: (data) => api.post('/programs', data),
   update: (id, data) => api.put(`/programs/${id}`, data),
@@ -55,6 +56,7 @@ export const programsAPI = {
 // Events
 export const eventsAPI = {
   getAll: (params) => api.get('/events', { params }),
+  getAllAdmin: () => api.get('/events/admin/all'),
   getById: (id) => api.get(`/events/${id}`),
   create: (data) => api.post('/events', data),
   update: (id, data) => api.put(`/events/${id}`, data),
@@ -64,6 +66,7 @@ export const eventsAPI = {
 // Retreats
 export const retreatsAPI = {
   getAll: (params) => api.get('/retreats', { params }),
+  getAllAdmin: () => api.get('/retreats/admin/all'),
   getById: (id) => api.get(`/retreats/${id}`),
   create: (data) => api.post('/retreats', data),
   update: (id, data) => api.put(`/retreats/${id}`, data),
@@ -73,6 +76,7 @@ export const retreatsAPI = {
 // Careers
 export const careersAPI = {
   getAll: () => api.get('/careers'),
+  getAllAdmin: () => api.get('/careers/admin/all'),
   getById: (id) => api.get(`/careers/${id}`),
   create: (data) => api.post('/careers', data),
   update: (id, data) => api.put(`/careers/${id}`, data),
@@ -86,6 +90,7 @@ export const testimonialsAPI = {
   getAll: (params) => api.get('/testimonials', { params }),
   getAllAdmin: () => api.get('/testimonials/admin/all'),
   create: (data) => api.post('/testimonials', data),
+  createAdmin: (data) => api.post('/testimonials/admin', data),
   update: (id, data) => api.put(`/testimonials/${id}`, data),
   delete: (id) => api.delete(`/testimonials/${id}`),
 };
@@ -108,6 +113,7 @@ export const donationsAPI = {
 // Volunteers
 export const volunteersAPI = {
   submit: (data) => api.post('/volunteers', data),
+  create: (data) => api.post('/volunteers', data),
   getAll: (params) => api.get('/volunteers', { params }),
   update: (id, data) => api.put(`/volunteers/${id}`, data),
   delete: (id) => api.delete(`/volunteers/${id}`),
@@ -116,6 +122,7 @@ export const volunteersAPI = {
 // Media
 export const mediaAPI = {
   getAll: (params) => api.get('/media', { params }),
+  getAllAdmin: () => api.get('/media/admin/all'),
   create: (data) => api.post('/media', data),
   update: (id, data) => api.put(`/media/${id}`, data),
   delete: (id) => api.delete(`/media/${id}`),

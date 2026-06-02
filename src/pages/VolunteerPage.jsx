@@ -11,7 +11,7 @@ export default function VolunteerPage() {
   const [form, setForm] = useState({
     name: '', email: '', phone: '', age: '', city: '', country: 'India',
     education: '', occupation: '', availability: '', experience: '',
-    motivation: '', type: 'volunteer', areas: []
+    motivation: '', skills: '', type: 'volunteer', areas: []
   });
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -28,7 +28,14 @@ export default function VolunteerPage() {
     if (!form.name || !form.email || !form.motivation) { toast.error('Please fill required fields'); return; }
     setLoading(true);
     try {
-      await volunteersAPI.submit(form);
+      const payload = {
+        ...form,
+        skills: form.skills.split(',').map(skill => skill.trim()).filter(Boolean),
+      };
+
+      if (payload.age === '') delete payload.age;
+
+      await volunteersAPI.submit(payload);
       setSubmitted(true);
     } catch {
       toast.error('Submission failed. Please try again.');
@@ -50,7 +57,7 @@ export default function VolunteerPage() {
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
           className="max-w-lg text-center bg-white p-12 rounded-3xl shadow-warm-lg"
         >
-          <div className="text-8xl mb-6">🙏</div>
+          <div className="text-8xl mb-6">✅</div>
           <h2 className="font-serif text-3xl font-bold text-earth-800 mb-3">Welcome to the Sangha!</h2>
           <p className="text-earth-500 mb-8">Your {form.type} application has been received. We'll review it and reach out within 5-7 days.</p>
           <button onClick={() => setSubmitted(false)} className="text-saffron-600 underline text-sm">Submit Another Application</button>
@@ -118,10 +125,12 @@ export default function VolunteerPage() {
               <FormInput name="age" type="number" label="Age" placeholder="25" value={form.age} onChange={handleChange} />
               <FormInput name="city" label="City" placeholder="Bangalore" value={form.city} onChange={handleChange} />
             </div>
+            <FormInput name="country" label="Country" placeholder="India" value={form.country} onChange={handleChange} />
             <div className="grid sm:grid-cols-2 gap-4">
               <FormInput name="education" label="Education" placeholder="B.A. Philosophy" value={form.education} onChange={handleChange} />
               <FormInput name="occupation" label="Current Occupation" placeholder="Software Engineer" value={form.occupation} onChange={handleChange} />
             </div>
+            <FormTextarea name="skills" label="Skills" placeholder="Teaching, design, coordination..." rows={2} value={form.skills} onChange={handleChange} />
 
             <FormSelect name="availability" label="Availability" value={form.availability} onChange={handleChange}>
               <option value="">Select availability</option>
@@ -152,7 +161,7 @@ export default function VolunteerPage() {
             <FormTextarea name="motivation" label="Why Do You Want to Serve? *" placeholder="What draws you to Anubhuthi Foundation and this work..." rows={4} value={form.motivation} onChange={handleChange} required />
 
             <Button type="submit" loading={loading} size="lg" className="w-full">
-              Submit Application 🙏
+              Submit Application ✅
             </Button>
           </form>
         </div>

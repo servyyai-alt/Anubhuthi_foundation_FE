@@ -20,7 +20,7 @@ export default class ErrorBoundary extends React.Component {
       return (
         <div className="min-h-screen bg-parchment flex items-center justify-center px-4">
           <div className="max-w-md text-center">
-            <div className="text-8xl mb-6">🙏</div>
+            <div className="text-8xl mb-6">⚠️</div>
             <h2 className="font-serif text-3xl font-bold text-earth-800 mb-3">Something Went Wrong</h2>
             <p className="text-earth-500 mb-2">
               We encountered an unexpected error. Please try refreshing the page.

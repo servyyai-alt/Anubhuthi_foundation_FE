@@ -79,7 +79,13 @@ export default function ProgramsPage() {
                 <motion.div key={prog._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
                   <Card className="flex h-full flex-col">
                     <div className="relative flex h-48 items-center justify-center overflow-hidden bg-gradient-to-br from-saffron-100 to-earth-100">
-                    
+                      {prog.image && (
+                        <img
+                          src={prog.image}
+                          alt={prog.title}
+                          className="absolute inset-0 h-full w-full object-cover"
+                        />
+                      )}
                       {prog.image && <div className="absolute inset-0 bg-gradient-to-t from-earth-900/25 to-transparent" />}
                       <div className="absolute left-3 top-3 flex gap-2">
                         <Badge color="saffron">{prog.category}</Badge>
