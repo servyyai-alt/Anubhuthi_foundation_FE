@@ -16,6 +16,7 @@ import {
   FaPlay,
 } from 'react-icons/fa';
 import { SectionTitle, LinkButton, Card } from '../common';
+import { animationVariants, transitionConfig, useReducedMotion, useIsMobile } from '../../utils/animations';
 import meditation from "../../assets/meditation.png";
 import purity from "../../assets/purity.png";
 import service from "../../assets/service.png";
@@ -70,7 +71,9 @@ const getMediaActionLabel = (type) => {
 
 // --- About Section ---
 
-export function AboutSection() {
+export function AboutSection({ compact = false }) {
+  const prefersReducedMotion = useReducedMotion();
+  const isMobile = useIsMobile();
 
 const pillars = [
 
@@ -115,14 +118,22 @@ const foundationFocusAreas = [
 
 return (
 
-<section className="pt-28 pb-0 bg-[#fffaf5]">
+<section className={`pb-0 bg-[#fffaf5] ${compact ? 'pt-6 md:pt-8' : 'pt-12 md:pt-16'}`}>
 
 <div className="max-w-7xl mx-auto px-6">
 
 
 {/* Heading */}
 
-<div className="text-center max-w-4xl mx-auto">
+<div className={compact ? "py-4" : ""}>
+<motion.div
+  className="text-center max-w-4xl mx-auto"
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, amount: 0.3 }}
+  variants={prefersReducedMotion ? {} : animationVariants.fadeUp}
+  transition={transitionConfig}
+>
 
 <span className="
 uppercase
@@ -173,10 +184,17 @@ The Foundation combines human awareness, emotional understanding, conscious rela
 
 </p>
 
+</motion.div>
 </div>
 
 
-<div className="mt-12 max-w-6xl mx-auto">
+<motion.div
+  className="mt-12 max-w-6xl mx-auto"
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, amount: 0.2 }}
+  variants={prefersReducedMotion || isMobile ? {} : animationVariants.staggerContainer}
+>
 
 <p className="
 text-sm
@@ -198,8 +216,9 @@ gap-4
 ">
 
 {foundationFocusAreas.map((area) => (
-<div
+<motion.div
 key={area}
+variants={prefersReducedMotion || isMobile ? {} : animationVariants.staggerItem}
 className="
 bg-white
 border
@@ -221,30 +240,37 @@ shadow-sm
 "
 >
 {area}
-</div>
+</motion.div>
 ))}
 
 </div>
 
-</div>
+</motion.div>
 
 
 
 
 {/* Cards */}
 
-<div className="
+<motion.div
+  className="
 grid
 md:grid-cols-2
 lg:grid-cols-4
 gap-8
 mt-20
-">
+"
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, amount: 0.1 }}
+  variants={prefersReducedMotion || isMobile ? {} : animationVariants.staggerContainer}
+>
 
 {pillars.map((item,index)=>(
 
-<div
+<motion.div
 key={index}
+variants={prefersReducedMotion || isMobile ? {} : animationVariants.staggerItem}
 className="
 bg-white
 rounded-[30px]
@@ -290,11 +316,11 @@ leading-8
 
 </div>
 
-</div>
+</motion.div>
 
 ))}
 
-</div>
+</motion.div>
 
 
 
@@ -311,13 +337,20 @@ gap-10
 
 {/* Vision */}
 
-<div className="
+<motion.div
+  className="
 bg-orange-50
 rounded-[35px]
 p-12
 border
 border-orange-100
-">
+"
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, amount: 0.2 }}
+  variants={prefersReducedMotion ? {} : animationVariants.slideLeft}
+  transition={transitionConfig}
+>
 
 <span className="
 uppercase
@@ -384,18 +417,25 @@ Lives To Impact
 
 </div>
 
-</div>
+</motion.div>
 
 
 
 {/* Mission */}
 
-<div className="
+<motion.div
+  className="
 bg-[#1d1d1d]
 text-white
 rounded-[35px]
 p-12
-">
+"
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, amount: 0.2 }}
+  variants={prefersReducedMotion ? {} : animationVariants.slideRight}
+  transition={transitionConfig}
+>
 
 <span className="
 uppercase
@@ -459,7 +499,7 @@ Join Mission
 
 </Link>
 
-</div>
+</motion.div>
 
 </div>
 
@@ -469,13 +509,20 @@ Join Mission
 
 {/* Founder */}
 
-<div className="
+<motion.div
+  className="
 mt-14
 grid
 lg:grid-cols-2
 gap-10
 items-center
-">
+"
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, amount: 0.2 }}
+  variants={prefersReducedMotion ? {} : animationVariants.fadeUp}
+  transition={transitionConfig}
+>
 
 
 <div>
@@ -558,19 +605,26 @@ Explore Journey
 
 </div>
 
-</div>
+</motion.div>
 
 
 
 
 {/* Bottom */}
 
-<div className="
+<motion.div
+  className="
 mt-16
 text-center
 border-t
 pt-10
-">
+"
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, amount: 0.3 }}
+  variants={prefersReducedMotion ? {} : animationVariants.fadeUp}
+  transition={transitionConfig}
+>
 
 <h3 className="
 inline-block
@@ -585,7 +639,7 @@ One Purpose • One Humanity • One Evolution
 
 </h3>
 
-</div>
+</motion.div>
 
 
 
@@ -638,12 +692,22 @@ const values = [
 
 
 export function CoreValuesSection() {
+  const prefersReducedMotion = useReducedMotion();
+  const isMobile = useIsMobile();
+
   return (
     <section className="pt-0 pb-28 bg-[#faf7f2]">
 
       <div className="max-w-7xl mx-auto px-6">
 
-        <div className="text-center mb-20">
+        <motion.div
+          className="text-center mb-20"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={prefersReducedMotion ? {} : animationVariants.fadeUp}
+          transition={transitionConfig}
+        >
 
           <span className="
           uppercase
@@ -675,21 +739,26 @@ export function CoreValuesSection() {
             service and human transformation.
           </p>
 
-        </div>
+        </motion.div>
 
-
-
-        <div className="
+        <motion.div
+          className="
         grid
         md:grid-cols-2
         lg:grid-cols-3
         gap-8
-        ">
+        "
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={prefersReducedMotion || isMobile ? {} : animationVariants.staggerContainer}
+        >
 
-          {values.map((item) => (
+          {values.map((item, index) => (
 
-            <div
+            <motion.div
               key={item.title}
+              variants={prefersReducedMotion || isMobile ? {} : animationVariants.staggerItem}
               className="
               bg-white
               rounded-[30px]
@@ -731,11 +800,11 @@ export function CoreValuesSection() {
 
               </div>
 
-            </div>
+            </motion.div>
 
           ))}
 
-        </div>
+        </motion.div>
 
       </div>
 
@@ -752,6 +821,9 @@ const defaultPrograms = [
 ];
 
 export function FeaturedProgramsSection({ programs = [] }) {
+  const prefersReducedMotion = useReducedMotion();
+  const isMobile = useIsMobile();
+
   const items = programs.length
     ? programs.slice(0, 4).map((program) => ({
         icon: programIconMap[program.category] || FaBook,
@@ -772,17 +844,31 @@ export function FeaturedProgramsSection({ programs = [] }) {
   return (
     <section className="py-24 bg-parchment">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+        <motion.div
+          className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={prefersReducedMotion ? {} : animationVariants.fadeUp}
+          transition={transitionConfig}
+        >
           <SectionTitle
             subtitle="Sacred Offerings"
             title="Featured Programs & Trainings"
           />
           <LinkButton to="/programs" variant="outline" size="sm">View All Programs</LinkButton>
-        </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {items.map((prog, i) => (
-            <motion.div key={prog.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+        </motion.div>
+        <motion.div
+          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={prefersReducedMotion || isMobile ? {} : animationVariants.staggerContainer}
+        >
+          {items.map((prog) => (
+            <motion.div
+              key={prog.title}
+              variants={prefersReducedMotion || isMobile ? {} : animationVariants.staggerItem}
             >
               <Card className="h-full flex flex-col">
                 <div className="relative">
@@ -814,7 +900,7 @@ export function FeaturedProgramsSection({ programs = [] }) {
               </Card>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -977,21 +1063,39 @@ const reasons = [
 ];
 
 export function WhyJoinUsSection() {
+  const prefersReducedMotion = useReducedMotion();
+  const isMobile = useIsMobile();
+
   return (
     <section className="py-24 bg-earth-900 mandala-bg relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-earth-900 via-transparent to-amber-950/50" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionTitle
-          subtitle="The Anubhuthi Difference"
-          title="Why Join Our Movement"
-          description="We are not just another spiritual organization. We are a living ecosystem of transformation."
-          center
-          light
-        />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {reasons.map((r, i) => (
-            <motion.div key={r.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={prefersReducedMotion ? {} : animationVariants.slideLeft}
+          transition={transitionConfig}
+        >
+          <SectionTitle
+            subtitle="The Anubhuthi Difference"
+            title="Why Join Our Movement"
+            description="We are not just another spiritual organization. We are a living ecosystem of transformation."
+            center
+            light
+          />
+        </motion.div>
+        <motion.div
+          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={prefersReducedMotion || isMobile ? {} : animationVariants.staggerContainer}
+        >
+          {reasons.map((r) => (
+            <motion.div
+              key={r.title}
+              variants={prefersReducedMotion || isMobile ? {} : animationVariants.staggerItem}
               className="text-center p-6 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-colors"
             >
               <div className="text-5xl mb-4">{r.icon}</div>
@@ -999,11 +1103,18 @@ export function WhyJoinUsSection() {
               <p className="text-earth-300 text-sm leading-relaxed">{r.desc}</p>
             </motion.div>
           ))}
-        </div>
-        <div className="text-center mt-12 flex flex-wrap gap-4 justify-center">
+        </motion.div>
+        <motion.div
+          className="text-center mt-12 flex flex-wrap gap-4 justify-center"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={prefersReducedMotion ? {} : animationVariants.fadeUp}
+          transition={transitionConfig}
+        >
           <LinkButton to="/about" variant="primary" size="lg">Discover Our Story</LinkButton>
           <LinkButton to="/programs" variant="white" size="lg">Explore Programs</LinkButton>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -1011,6 +1122,9 @@ export function WhyJoinUsSection() {
 
 // --- Testimonials Preview ---
 export function TestimonialsPreview({ testimonials = [] }) {
+  const prefersReducedMotion = useReducedMotion();
+  const isMobile = useIsMobile();
+
   const defaults = [
     { name: 'Priya Sharma', designation: 'IT Professional', content: 'The 10-day retreat completely transformed my relationship with myself. I came back with clarity I had never experienced before.', rating: 5 },
     { name: 'Arjun Mehta', designation: 'Entrepreneur', content: 'DNI Academy gave me the philosophical framework and meditative tools to lead with consciousness. Truly life-changing.', rating: 5 },
@@ -1021,11 +1135,26 @@ export function TestimonialsPreview({ testimonials = [] }) {
   return (
     <section className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionTitle subtitle="Voices of Transformation" title="What Seekers Say" center />
-        <div className="grid md:grid-cols-3 gap-8 mb-10">
-          {items.slice(0, 3).map((t, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={prefersReducedMotion ? {} : animationVariants.fadeUp}
+          transition={transitionConfig}
+        >
+          <SectionTitle subtitle="Voices of Transformation" title="What Seekers Say" center />
+        </motion.div>
+        <motion.div
+          className="grid md:grid-cols-3 gap-8 mb-10"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={prefersReducedMotion || isMobile ? {} : animationVariants.staggerContainer}
+        >
+          {items.slice(0, 3).map((t) => (
+            <motion.div
+              key={t.name}
+              variants={prefersReducedMotion || isMobile ? {} : animationVariants.staggerItem}
               className="p-8 bg-parchment rounded-2xl relative"
             >
               <div className="text-saffron-400 text-5xl font-serif leading-none mb-4">"</div>
@@ -1041,10 +1170,17 @@ export function TestimonialsPreview({ testimonials = [] }) {
               </div>
             </motion.div>
           ))}
-        </div>
-        <div className="text-center">
+        </motion.div>
+        <motion.div
+          className="text-center"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={prefersReducedMotion ? {} : animationVariants.fadeUp}
+          transition={transitionConfig}
+        >
           <LinkButton to="/testimonials" variant="outline">Read More Stories</LinkButton>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -1052,10 +1188,19 @@ export function TestimonialsPreview({ testimonials = [] }) {
 
 // --- CTA Banner ---
 export function CTABanner() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <section className="py-20 bg-gradient-to-r from-saffron-600 to-earth-700 relative overflow-hidden">
       <div className="absolute inset-0 bg-hero-pattern opacity-20" />
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <motion.div
+        className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={prefersReducedMotion ? {} : animationVariants.fadeUp}
+        transition={transitionConfig}
+      >
         <h2 className="font-serif text-4xl md:text-5xl font-bold text-white mb-6">
           Begin Your Sacred Journey Today
         </h2>
@@ -1068,7 +1213,7 @@ export function CTABanner() {
             Get in Touch
           </LinkButton>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

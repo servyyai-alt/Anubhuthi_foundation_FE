@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaFacebook, FaInstagram, FaYoutube, FaTwitter, FaLinkedin, FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
-import logo from '../../assets/logo-1.png';
+import logo from '../../assets/logo.jpeg';
 
 export default function Footer() {
   return (
@@ -95,14 +95,6 @@ export default function Footer() {
                 <a href="mailto:namaste@anubhuthifoundation.org" className="text-earth-300 hover:text-saffron-400 text-sm transition-colors">namaste@anubhuthifoundation.org</a>
               </li>
             </ul>
-
-            <div className="mt-6 p-4 bg-earth-800 rounded-xl">
-              <p className="text-earth-300 text-xs mb-2">Newsletter</p>
-              <div className="flex gap-2">
-                <input type="email" placeholder="Your email" className="flex-1 bg-earth-700 text-white text-sm px-3 py-2 rounded-lg outline-none placeholder-earth-500" />
-                <button className="px-3 py-2 bg-saffron-500 text-white rounded-lg text-sm hover:bg-saffron-600 transition-colors">âœ“</button>
-              </div>
-            </div>
           </div>
         </div>
       </div>

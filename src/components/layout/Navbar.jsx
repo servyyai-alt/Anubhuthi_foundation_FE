@@ -204,6 +204,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [dropdown, setDropdown] = useState(null);
   const [mobileDropdown, setMobileDropdown] = useState(null);
+  const [scrolled, setScrolled] = useState(false);
 
   const location = useLocation();
 
@@ -212,6 +213,14 @@ export default function Navbar() {
     setDropdown(null);
     setMobileDropdown(null);
   }, [location]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 80); // trigger scroll state after 80px scroll
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const isRouteActive = (path) =>
     path !== "#" &&
@@ -222,7 +231,11 @@ export default function Navbar() {
     link.children?.some((child) => isRouteActive(child.path));
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
+      scrolled 
+        ? "bg-[#07284A] shadow-[0_4px_20px_rgba(0,0,0,0.12)] border-b border-[#C58A2B]/15" 
+        : "bg-transparent shadow-none"
+    }`}>
 
       <div className="max-w-7xl mx-auto px-6">
 
@@ -238,10 +251,17 @@ export default function Navbar() {
             <img
               src={logo}
               alt="logo"
-              className="w-20 h-20 object-contain"
+              className="w-20 h-20 object-contain transition-all duration-300"
             />
 
-            
+            <div className="leading-none flex flex-col justify-center">
+              <span className="text-xl font-sans font-bold tracking-wide text-white transition-colors duration-300">
+                ANUBHUTHI
+              </span>
+              <span className="text-[10px] font-sans font-semibold tracking-[0.25em] mt-0.5 text-white transition-colors duration-300">
+                FOUNDATION
+              </span>
+            </div>
 
           </Link>
 
@@ -269,10 +289,10 @@ export default function Navbar() {
                         current === link.label ? null : link.label
                       )
                     }
-                    className={`flex items-center gap-1 text-sm font-medium transition ${
+                    className={`relative pb-1 flex items-center gap-1 text-sm font-medium transition-all duration-300 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-orange-400 after:transition-all after:duration-300 hover:after:w-full ${
                       isLinkActive(link)
-                        ? "text-orange-500"
-                        : "text-gray-700 hover:text-orange-500"
+                        ? "text-orange-400 after:w-full after:bg-orange-400"
+                        : "text-white hover:text-orange-400 after:bg-orange-400"
                     }`}
                   >
                     {link.label}
@@ -287,10 +307,10 @@ export default function Navbar() {
                   <NavLink
                     to={link.path}
                     className={({ isActive }) =>
-                      `flex items-center gap-1 text-sm font-medium transition ${
+                      `relative pb-1 flex items-center gap-1 text-sm font-medium transition-all duration-300 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-orange-500 after:transition-all after:duration-300 hover:after:w-full ${
                         isActive
-                          ? "text-orange-500"
-                          : "text-gray-700 hover:text-orange-500"
+                          ? "text-orange-400 after:w-full after:bg-orange-400"
+                          : "text-white hover:text-orange-400 after:bg-orange-400"
                       }`
                     }
                   >
@@ -357,15 +377,21 @@ export default function Navbar() {
           <div className="hidden lg:block">
 
             <Link
-              to="/donate"
+              to="/donate?modal=true"
               className="
+              inline-block
               bg-orange-500
               text-white
               px-6
               py-3
               rounded-full
               font-medium
+              transition-all
+              duration-300
               hover:bg-orange-600
+              hover:-translate-y-0.5
+              hover:scale-[1.03]
+              hover:shadow-[0_0_20px_rgba(249,115,22,0.4)]
               "
             >
               Donate Now
@@ -377,7 +403,7 @@ export default function Navbar() {
 
           <button
             onClick={() => setOpen(!open)}
-            className="lg:hidden"
+            className="lg:hidden transition-colors duration-300 text-white hover:text-orange-400"
           >
             {open ? (
               <FaTimes size={22} />
@@ -408,7 +434,7 @@ export default function Navbar() {
               opacity: 0,
               height: 0,
             }}
-            className="bg-white border-t"
+            className="border-t bg-[#07284A] text-white border-[#C58A2B]/20"
           >
 
             <div className="p-5 space-y-3">
@@ -426,8 +452,8 @@ export default function Navbar() {
                         }
                         className={`flex w-full items-center justify-between py-2 text-left ${
                           isLinkActive(link)
-                            ? "text-orange-500"
-                            : "text-gray-700 hover:text-orange-500"
+                            ? "text-orange-400 font-semibold"
+                            : "text-white hover:text-orange-400"
                         }`}
                       >
                         <span>{link.label}</span>
@@ -448,8 +474,8 @@ export default function Navbar() {
                               className={({ isActive }) =>
                                 `block py-2 text-sm ${
                                   isActive
-                                    ? "text-orange-500"
-                                    : "text-gray-600 hover:text-orange-500"
+                                    ? "text-orange-400 font-semibold"
+                                    : "text-white/80 hover:text-orange-400"
                                 }`
                               }
                             >
@@ -465,8 +491,8 @@ export default function Navbar() {
                       className={({ isActive }) =>
                         `block py-2 ${
                           isActive
-                            ? "text-orange-500"
-                            : "text-gray-700 hover:text-orange-500"
+                            ? "text-orange-400 font-semibold"
+                            : "text-white hover:text-orange-400"
                         }`
                       }
                     >
@@ -478,7 +504,7 @@ export default function Navbar() {
               ))}
 
               <Link
-                to="/donate"
+                to="/donate?modal=true"
                 className="
                 block
                 text-center
@@ -486,6 +512,12 @@ export default function Navbar() {
                 text-white
                 py-3
                 rounded-full
+                transition-all
+                duration-300
+                hover:bg-orange-600
+                hover:-translate-y-0.5
+                hover:scale-[1.03]
+                hover:shadow-[0_0_20px_rgba(249,115,22,0.4)]
                 "
               >
                 Donate Now

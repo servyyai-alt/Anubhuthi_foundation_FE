@@ -4,9 +4,12 @@ import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock } from 'react-icons/fa';
 import { PageHeader, FormInput, FormTextarea, FormSelect, Button } from '../components/common';
+import { animationVariants, transitionConfig, useReducedMotion, useIsMobile } from '../utils/animations';
 import { contactAPI } from '../services/api';
 
 export default function ContactPage() {
+  const prefersReducedMotion = useReducedMotion();
+  const isMobile = useIsMobile();
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '', type: 'general' });
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -61,7 +64,13 @@ export default function ContactPage() {
               </div>
 
               {info.map((item, i) => (
-                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }}
+                <motion.div
+                  key={i}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.15 }}
+                  variants={prefersReducedMotion || isMobile ? {} : animationVariants.staggerItem}
+                  transition={{ ...transitionConfig, delay: i * 0.1 }}
                   className="flex gap-4"
                 >
                   <div className="w-10 h-10 bg-saffron-50 border border-saffron-200 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -84,7 +93,11 @@ export default function ContactPage() {
             {/* Right form */}
             <div className="lg:col-span-3">
               {submitted ? (
-                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  variants={prefersReducedMotion || isMobile ? {} : animationVariants.scaleFade}
+                  transition={transitionConfig}
                   className="text-center py-20 bg-saffron-50 rounded-3xl"
                 >
 
@@ -99,7 +112,15 @@ export default function ContactPage() {
                   </button>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="bg-parchment p-8 rounded-3xl space-y-5">
+                <motion.form
+                  onSubmit={handleSubmit}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.15 }}
+                  variants={prefersReducedMotion || isMobile ? {} : animationVariants.fadeUp}
+                  transition={transitionConfig}
+                  className="bg-parchment p-8 rounded-3xl space-y-5"
+                >
                   <div className="grid sm:grid-cols-2 gap-5">
                     <FormInput name="name" label="Full Name *" placeholder="Your name" value={form.name} onChange={handleChange} required />
                     <FormInput name="email" type="email" label="Email Address *" placeholder="you@email.com" value={form.email} onChange={handleChange} required />
@@ -120,7 +141,7 @@ export default function ContactPage() {
 
                     Send Message ✅
                   </Button>
-                </form>
+                </motion.form>
               )}
             </div>
           </div>

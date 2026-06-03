@@ -4,11 +4,80 @@
 @tailwind utilities;
 
 :root {
-  --color-saffron: #e8821a;
-  --color-earth: #8B5E3C;
+  /* Default Navy Theme (For all pages except home) */
+  --color-earth-50: #f0f4f8;
+  --color-earth-100: #d9e2ec;
+  --color-earth-200: #bcccdc;
+  --color-earth-300: #9fb3c8;
+  --color-earth-400: #829ab1;
+  --color-earth-500: #627d98;
+  --color-earth-600: #486581;
+  --color-earth-700: #334e68;
+  --color-earth-800: #021B3A;
+  --color-earth-900: #011126;
+  
+  --color-saffron-50: #fdfaf4;
+  --color-saffron-100: #faeed9;
+  --color-saffron-200: #f4dca8;
+  --color-saffron-300: #edc574;
+  --color-saffron-400: #e7ad43;
+  --color-saffron-500: #D8A24A;
+  --color-saffron-600: #c18835;
+  --color-saffron-700: #a16b2c;
+  --color-saffron-800: #845529;
+  --color-saffron-900: #6e4626;
+
+  --color-cream: #faf8f0;
+  --color-parchment: #F5EFE4;
+  
+  --color-saffron: var(--color-saffron-500);
+  --color-earth: var(--color-earth-600);
+  --color-gold: #d99e1a;
+
+  --color-earth-shadow: rgba(2, 27, 58, 0.15);
+  --color-earth-shadow-lg: rgba(2, 27, 58, 0.2);
+  --color-saffron-shadow: rgba(216, 162, 74, 0.25);
+  
+  --mandala-saffron: rgba(216, 162, 74, 0.08);
+  --mandala-earth: rgba(2, 27, 58, 0.08);
+}
+
+.theme-earth {
+  /* Original Earth Theme (For home page) */
+  --color-earth-50: #faf8f5;
+  --color-earth-100: #f2ede3;
+  --color-earth-200: #e3d7c3;
+  --color-earth-300: #d0bb9a;
+  --color-earth-400: #ba9a72;
+  --color-earth-500: #a67d54;
+  --color-earth-600: #8B5E3C;
+  --color-earth-700: #724a2f;
+  --color-earth-800: #5e3d28;
+  --color-earth-900: #4e3324;
+  
+  --color-saffron-50: #fff8f0;
+  --color-saffron-100: #fef0d9;
+  --color-saffron-200: #fcdda5;
+  --color-saffron-300: #f9c46b;
+  --color-saffron-400: #f5a030;
+  --color-saffron-500: #e8821a;
+  --color-saffron-600: #cc650f;
+  --color-saffron-700: #a84c0e;
+  --color-saffron-800: #883d13;
+  --color-saffron-900: #703414;
+
   --color-cream: #faf8f0;
   --color-parchment: #f5efe0;
-  --color-gold: #d99e1a;
+
+  --color-saffron: var(--color-saffron-500);
+  --color-earth: var(--color-earth-600);
+  
+  --color-earth-shadow: rgba(139, 94, 60, 0.15);
+  --color-earth-shadow-lg: rgba(139, 94, 60, 0.2);
+  --color-saffron-shadow: rgba(232, 130, 26, 0.25);
+  
+  --mandala-saffron: rgba(232, 130, 26, 0.08);
+  --mandala-earth: rgba(139, 94, 60, 0.08);
 }
 
 * { box-sizing: border-box; }
@@ -26,8 +95,8 @@ h1, h2, h3, h4 {
 }
 
 .mandala-bg {
-  background-image: radial-gradient(circle at 20% 80%, rgba(232,130,26,0.08) 0%, transparent 50%),
-                    radial-gradient(circle at 80% 20%, rgba(139,94,60,0.08) 0%, transparent 50%);
+  background-image: radial-gradient(circle at 20% 80%, var(--mandala-saffron) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, var(--mandala-earth) 0%, transparent 50%);
 }
 
 .section-title {
@@ -65,7 +134,7 @@ html { scroll-behavior: smooth; }
 }
 .card-hover:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(139, 94, 60, 0.2);
+  box-shadow: 0 12px 40px var(--color-earth-shadow-lg);
 }
 
 /* Animate on scroll */

@@ -114,6 +114,8 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { FaCheckCircle } from "react-icons/fa";
 import bg from "../assets/retreat-bg.png";
 
 import travel from "../assets/travel.png";
@@ -126,7 +128,7 @@ import cultural from "../assets/cultural.png";
 
 import himalaya from "../assets/himalaya.png";
 import couples from "../assets/couples.png";
-import natureCamp from "../assets/spiritual-nature-camps.png";
+import natureCamp from "../assets/natureCamp.png";
 import meditationJourney from "../assets/meditationJourney.png";
 import consciousLiving from "../assets/conscious-living-programs.png";
 import international from "../assets/international-awareness-tours.png";
@@ -136,6 +138,8 @@ import { retreatsAPI } from "../services/api";
 
 export default function RetreatsPage() {
   const [adminRetreats, setAdminRetreats] = useState([]);
+  const { scrollY } = useScroll();
+  const bgY = useTransform(scrollY, [0, 500], [0, 100]);
 
   useEffect(() => {
     retreatsAPI.getAll()
@@ -180,18 +184,32 @@ export default function RetreatsPage() {
     },
   ];
 
+  const getRetreatImage = (title = "") => {
+    const t = title.toLowerCase();
+    if (t.includes("trekking") || t.includes("himalayan") || t.includes("himalaya")) return himalaya;
+    if (t.includes("couple") || t.includes("relationship")) return couples;
+    if (t.includes("nature") || t.includes("camp")) return natureCamp;
+    if (t.includes("meditation")) return meditationJourney;
+    if (t.includes("conscious") || t.includes("humanitarian") || t.includes("living")) return consciousLiving;
+    if (t.includes("international") || t.includes("tour")) return international;
+    return null;
+  };
+
   const retreats = useMemo(() => {
     if (!adminRetreats.length) return staticRetreats;
 
-    return adminRetreats.map((retreat) => ({
-      _id: retreat._id,
-      title: retreat.title,
-      image: retreat.image || retreat.gallery?.[0] || himalaya,
-      location: retreat.location,
-      duration: retreat.duration,
-      price: retreat.price,
-      shortDescription: retreat.shortDescription || retreat.description,
-    }));
+    return adminRetreats.map((retreat) => {
+      const localImg = getRetreatImage(retreat.title);
+      return {
+        _id: retreat._id,
+        title: retreat.title,
+        image: localImg || retreat.image || retreat.gallery?.[0] || himalaya,
+        location: retreat.location,
+        duration: retreat.duration,
+        price: retreat.price,
+        shortDescription: retreat.shortDescription || retreat.description,
+      };
+    });
   }, [adminRetreats]);
 
   return (
@@ -200,19 +218,33 @@ export default function RetreatsPage() {
         <title>Himalayan Retreats - Anubhuthi Foundation</title>
         <meta name="description" content="Sacred retreats, nature journeys, and conscious living programs from Anubhuthi Foundation." />
       </Helmet>
-      <section className="bg-[#f8f2e8]">
+      <section className="bg-[#f8f2e8] pt-20">
 
       {/* HERO */}
 
-      <div
-        className="bg-cover bg-center py-20"
-        style={{
-          backgroundImage: `url(${bg})`,
-        }}
-      >
-        <div className="max-w-7xl mx-auto px-6 text-center text-white">
+      <div className="relative min-h-[calc(100vh-80px)] py-12 md:py-16 lg:py-20 flex items-center overflow-hidden">
+        {/* Cinematic Zoom + Parallax background */}
+        <motion.div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${bg})`,
+            y: bgY,
+          }}
+          animate={{ scale: [1, 1.05] }}
+          transition={{
+            duration: 20,
+            ease: "easeOut",
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
+        />
 
-          <h1
+        <div className="relative z-10 max-w-7xl mx-auto px-6 text-center text-white w-full">
+
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
             className="
             text-4xl
             md:text-6xl
@@ -221,9 +253,12 @@ export default function RetreatsPage() {
             "
           >
             TRANSFORM THROUGH NATURE
-          </h1>
+          </motion.h1>
 
-          <p
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
             className="
             mt-5
             max-w-3xl
@@ -235,7 +270,7 @@ export default function RetreatsPage() {
             Anubhuthi Foundation organizes transformative
             journeys across the Himalayas and other
             nature-rich destinations.
-          </p>
+          </motion.p>
 
           {/* Top Row */}
 
@@ -250,33 +285,44 @@ export default function RetreatsPage() {
             "
           >
             {topItems.map((item, index) => (
-              <div key={index}>
-
-                <img
-                  src={item.image}
-                  alt=""
-                  className="
-                  w-20
-                  h-20
-                  mx-auto
-                  rounded-full
-                  object-cover
-                  border-2
-                  border-[#d7b56d]
-                  "
-                />
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 + index * 0.1 }}
+                className="group cursor-pointer flex flex-col items-center"
+              >
+                <motion.div
+                  className="w-28 h-28 rounded-full overflow-hidden border-2 border-[#d7b56d]"
+                  whileHover={{
+                    scale: 1.08,
+                    boxShadow: "0 0 25px rgba(215, 181, 109, 0.75)",
+                  }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                >
+                  <motion.img
+                    src={item.image}
+                    alt=""
+                    className="w-full h-full object-cover"
+                    whileHover={{ scale: 1.12 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                  />
+                </motion.div>
 
                 <h3
                   className="
                   mt-3
                   text-sm
                   font-medium
+                  text-white
+                  group-hover:text-[#d7b56d]
+                  transition-colors
+                  duration-300
                   "
                 >
                   {item.title}
                 </h3>
-
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -288,7 +334,11 @@ export default function RetreatsPage() {
 
         <div className="max-w-7xl mx-auto px-6">
 
-          <h2
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
             className="
             text-center
             text-4xl
@@ -299,7 +349,7 @@ export default function RetreatsPage() {
             "
           >
             RETREAT EXPERIENCES
-          </h2>
+          </motion.h2>
 
           <div
             className="
@@ -310,9 +360,14 @@ export default function RetreatsPage() {
             "
           >
             {retreats.map((item, index) => (
-              <div
+              <motion.div
                 key={item._id || item.title || index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: index * 0.08 }}
                 className="
+                group
                 bg-white
                 rounded-xl
                 overflow-hidden
@@ -321,16 +376,23 @@ export default function RetreatsPage() {
                 shadow-sm
                 "
               >
-
-                <img
-                  src={item.image}
-                  alt=""
-                  className="
-                  h-[120px]
-                  w-full
-                  object-cover
-                  "
-                />
+                <div className="relative overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt=""
+                    className="
+                    h-[120px]
+                    w-full
+                    object-cover
+                    transition-all
+                    duration-500
+                    ease-out
+                    group-hover:scale-105
+                    group-hover:brightness-105
+                    "
+                  />
+                  <div className="absolute inset-0 bg-black/0 transition-colors duration-500 ease-out group-hover:bg-black/10" />
+                </div>
 
                 <div className="p-3">
 
@@ -345,7 +407,13 @@ export default function RetreatsPage() {
                     {item.title}
                   </h4>
                   {(item.shortDescription || item.location || item.duration || item.price) && (
-                    <div className="mt-3 space-y-2 text-center text-xs text-gray-600">
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: 0.2 }}
+                      className="mt-3 space-y-2 text-center text-xs text-gray-600"
+                    >
                       {item.shortDescription && (
                         <p className="line-clamp-3 leading-5">
                           {item.shortDescription}
@@ -356,12 +424,12 @@ export default function RetreatsPage() {
                         {item.duration && <span>{item.duration}</span>}
                         {item.price ? <span>Rs {Number(item.price).toLocaleString()}</span> : null}
                       </div>
-                    </div>
+                    </motion.div>
                   )}
 
                 </div>
 
-              </div>
+              </motion.div>
             ))}
           </div>
 
@@ -375,7 +443,11 @@ export default function RetreatsPage() {
 
         <div className="max-w-7xl mx-auto px-6">
 
-          <div
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
             className="
             bg-white
             rounded-3xl
@@ -391,7 +463,11 @@ export default function RetreatsPage() {
 
             <div>
 
-              <h2
+              <motion.h2
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
                 className="
                 text-4xl
                 font-serif
@@ -401,7 +477,7 @@ export default function RetreatsPage() {
                 "
               >
                 PARTICIPANTS EXPERIENCE
-              </h2>
+              </motion.h2>
 
               <div
                 className="
@@ -411,21 +487,39 @@ export default function RetreatsPage() {
                 text-gray-700
                 "
               >
-                <p>✓ Self Discovery</p>
-                <p>✓ Relationship Understanding</p>
-
-                <p>✓ Emotional Clarity</p>
-                <p>✓ Nature Connection</p>
-
-                <p>✓ Mental Peace</p>
-                <p>✓ Purpose Oriented Living</p>
+                {[
+                  "Self Discovery",
+                  "Relationship Understanding",
+                  "Emotional Clarity",
+                  "Nature Connection",
+                  "Mental Peace",
+                  "Purpose Oriented Living",
+                ].map((text, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: idx * 0.08, ease: "easeOut" }}
+                    className="group/item flex items-start gap-2.5 cursor-pointer transition-transform duration-300 hover:translate-x-[8px]"
+                  >
+                    <FaCheckCircle className="text-gray-400 group-hover/item:text-[#d7b56d] transition-colors duration-300 flex-shrink-0 text-[15px] mt-[3px]" />
+                    <span className="transition-colors duration-300 group-hover/item:text-[#1d3557] font-medium">{text}</span>
+                  </motion.div>
+                ))}
               </div>
 
             </div>
 
-            <div>
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-500"
+            >
 
-              <img
+              <motion.img
                 src={participant}
                 alt=""
                 className="
@@ -434,11 +528,13 @@ export default function RetreatsPage() {
                 object-cover
                 rounded-2xl
                 "
+                whileHover={{ scale: 1.03 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
               />
 
-            </div>
+            </motion.div>
 
-          </div>
+          </motion.div>
 
         </div>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext.jsx';
@@ -36,8 +36,11 @@ import {
 
 // Public layout wrapper
 function PublicLayout({ children }) {
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+  
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className={`flex flex-col min-h-screen ${isHome ? 'theme-earth' : ''}`}>
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
