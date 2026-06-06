@@ -178,7 +178,7 @@
 //     </section>
 //   );
 // }
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import hero from "../../assets/hero-section.png";
 import bg from "../../assets/bg.png";
 import { Link } from "react-router-dom";
@@ -191,7 +191,32 @@ const heroStats = [
 
 export default function HeroSection() {
   const [counts, setCounts] = useState(heroStats.map(() => 0));
+  const [scrollY, setScrollY] = useState(0);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const sectionRef = useRef(null);
+  const bgLayerRef = useRef(null);
+  const imageLayerRef = useRef(null);
 
+  // Check for reduced motion preference
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setPrefersReducedMotion(mediaQuery.matches);
+    
+    const handleChange = (e) => setPrefersReducedMotion(e.matches);
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
+  // Check for mobile/tablet
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Count animation
   useEffect(() => {
     let animationFrame;
     let startTime;
@@ -213,150 +238,241 @@ export default function HeroSection() {
     return () => window.cancelAnimationFrame(animationFrame);
   }, []);
 
+  // Parallax scroll effect
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    let frameId;
+    const handleScroll = () => {
+      frameId = requestAnimationFrame(() => {
+        setScrollY(window.scrollY);
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      cancelAnimationFrame(frameId);
+    };
+  }, [prefersReducedMotion]);
+
+  // Calculate parallax offsets
+  const getParallaxOffset = () => {
+    if (prefersReducedMotion || !sectionRef.current) return { bg: 0, image: 0 };
+
+    const sectionTop = sectionRef.current.offsetTop;
+    const scrollRelative = Math.max(0, window.scrollY - sectionTop);
+    
+    // Desktop: full parallax
+    // Tablet: 50% intensity
+    // Mobile: disabled
+    let bgOffset = 0;
+    let imageOffset = 0;
+
+    if (!isMobile) {
+      const intensity = window.innerWidth < 1280 ? 0.5 : 1;
+      bgOffset = scrollRelative * 0.25 * intensity; // 25% scroll speed (Layer 1)
+      imageOffset = scrollRelative * 0.45 * intensity; // 45% scroll speed (Layer 2)
+    }
+
+    return { bg: bgOffset, image: imageOffset };
+  };
+
+  const parallax = getParallaxOffset();
+
   return (
     <section
-      className="relative min-h-screen overflow-hidden bg-cover bg-center"
-      style={{
-        backgroundImage: `url(${bg})`,
-      }}
+      ref={sectionRef}
+      className="relative bg-center min-h-[84vh] lg:min-h-[88vh] overflow-hidden"
     >
-      {/* overlay */}
+      {/* Background image - parallax layer */}
+      <div
+        ref={bgLayerRef}
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `url(${bg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          transform: `translateY(${parallax.bg}px)`,
+          willChange: "transform",
+        }}
+      />
 
-      <div className="absolute inset-0 bg-black/60"></div>
+      {/* overlay - fixed dark overlay */}
+      <div className="absolute inset-0 bg-black/60" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-8">
-
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
         <div className="
         flex
         flex-col
         lg:flex-row
-        items-center
+        items-end
         justify-between
-        min-h-screen
-        pt-24
+        gap-8
+        pt-20
+        pb-0
+        md:pt-24
+        lg:items-end
+        lg:gap-10
+        lg:pt-28
+        lg:pb-0
+        h-full
         ">
 
-          {/* LEFT IMAGE */}
-
+          {/* LEFT IMAGE - parallax layer */}
           <div className="
           w-full
-          lg:w-1/2
+          lg:w-[45%]
+          h-full
           flex
           justify-center
           lg:justify-start
+          items-end
+          self-end
           ">
-
-            <img
-              src={hero}
-              alt=""
-              className="
-              w-[320px]
-              md:w-[450px]
-              lg:w-[620px]
-              object-contain
-              translate-y-16
-              "
-            />
-
+            <div
+              style={{
+                transform: `translateY(${parallax.image}px)`,
+                willChange: "transform",
+              }}
+            >
+              <img
+                ref={imageLayerRef}
+                src={hero}
+                alt="Founder"
+                className="
+                relative
+                top-0
+                w-full
+                max-w-[260px]
+                sm:max-w-[360px]
+                md:max-w-[460px]
+                lg:w-[540px]
+                xl:w-[620px]
+                max-h-[80vh]
+                object-contain
+                object-bottom
+                self-end
+                "
+              />
+            </div>
           </div>
 
-
-
-          {/* RIGHT CONTENT */}
-
+          {/* RIGHT CONTENT - minimal parallax */}
           <div className="
-          lg:w-1/2
+          w-full
+          lg:w-[55%]
           text-white
-          lg:pl-10
-          ">
-
-            <p className="
-            uppercase
-            tracking-[8px]
-            text-orange-400
-            text-sm
-            mb-6
-            ">
-              HUMAN EVOLUTION MOVEMENT
-            </p>
-
+          lg:max-w-[55%]
+          lg:pl-2
+          flex
+          flex-col
+          justify-end
+          pb-10
+          md:pb-12
+          lg:pb-16
+          text-center
+          lg:text-left
+          "
+            style={{
+              transform: `translateY(${parallax.bg * 0.1}px)`,
+              willChange: "transform",
+            }}
+          >
+             <p className="
+              uppercase
+              tracking-[5px]
+              text-orange-400
+              text-xs
+              sm:text-[13px]
+             mb-3
+             sm:mb-4
+               ">
+                HUMAN EVOLUTION MOVEMENT
+             </p>
 
             <h1 className="
-            font-serif
-            font-bold
-            text-5xl
-            md:text-7xl
-            leading-none
-            ">
-              Transform Your Life.
-
+              font-serif
+              font-bold
+             text-[2rem]
+             sm:text-[2.4rem]
+             md:text-[2.8rem]
+             lg:text-[3.4rem]
+             xl:text-[3.8rem]
+             leading-[1.06]
+               ">
+                Transform Your Life.
               <br/>
-
               Understand Your Purpose.
-
               <br/>
-
               Evolve Humanity.
             </h1>
 
-
-
-            <p className="
-            mt-8
-            text-gray-300
-            text-xl
-            leading-9
-            max-w-xl
-            ">
-              Helping individuals reconnect with
-              awareness, meditation, purpose,
+             <p className="
+             mt-4
+             sm:mt-5
+              text-gray-300
+              text-sm
+             sm:text-base
+             lg:text-[1.05rem]
+              leading-6
+             sm:leading-7
+             max-w-xl
+              mx-auto
+              lg:mx-0
+               ">
+                Helping individuals reconnect with
+               awareness, meditation, purpose,
               retreats and conscious living.
             </p>
 
-
-
             {/* buttons */}
-
             <div className="
-            flex
-            gap-4
-            flex-wrap
-            mt-10
-            sm:mt-12
-            ">
+              flex
+             gap-4
+              flex-wrap
+             justify-center
+             mt-6
+             sm:mt-8
+             lg:justify-start
+               ">
 
               <Link
                 to="/contact"
                 className="
-               inline-flex
-               w-fit
-               items-center
-               justify-center
-                bg-orange-500
-                px-10
-                py-4
-                rounded-full
-                font-semibold
-               leading-none
+                inline-flex
+                w-fit
+                items-center
+                justify-center
+                  bg-orange-500
+                  px-7
+                  py-3.5
+                  rounded-full
+                  font-semibold
+                 text-sm
+                sm:text-base
+                leading-none
               "
               >
                 Join Movement
               </Link>
 
-
               <Link
                 to="/retreats"
                 className="
-               inline-flex
-               w-fit
-               items-center
-               justify-center
-                border
-                border-white/30
-                px-10
-                py-4
-                rounded-full
-               leading-none
+                inline-flex
+                w-fit
+                items-center
+                justify-center
+                  border
+                  border-white/30
+                  px-7
+                  py-3.5
+
+                  rounded-full
+                 text-sm
+                 sm:text-base
+                leading-none
               "
               >
                 Explore Retreats
@@ -369,41 +485,43 @@ export default function HeroSection() {
             {/* stats */}
 
             <div className="
-            mt-12
-            grid
-            grid-cols-2
-            gap-4
-            sm:mt-14
-            sm:grid-cols-3
-            sm:gap-5
-            lg:mt-16
-            ">
+             mt-7
+             grid
+             grid-cols-1
+             gap-3
+             sm:mt-8
+             sm:grid-cols-3
+             sm:gap-4
+             lg:mt-10
+                ">
 
               {heroStats.map((item, index) => (
                 <div
                   key={item.label}
                   className="
-                  rounded-[24px]
-                  border
-                  border-white/10
-                  bg-black/20
-                  px-4
-                  py-4
-                  backdrop-blur-sm
-                  "
-                >
-                  <h2 className="
-                  text-3xl
-                  font-bold
-                  text-orange-400
-                  sm:text-4xl
-                  lg:text-5xl
-                  ">
-                    {counts[index]}{item.suffix}
-                  </h2>
+                    rounded-[22px]
+                    border
+                    border-white/10
+                    bg-black/20
+                    px-5
+                    py-4
+                    backdrop-blur-sm
+                    text-center
+                    sm:text-left
+                     "
+                  >
+                    <h2 className="
+                    text-2xl
+                      font-bold
+                      text-orange-400
+                    sm:text-[1.75rem]
+                    lg:text-[2rem]
+                     ">
+                      {counts[index]}{item.suffix}
+                    </h2>
 
-                  <p className="mt-1 text-sm text-white/85 sm:text-base">{item.label}</p>
-                </div>
+                   <p className="mt-1 text-xs text-white/85 sm:text-sm">{item.label}</p>
+                  </div>
               ))}
 
             </div>

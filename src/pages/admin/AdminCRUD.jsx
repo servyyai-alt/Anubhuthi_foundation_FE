@@ -17,6 +17,8 @@ export default function AdminCRUD({
   defaultValues = {},
   searchKey = 'title',
   preparePayload,
+  hideCreate = false,
+  transformFormChange,
 }) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -99,7 +101,11 @@ export default function AdminCRUD({
       return;
     }
 
-    setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    const nextValue = type === 'checkbox' ? checked : value;
+    setForm((prev) => {
+      const nextForm = { ...prev, [name]: nextValue };
+      return transformFormChange ? transformFormChange(nextForm, { name, value: nextValue, type, checked, files }, prev) : nextForm;
+    });
   };
 
   const handleSave = async (e) => {
@@ -146,18 +152,20 @@ export default function AdminCRUD({
   );
 
   return (
-    <div className="p-8">
-      <div className="mb-8 flex items-center justify-between">
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="mb-6 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-serif text-3xl font-bold text-gray-800">{icon} {title}</h1>
+          <h1 className="font-serif text-2xl font-bold text-gray-800 sm:text-3xl">{icon} {title}</h1>
           <p className="mt-1 text-sm text-gray-400">{items.length} total records</p>
         </div>
-        <Button onClick={openCreate} variant="primary">
-          <FaPlus size={12} /> Add New
-        </Button>
+        {!hideCreate && (
+          <Button onClick={openCreate} variant="primary" className="justify-center sm:w-auto">
+            <FaPlus size={12} /> Add New
+          </Button>
+        )}
       </div>
 
-      <div className="relative mb-6 max-w-sm">
+      <div className="relative mb-6 max-w-full sm:max-w-sm">
         <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" size={14} />
         <input
           type="text"
@@ -179,8 +187,8 @@ export default function AdminCRUD({
             <p>No {title.toLowerCase()} found</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+          <div className="responsive-table">
+            <table className="w-full min-w-[720px] text-sm">
               <thead className="border-b border-gray-100 bg-gray-50">
                 <tr>
                   {columns.map((col) => (
@@ -201,7 +209,7 @@ export default function AdminCRUD({
                   >
                     {columns.map((col) => (
                       <td key={col.key} className="px-4 py-3 text-gray-700">
-                        {col.render ? col.render(item[col.key], item) : String(item[col.key] ?? 'â€”').slice(0, 60)}
+                        {col.render ? col.render(item[col.key], item) : String(item[col.key] ?? '—').slice(0, 60)}
                       </td>
                     ))}
                     <td className="px-4 py-3">
@@ -238,8 +246,8 @@ export default function AdminCRUD({
               exit={{ opacity: 0, scale: 0.95 }}
               className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white shadow-2xl"
             >
-              <div className="flex items-center justify-between border-b border-gray-100 p-6">
-                <h2 className="font-serif text-xl font-bold text-gray-800">
+              <div className="flex items-center justify-between border-b border-gray-100 p-4 sm:p-6">
+                <h2 className="pr-4 font-serif text-lg font-bold text-gray-800 sm:text-xl">
                   {modal === 'create' ? `Create ${title.slice(0, -1)}` : `Edit ${title.slice(0, -1)}`}
                 </h2>
                 <button
@@ -250,10 +258,16 @@ export default function AdminCRUD({
                 </button>
               </div>
 
-              <form onSubmit={handleSave} className="space-y-4 p-6">
+              <form onSubmit={handleSave} className="space-y-4 p-4 sm:p-6">
                 <div className="grid gap-4 sm:grid-cols-2">
                   {formFields.map((field) => (
                     <div key={field.name} className={field.fullWidth ? 'sm:col-span-2' : ''}>
+                      {(() => {
+                        const isDisabled = typeof field.disabled === 'function' ? field.disabled(form, modal) : field.disabled;
+                        const isReadOnly = typeof field.readOnly === 'function' ? field.readOnly(form, modal) : field.readOnly;
+                        const helperText = typeof field.helperText === 'function' ? field.helperText(form, modal) : field.helperText;
+                        return (
+                          <>
                       <label className="mb-1 block text-sm font-medium text-gray-700">{field.label}</label>
                       {field.type === 'textarea' ? (
                         <textarea
@@ -262,15 +276,18 @@ export default function AdminCRUD({
                           onChange={handleChange}
                           rows={3}
                           required={field.required}
+                          disabled={isDisabled}
+                          readOnly={isReadOnly}
                           placeholder={field.placeholder || field.label}
-                          className="w-full resize-none rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-saffron-400"
+                          className={`w-full resize-none rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-saffron-400 ${isDisabled || isReadOnly ? 'bg-gray-50' : ''}`}
                         />
                       ) : field.type === 'select' ? (
                         <select
                           name={field.name}
                           value={form[field.name] || ''}
                           onChange={handleChange}
-                          className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-saffron-400"
+                          disabled={isDisabled}
+                            className={`w-full rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-saffron-400 ${isDisabled ? 'bg-gray-50' : ''}`}
                         >
                           <option value="">Select...</option>
                           {field.options?.map((opt) => (
@@ -286,6 +303,7 @@ export default function AdminCRUD({
                             name={field.name}
                             checked={!!form[field.name]}
                             onChange={handleChange}
+                            disabled={isDisabled}
                             className="rounded"
                           />
                           {field.checkLabel || field.label}
@@ -298,8 +316,9 @@ export default function AdminCRUD({
                             accept={field.accept || 'image/*'}
                             multiple={!!field.multiple}
                             onChange={handleChange}
+                            disabled={isDisabled}
                             required={field.required && !form[field.urlKey]}
-                            className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-saffron-400 file:mr-3 file:rounded-lg file:border-0 file:bg-saffron-50 file:px-3 file:py-2 file:text-saffron-700"
+                             className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-saffron-400 file:mr-3 file:rounded-lg file:border-0 file:bg-saffron-50 file:px-3 file:py-2 file:text-saffron-700"
                           />
                           {Array.isArray(form[field.previewKey]) ? (
                             form[field.previewKey].length > 0 && (
@@ -344,17 +363,23 @@ export default function AdminCRUD({
                           onChange={handleChange}
                           placeholder={field.placeholder || field.label}
                           required={field.required}
-                          className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-saffron-400"
+                          disabled={isDisabled}
+                          readOnly={isReadOnly}
+                           className={`w-full rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-saffron-400 ${isDisabled || isReadOnly ? 'bg-gray-50' : ''}`}
                         />
                       )}
+                      {helperText ? <p className="mt-1 text-xs text-gray-500">{helperText}</p> : null}
+                          </>
+                        );
+                      })()}
                     </div>
                   ))}
                 </div>
 
-                <div className="flex gap-3 pt-2">
-                  <Button type="submit" loading={saving} className="flex-1">Save</Button>
-                  <Button type="button" variant="ghost" onClick={closeModal}>Cancel</Button>
-                </div>
+                 <div className="flex flex-col gap-3 pt-2 sm:flex-row">
+                   <Button type="submit" loading={saving} className="flex-1">Save</Button>
+                   <Button type="button" variant="ghost" onClick={closeModal} className="justify-center sm:w-auto">Cancel</Button>
+                 </div>
               </form>
             </motion.div>
           </div>

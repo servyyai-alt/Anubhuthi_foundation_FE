@@ -87,7 +87,7 @@ export default function ProgramDetailPage() {
             <div className="space-y-10 lg:col-span-2">
               {program.image && (
                 <section>
-                  <img src={program.image} alt={program.title} className="h-[26rem] w-full rounded-3xl object-cover shadow-sm" />
+                  <img src={program.image} alt={program.title} className="h-72 w-full rounded-3xl object-cover shadow-sm sm:h-80 lg:h-[26rem]" />
                 </section>
               )}
 
@@ -141,7 +141,7 @@ export default function ProgramDetailPage() {
               {program.instructor?.name && (
                 <section>
                   <h2 className="mb-4 font-serif text-2xl font-bold text-earth-800">Your Instructor</h2>
-                  <div className="flex items-start gap-4 rounded-2xl bg-parchment p-6">
+                  <div className="flex flex-col items-start gap-4 rounded-2xl bg-parchment p-5 sm:flex-row sm:p-6">
                     <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-saffron-200 font-serif text-2xl font-bold text-saffron-700">
                       {program.instructor.name[0]}
                     </div>
@@ -158,7 +158,7 @@ export default function ProgramDetailPage() {
               <div className="sticky top-28 space-y-5 rounded-2xl bg-parchment p-6">
                 <div className="text-center">
                   <div className="mb-1 font-serif text-4xl font-bold text-saffron-600">
-                    {program.isFree ? 'Free' : `â‚¹${program.price?.toLocaleString()}`}
+                    {program.isFree ? 'Free' : `₹${program.price?.toLocaleString()}`}
                   </div>
                   {!program.isFree && <p className="text-sm text-earth-400">one-time fee</p>}
                 </div>
@@ -176,7 +176,7 @@ export default function ProgramDetailPage() {
                         : 'Ongoing'
                     },
                   ].filter((row) => row.value).map((row) => (
-                    <div key={row.label} className="flex items-center justify-between border-b border-earth-100 py-2 last:border-0">
+                    <div key={row.label} className="flex flex-col gap-1 border-b border-earth-100 py-2 last:border-0 sm:flex-row sm:items-center sm:justify-between">
                       <span className="text-earth-400">{row.label}</span>
                       <span className={`font-medium text-earth-800 ${row.capitalize ? 'capitalize' : ''}`}>{row.value}</span>
                     </div>

@@ -1,0 +1,196 @@
+<USER_REQUEST>
+FOOTER LAYOUT REFINEMENT
+
+IMPORTANT:
+
+- Do NOT redesign the footer.
+- Do NOT change colors.
+- Do NOT change typography.
+- Do NOT change responsiveness.
+- Do NOT change existing routes.
+- Do NOT change functionality of any links.
+- Only adjust layout positioning and branding placement.
+
+==================================================
+TASK 1 — MOVE LEGAL LINKS TO CONTACT COLUMN AREA
+==================================================
+
+Current Situation:
+
+The following links are displayed in the bottom footer bar:
+
+- Legal & Compliance
+- Privacy Policy
+- Terms of Service
+
+These links are currently positioned beside the copyright section.
+
+Required Change:
+
+Move these 3 links into the empty space inside the Contact Us column area (the currently unused space highlighted in the design).
+
+Layout:
+
+Contact Us Section
+
+Address
+
+Phone
+
+Email
+
+Then below:
+
+Legal & Compliance
+
+Privacy Policy
+
+Terms of Service
+
+Display vertically:
+
+Legal & Compliance
+Privacy Policy
+Terms of Service
+
+OR
+
+Display as a compact stacked list with proper spacing.
+
+IMPORTANT:
+
+- Preserve existing routing.
+- Preserve existing functionality.
+- Preserve existing URLs.
+- Clicking should behave exactly the same as before.
+- Only move the UI position.
+
+==================================================
+TASK 2 — ADD LEAST ACTION BRANDING
+==================================================
+
+After moving the legal links above:
+
+Locate:
+
+Admin Login
+
+which currently appears in the bottom footer bar.
+
+Immediately after Admin Login add:
+
+Least Action logo
+
+(Use the official Least Action logo already present in the project assets folder.)
+
+Display:
+
+[Least Action Logo]
+Powered by Least Action Company Pvt Ltd
+
+Requirements:
+
+- Logo should appear before the text.
+- Align horizontally.
+- Professional appearance.
+- Same footer styling.
+- Match existing footer color palette.
+- Do not overpower the foundation branding.
+- Keep it subtle and professional.
+
+Example:
+
+Admin Login    |    [Least Action Logo] Powered by Least Action Company Pvt Ltd
+
+====
+<truncated 4194 bytes>
+t:
+
+- Animate stars on appearance
+- Gold glow effect
+- Smooth reveal
+
+Do not alter rating values.
+
+==================================================
+SHARE YOUR STORY BUTTON
+==================================================
+
+Keep existing functionality.
+
+Enhance:
+
+Hover:
+
+- Gold gradient fill
+- Slight lift
+- Arrow/icon slide
+
+Active:
+
+Smooth press effect
+
+==================================================
+BACKGROUND ENHANCEMENTS
+==================================================
+
+Add subtle premium background elements:
+
+- Soft radial gradients
+- Very light floating particles
+- Gentle ambient motion
+
+Keep elegant and minimal.
+
+No distracting effects.
+
+==================================================
+PERFORMANCE RULES
+==================================================
+
+Use:
+
+- Framer Motion
+- GPU-friendly animations
+- Viewport-triggered reveals
+
+Avoid:
+
+- Heavy animations
+- Infinite movement
+- Layout shifts
+- Performance degradation
+
+==================================================
+STRICT REQUIREMENTS
+==================================================
+
+✓ Do not touch navbar
+
+✓ Do not touch footer
+
+✓ Do not touch APIs
+
+✓ Do not touch Admin functionality
+
+✓ Do not hardcode testimonials
+
+✓ Continue fetching testimonials dynamically
+
+✓ Generate a brand-new Testimonials Hero Image
+
+✓ Keep Hero Section within one viewport
+
+✓ Improve only UI, interactions, animations, and visual presentation
+
+Goal:
+
+Transform the Testimonials page into a premium, emotionally engaging experience that highlights real transformation stories while preserving all existing admin-controlled functionality.
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-04T14:59:30+05:30.
+</ADDITIONAL_METADATA>
+<USER_SETTINGS_CHANGE>
+The user changed setting `Model Selection` from Gemini 3.5 Flash (Medium) to Gemini 3.1 Pro (High). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
+</USER_SETTINGS_CHANGE>
