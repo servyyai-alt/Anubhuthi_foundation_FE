@@ -174,6 +174,21 @@ export function AdminPrograms() {
 ========================= */
 
 export function AdminEvents() {
+  const syncEventPricing = (nextForm, change) => {
+    if (change.name === 'isFree' && change.value) {
+      return { ...nextForm, price: 0 };
+    }
+
+    if (change.name === 'price') {
+      const numericPrice = Number(change.value);
+      if (!Number.isNaN(numericPrice) && numericPrice > 0) {
+        return { ...nextForm, isFree: false };
+      }
+    }
+
+    return nextForm;
+  };
+
   return (
     <AdminCRUD
       title="Events"
@@ -183,6 +198,12 @@ export function AdminEvents() {
       updateFn={eventsAPI.update}
       deleteFn={eventsAPI.delete}
       searchKey="title"
+      transformFormChange={syncEventPricing}
+      preparePayload={(form) => ({
+        ...form,
+        price: form.isFree ? 0 : Number(form.price) || 0,
+        isFree: form.isFree || !(Number(form.price) > 0),
+      })}
       columns={[
         { key: 'title', label: 'Title' },
         {
@@ -954,6 +975,17 @@ export function AdminDonations() {
 
 export function AdminTestimonials() {
   const [activeTab, setActiveTab] = useState('user');
+  const getUserSubmittedTestimonials = async () => {
+    const res = await testimonialsAPI.getAllAdmin();
+    res.data.data = (res.data.data || []).filter((t) => t.isUserSubmitted === true);
+    return res;
+  };
+
+  const getAdminCreatedTestimonials = async () => {
+    const res = await testimonialsAPI.getAllAdmin();
+    res.data.data = (res.data.data || []).filter((t) => t.isUserSubmitted === false);
+    return res;
+  };
 
   return (
     <div className="flex flex-col h-full">
@@ -979,15 +1011,12 @@ export function AdminTestimonials() {
           <div className="-mt-4">
             <AdminCRUD
               title="Admin Testimonials"
-              fetchFn={async () => {
-                const res = await testimonialsAPI.getAllAdmin();
-                res.data.data = (res.data.data || []).filter(t => !t.isUserSubmitted);
-                return res;
-              }}
+              fetchFn={getAdminCreatedTestimonials}
               createFn={testimonialsAPI.createAdmin}
               updateFn={testimonialsAPI.update}
               deleteFn={testimonialsAPI.delete}
               searchKey="name"
+              preparePayload={(form) => ({ ...form, isUserSubmitted: false })}
               columns={[
                 { key: 'name', label: 'Name' },
                 { key: 'designation', label: 'Designation' },
@@ -1014,15 +1043,12 @@ export function AdminTestimonials() {
             <AdminCRUD
               title="User Testimonials"
               hideCreate={true}
-              fetchFn={async () => {
-                const res = await testimonialsAPI.getAllAdmin();
-                res.data.data = (res.data.data || []).filter(t => t.isUserSubmitted);
-                return res;
-              }}
+              fetchFn={getUserSubmittedTestimonials}
               createFn={() => {}}
               updateFn={testimonialsAPI.update}
               deleteFn={testimonialsAPI.delete}
               searchKey="name"
+              preparePayload={(form) => ({ ...form, isUserSubmitted: true })}
               columns={[
                 { key: 'name', label: 'Name' },
                 { key: 'program', label: 'Program' },

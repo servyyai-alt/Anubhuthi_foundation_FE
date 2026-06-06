@@ -18,6 +18,7 @@ export default function AdminCRUD({
   searchKey = 'title',
   preparePayload,
   hideCreate = false,
+  transformFormChange,
 }) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -100,7 +101,11 @@ export default function AdminCRUD({
       return;
     }
 
-    setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    const nextValue = type === 'checkbox' ? checked : value;
+    setForm((prev) => {
+      const nextForm = { ...prev, [name]: nextValue };
+      return transformFormChange ? transformFormChange(nextForm, { name, value: nextValue, type, checked, files }, prev) : nextForm;
+    });
   };
 
   const handleSave = async (e) => {
@@ -257,6 +262,12 @@ export default function AdminCRUD({
                 <div className="grid gap-4 sm:grid-cols-2">
                   {formFields.map((field) => (
                     <div key={field.name} className={field.fullWidth ? 'sm:col-span-2' : ''}>
+                      {(() => {
+                        const isDisabled = typeof field.disabled === 'function' ? field.disabled(form, modal) : field.disabled;
+                        const isReadOnly = typeof field.readOnly === 'function' ? field.readOnly(form, modal) : field.readOnly;
+                        const helperText = typeof field.helperText === 'function' ? field.helperText(form, modal) : field.helperText;
+                        return (
+                          <>
                       <label className="mb-1 block text-sm font-medium text-gray-700">{field.label}</label>
                       {field.type === 'textarea' ? (
                         <textarea
@@ -265,18 +276,18 @@ export default function AdminCRUD({
                           onChange={handleChange}
                           rows={3}
                           required={field.required}
-                          disabled={field.disabled}
-                          readOnly={field.readOnly}
+                          disabled={isDisabled}
+                          readOnly={isReadOnly}
                           placeholder={field.placeholder || field.label}
-                          className={`w-full resize-none rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-saffron-400 ${field.disabled || field.readOnly ? 'bg-gray-50' : ''}`}
+                          className={`w-full resize-none rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-saffron-400 ${isDisabled || isReadOnly ? 'bg-gray-50' : ''}`}
                         />
                       ) : field.type === 'select' ? (
                         <select
                           name={field.name}
                           value={form[field.name] || ''}
                           onChange={handleChange}
-                          disabled={field.disabled}
-                           className={`w-full rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-saffron-400 ${field.disabled ? 'bg-gray-50' : ''}`}
+                          disabled={isDisabled}
+                            className={`w-full rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-saffron-400 ${isDisabled ? 'bg-gray-50' : ''}`}
                         >
                           <option value="">Select...</option>
                           {field.options?.map((opt) => (
@@ -292,7 +303,7 @@ export default function AdminCRUD({
                             name={field.name}
                             checked={!!form[field.name]}
                             onChange={handleChange}
-                            disabled={field.disabled}
+                            disabled={isDisabled}
                             className="rounded"
                           />
                           {field.checkLabel || field.label}
@@ -305,7 +316,7 @@ export default function AdminCRUD({
                             accept={field.accept || 'image/*'}
                             multiple={!!field.multiple}
                             onChange={handleChange}
-                            disabled={field.disabled}
+                            disabled={isDisabled}
                             required={field.required && !form[field.urlKey]}
                              className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-saffron-400 file:mr-3 file:rounded-lg file:border-0 file:bg-saffron-50 file:px-3 file:py-2 file:text-saffron-700"
                           />
@@ -352,11 +363,15 @@ export default function AdminCRUD({
                           onChange={handleChange}
                           placeholder={field.placeholder || field.label}
                           required={field.required}
-                          disabled={field.disabled}
-                          readOnly={field.readOnly}
-                           className={`w-full rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-saffron-400 ${field.disabled || field.readOnly ? 'bg-gray-50' : ''}`}
+                          disabled={isDisabled}
+                          readOnly={isReadOnly}
+                           className={`w-full rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-saffron-400 ${isDisabled || isReadOnly ? 'bg-gray-50' : ''}`}
                         />
                       )}
+                      {helperText ? <p className="mt-1 text-xs text-gray-500">{helperText}</p> : null}
+                          </>
+                        );
+                      })()}
                     </div>
                   ))}
                 </div>

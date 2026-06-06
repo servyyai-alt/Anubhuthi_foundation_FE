@@ -490,7 +490,7 @@ sm:text-lg
             living.
           </p>
 
-          <Link to="/donate?modal=true" className="inline-block mt-10 mb-4 rounded-full bg-orange-500 px-6 py-3 font-semibold text-white duration-300 hover:bg-orange-600 sm:px-10 sm:py-4">Explore Philosophy</Link>
+          <Link to="/contact" className="inline-block mt-10 mb-4 rounded-full bg-orange-500 px-6 py-3 font-semibold text-white duration-300 hover:bg-orange-600 sm:px-10 sm:py-4">Explore Philosophy</Link>
         </motion.div>
       </div>
     </section>

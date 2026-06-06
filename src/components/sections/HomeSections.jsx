@@ -482,7 +482,7 @@ text-gray-300
 
 
 
-<Link to="/contact" className="
+<Link to="/philosophy" className="
 mt-12
 inline-block
 w-fit
@@ -585,7 +585,7 @@ they should live.”
 
 
 
-<Link to="/contact" className="
+<Link to="/philosophy" className="
 mt-8
 inline-block
 w-fit
