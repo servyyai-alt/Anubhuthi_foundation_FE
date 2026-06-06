@@ -1,0 +1,66 @@
+<svg width="1600" height="1200" viewBox="0 0 1600 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="800" y1="0" x2="800" y2="1200" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F6F2E6"/>
+      <stop offset="0.45" stop-color="#E8F0E8"/>
+      <stop offset="1" stop-color="#B6D9D3"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1180 260) rotate(90) scale(300 300)">
+      <stop stop-color="#FFF8DE"/>
+      <stop offset="1" stop-color="#FFF8DE" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="mountainA" x1="800" y1="380" x2="800" y2="860" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#BDD9D6"/>
+      <stop offset="1" stop-color="#8AB8B8"/>
+    </linearGradient>
+    <linearGradient id="mountainB" x1="800" y1="520" x2="800" y2="980" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9DCACA"/>
+      <stop offset="1" stop-color="#6FA6AA"/>
+    </linearGradient>
+    <linearGradient id="mountainC" x1="800" y1="720" x2="800" y2="1120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7EB2B7"/>
+      <stop offset="1" stop-color="#5E8E97"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="1200" fill="url(#sky)"/>
+  <circle cx="1180" cy="260" r="300" fill="url(#sunGlow)"/>
+
+  <g opacity="0.36" stroke="#FFFDF5">
+    <circle cx="1220" cy="320" r="200"/>
+    <circle cx="1220" cy="320" r="250"/>
+    <circle cx="340" cy="180" r="150"/>
+    <path d="M940 60C1080 180 1180 360 1180 560" stroke-width="2"/>
+    <path d="M160 740C260 620 420 560 600 560" stroke-width="2"/>
+  </g>
+
+  <g opacity="0.22" stroke="#F4D07A" stroke-width="3">
+    <path d="M1180 80V170"/>
+    <path d="M1120 100L1160 175"/>
+    <path d="M1240 100L1200 175"/>
+    <path d="M1080 150L1145 205"/>
+    <path d="M1280 150L1215 205"/>
+  </g>
+
+  <path d="M0 700L90 630L180 680L280 600L390 700L520 560L610 640L720 520L840 650L980 430L1080 520L1220 330L1360 460L1490 300L1600 410V1200H0V700Z" fill="url(#mountainA)"/>
+  <path d="M0 860L180 760L300 840L430 730L590 850L760 690L930 820L1100 620L1290 770L1460 660L1600 740V1200H0V860Z" fill="url(#mountainB)"/>
+  <path d="M0 980L170 900L300 980L450 860L640 1010L810 860L980 980L1140 820L1320 940L1460 860L1600 930V1200H0V980Z" fill="url(#mountainC)"/>
+
+  <ellipse cx="760" cy="1090" rx="720" ry="100" fill="#DDEBE7" opacity="0.7"/>
+
+  <g opacity="0.22" stroke="#FFF9E8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M160 930C220 880 300 850 380 850C460 850 540 880 600 930"/>
+    <path d="M230 930C250 895 290 865 330 865C370 865 410 895 430 930"/>
+    <path d="M330 930C350 890 390 850 430 850C470 850 510 890 530 930"/>
+    <path d="M330 930V1010"/>
+    <path d="M430 930V1010"/>
+    <path d="M280 985H480"/>
+  </g>
+
+  <g opacity="0.2" fill="#6AA5A5">
+    <path d="M80 90C120 120 136 170 130 216C96 206 68 176 56 132C52 116 58 100 80 90Z"/>
+    <path d="M120 54C158 84 178 132 176 178C138 170 108 138 94 94C90 80 98 62 120 54Z"/>
+    <path d="M1500 94C1460 124 1444 174 1450 220C1484 210 1512 180 1524 136C1528 120 1522 104 1500 94Z"/>
+    <path d="M1462 54C1424 84 1404 132 1406 178C1444 170 1474 138 1488 94C1492 80 1484 62 1462 54Z"/>
+  </g>
+</svg>

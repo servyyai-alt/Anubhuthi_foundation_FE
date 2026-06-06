@@ -3,13 +3,56 @@ import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { FaTimes, FaRegCheckCircle, FaMapMarkerAlt, FaBriefcase as FaBriefcaseSolid, FaClock } from 'react-icons/fa';
-import { FiHome, FiTrendingUp, FiGlobe, FiBriefcase, FiAward } from 'react-icons/fi';
 import { Button, FormInput, FormTextarea, LoadingPage } from '../components/common';
 import { careersAPI } from '../services/api';
 import careersBg from '../assets/careers.png';
 import volunteerImg from '../assets/volunteer.png';
 import communityImg from '../assets/community.png';
 import meditationJourneyImg from '../assets/meditationJourney.png';
+
+const CareerHomeIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" stroke="currentColor" strokeWidth="1.8">
+    <path d="M4 10.5L12 4l8 6.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M6.5 9.5V20h11V9.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M10 20v-5h4v5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const CareerGrowthIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" stroke="currentColor" strokeWidth="1.8">
+    <path d="M5 18h14" strokeLinecap="round" />
+    <path d="M7 15l3-3 3 2 4-5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M14 9h3v3" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const CareerGlobeIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" stroke="currentColor" strokeWidth="1.8">
+    <circle cx="12" cy="12" r="8" />
+    <path d="M4 12h16M12 4c2.5 2.5 3.5 5.2 3.5 8S14.5 17.5 12 20c-2.5-2.5-3.5-5.2-3.5-8S9.5 6.5 12 4Z" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const CareerBriefcaseIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" stroke="currentColor" strokeWidth="1.8">
+    <path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7" strokeLinecap="round" />
+    <path d="M4.5 9.5h15v8A1.5 1.5 0 0 1 18 19H6a1.5 1.5 0 0 1-1.5-1.5v-8Z" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M4.5 11.5c2.5 1 5 1.5 7.5 1.5s5-.5 7.5-1.5" strokeLinecap="round" />
+  </svg>
+);
+
+const CareerSparkIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" stroke="currentColor" strokeWidth="1.8">
+    <path d="m12 4 1.4 3.6L17 9l-3.6 1.4L12 14l-1.4-3.6L7 9l3.6-1.4L12 4Z" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M18 4v2M19 5h-2M6 16v2M7 17H5M17 16l1 1M7 7 6 8" strokeLinecap="round" />
+  </svg>
+);
+
+const CheckMarkIcon = () => (
+  <svg viewBox="0 0 20 20" fill="none" className="h-5 w-5 text-[#D4A84F] flex-shrink-0" stroke="currentColor" strokeWidth="2.2">
+    <path d="M4.5 10.5 8 14l7.5-8" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
 
 
 function ApplicationModal({ career, onClose }) {
@@ -296,11 +339,11 @@ export default function CareersPage() {
   ];
 
   const benefits = [
-    { text: 'Stay & Food Provided', icon: FiHome },
-    { text: 'Training & Personal Growth', icon: FiTrendingUp },
-    { text: 'Purpose-Driven Environment', icon: FiGlobe },
-    { text: 'Meaningful Work Experience', icon: FiBriefcase },
-    { text: 'Career Development Opportunities', icon: FiAward }
+    { text: 'Stay & Food Provided', icon: CareerHomeIcon },
+    { text: 'Training & Personal Growth', icon: CareerGrowthIcon },
+    { text: 'Purpose-Driven Environment', icon: CareerGlobeIcon },
+    { text: 'Meaningful Work Experience', icon: CareerBriefcaseIcon },
+    { text: 'Career Development Opportunities', icon: CareerSparkIcon }
   ];
 
   const careerGrowth = [
@@ -346,13 +389,12 @@ export default function CareersPage() {
         
         {/* HERO SECTION */}
         <section className="relative z-10 w-full pt-20 pb-12 lg:pt-24 lg:pb-16">
-          
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+                    <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="font-sans font-bold text-white text-5xl md:text-6xl lg:text-[72px] tracking-tight mb-4"
+              className="max-w-4xl font-sans font-bold text-white text-2xl md:text-3xl lg:text-4xl tracking-tight mb-4"
             >
               WORK WITH PURPOSE
             </motion.h1>
@@ -381,7 +423,7 @@ export default function CareersPage() {
               className="w-full md:w-1/2 flex flex-col items-start text-left"
             >
               <div className="mb-6 inline-block group cursor-pointer">
-                <h2 className="relative inline-block pb-3 text-white font-sans text-3xl md:text-4xl lg:text-5xl font-bold tracking-[2px] uppercase">
+                <h2 className="relative inline-block pb-3 text-white font-sans text-2xl md:text-3xl lg:text-4xl font-bold tracking-[2px] uppercase">
                   Open Roles
                   <span className="absolute bottom-0 left-0 w-12 h-[2px] bg-[#D4A84F] transition-all duration-500 group-hover:w-full"></span>
                 </h2>
@@ -447,7 +489,7 @@ export default function CareersPage() {
               className="w-full md:w-1/2 flex flex-col items-start md:items-end text-left md:text-right"
             >
               <div className="mb-6 inline-block group cursor-pointer">
-                <h2 className="relative inline-block pb-3 text-white font-sans text-3xl md:text-4xl lg:text-5xl font-bold tracking-[2px] uppercase">
+                <h2 className="relative inline-block pb-3 text-white font-sans text-2xl md:text-3xl lg:text-4xl font-bold tracking-[2px] uppercase">
                   Ideal Candidates
                   <span className="absolute bottom-0 right-0 left-0 md:left-auto w-12 h-[2px] bg-[#D4A84F] transition-all duration-500 group-hover:w-full"></span>
                 </h2>
@@ -479,18 +521,21 @@ export default function CareersPage() {
               className="w-full md:w-1/2 flex flex-col items-start text-left"
             >
               <div className="mb-6 inline-block group cursor-pointer">
-                <h2 className="relative inline-block pb-3 text-white font-sans text-3xl md:text-4xl lg:text-5xl font-bold tracking-[2px] uppercase">
+                <h2 className="relative inline-block pb-3 text-white font-sans text-2xl md:text-3xl lg:text-4xl font-bold tracking-[2px] uppercase">
                   Benefits
                   <span className="absolute bottom-0 left-0 w-12 h-[2px] bg-[#D4A84F] transition-all duration-500 group-hover:w-full"></span>
                 </h2>
               </div>
               <ul className="space-y-4">
                 {benefits.map((benefit, idx) => {
+                  const BenefitIcon = benefit.icon;
                   const emojis = ['🏠', '📈', '🌍', '💼', '🚀'];
                   const emoji = emojis[idx] || '✨';
                   return (
                     <li key={idx} className="flex items-start gap-4">
-                      <span className="text-2xl leading-none flex-shrink-0">{emoji}</span>
+                      <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl border border-[#D4A84F]/25 bg-white/10 text-[#f4cd75] shadow-[0_10px_24px_rgba(2,11,22,0.24)] backdrop-blur-sm">
+                        <BenefitIcon />
+                      </span>
                       <span className="text-white text-base md:text-lg font-medium tracking-wide leading-relaxed" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.9)' }}>{benefit.text}</span>
                     </li>
                   );
