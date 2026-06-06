@@ -125,7 +125,13 @@ export default function VolunteerPage() {
     phone: '',
     dob: '',
     gender: '',
-    location: '',
+    city: '',
+    country: 'India',
+    education: '',
+    occupation: '',
+    skills: '',
+    experience: '',
+    type: 'volunteer',
     areas: [],
     motivation: '',
     availability: ''
@@ -187,7 +193,13 @@ export default function VolunteerPage() {
     if (!form.phone.trim()) newErrors.phone = 'Phone Number is required';
     if (!form.dob) newErrors.dob = 'Date of Birth is required';
     if (!form.gender) newErrors.gender = 'Gender selection is required';
-    if (!form.location.trim()) newErrors.location = 'Location is required';
+    if (!form.type) newErrors.type = 'Application Type is required';
+    if (!form.city.trim()) newErrors.city = 'City is required';
+    if (!form.country.trim()) newErrors.country = 'Country is required';
+    if (!form.education.trim()) newErrors.education = 'Education is required';
+    if (!form.occupation.trim()) newErrors.occupation = 'Occupation is required';
+    if (!form.skills.trim()) newErrors.skills = 'Skills are required';
+    if (!form.experience.trim()) newErrors.experience = 'Experience is required';
     if (form.areas.length === 0) newErrors.areas = 'Select at least one Area of Interest';
     if (!form.motivation.trim()) newErrors.motivation = 'Please tell us why you want to serve';
     if (!form.availability) newErrors.availability = 'Availability selection is required';
@@ -205,31 +217,25 @@ export default function VolunteerPage() {
 
     setLoading(true);
     try {
-      // Split location into city and country
-      let city = form.location.trim();
-      let country = 'India';
-      if (form.location.includes(',')) {
-        const parts = form.location.split(',');
-        city = parts[0].trim();
-        country = parts[parts.length - 1].trim();
-      }
-
       const calculatedAge = calculateAge(form.dob);
 
       const payload = {
         name: form.name,
         email: form.email,
         phone: form.phone,
+        dob: form.dob,
+        gender: form.gender,
         age: calculatedAge,
-        city: city,
-        country: country,
+        city: form.city.trim(),
+        country: form.country.trim(),
+        education: form.education.trim(),
+        occupation: form.occupation.trim(),
         availability: form.availability,
-        experience: `Availability Option: ${form.availability}`,
+        experience: form.experience.trim(),
         motivation: form.motivation,
         areas: form.areas,
-        skills: form.areas, // map areas of interest to skills array in db for redundancy
-        type: 'volunteer',
-        notes: `Gender: ${form.gender} | DOB: ${form.dob}`
+        skills: form.skills.split(',').map((item) => item.trim()).filter(Boolean),
+        type: form.type,
       };
 
       await volunteersAPI.submit(payload);
@@ -249,7 +255,13 @@ export default function VolunteerPage() {
       phone: '',
       dob: '',
       gender: '',
-      location: '',
+      city: '',
+      country: 'India',
+      education: '',
+      occupation: '',
+      skills: '',
+      experience: '',
+      type: 'volunteer',
       areas: [],
       motivation: '',
       availability: ''
@@ -301,13 +313,13 @@ export default function VolunteerPage() {
         <div className="relative z-10 w-full flex flex-col flex-1">
           
           {/* Hero Content Section */}
-          <section className="w-full pt-36 pb-6">
-            <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <section className="w-full pt-32 pb-6 sm:pt-36">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <motion.h1 
                 initial={{ opacity: 0, y: 25 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
-                className="font-sans font-bold text-white text-5xl md:text-6xl lg:text-[72px] tracking-tight mb-4 leading-none uppercase"
+                className="mb-4 font-sans text-3xl font-bold uppercase leading-none tracking-tight text-white sm:text-5xl md:text-6xl lg:text-[72px]"
               >
                 BECOME A VOLUNTEER
               </motion.h1>
@@ -316,7 +328,7 @@ export default function VolunteerPage() {
                 initial={{ opacity: 0, y: 25 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-                className="text-white text-lg md:text-xl lg:text-[22px] max-w-2xl leading-relaxed opacity-95 font-medium"
+                className="max-w-2xl text-base font-medium leading-relaxed text-white opacity-95 sm:text-lg md:text-xl lg:text-[22px]"
               >
                 Support our mission by volunteering your time,<br className="hidden md:inline" />
                 skills, and passion to create a better world.
@@ -327,14 +339,14 @@ export default function VolunteerPage() {
                 initial={{ opacity: 0, y: 25 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
-                className="mt-14 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 lg:gap-8 max-w-5xl mx-auto justify-items-center text-center"
+                className="mx-auto mt-10 grid max-w-5xl grid-cols-2 justify-items-center gap-5 text-center sm:mt-14 sm:grid-cols-3 md:grid-cols-6 lg:gap-8"
               >
                 {opportunities.map((item, idx) => (
                   <div key={idx} className="flex flex-col items-center text-center text-white group">
                     <div className="mb-3 p-1 rounded-xl transform transition-transform duration-300 group-hover:scale-110">
                       {item.icon}
                     </div>
-                    <span className="text-sm md:text-base font-semibold tracking-wide leading-snug">
+                     <span className="text-xs font-semibold tracking-wide leading-snug sm:text-sm md:text-base">
                       {item.label}
                     </span>
                   </div>
@@ -344,31 +356,31 @@ export default function VolunteerPage() {
           </section>
 
           {/* Floating Internship Programs Section */}
-          <section className="w-full max-w-[92%] lg:max-w-7xl mx-auto mt-2 mb-12">
+          <section className="mx-auto mt-2 mb-12 w-full max-w-[94%] lg:max-w-7xl">
             <motion.div 
               initial={{ opacity: 0, y: 35 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-              className="bg-[#FAF7F0] rounded-[24px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.4)] w-full overflow-hidden p-8 md:p-10 lg:p-12 text-center"
+              className="bg-[#FAF7F0] rounded-[24px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.4)] w-full overflow-hidden p-5 sm:p-8 md:p-10 lg:p-12 text-center"
             >
               <h2 className="font-sans font-bold text-2xl md:text-3xl lg:text-4xl text-[#07284A] tracking-wider mb-2 uppercase">
                 INTERNSHIP PROGRAMS
               </h2>
-              <p className="text-gray-600 text-base md:text-lg font-medium tracking-wide mb-8">
+               <p className="mb-6 text-sm font-medium tracking-wide text-gray-600 sm:text-base md:mb-8 md:text-lg">
                 Available for:
               </p>
 
               {/* Sub cards inside */}
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-6 lg:grid-cols-6">
                 {internships.map((item, idx) => (
                   <div 
                     key={idx} 
-                    className="bg-white rounded-2xl border border-gray-150 p-6 flex flex-col items-center text-center justify-center transition-all duration-300 transform hover:-translate-y-1 hover:shadow-md h-full min-h-[170px]"
+                     className="bg-white rounded-2xl border border-gray-150 p-5 sm:p-6 flex flex-col items-center text-center justify-center transition-all duration-300 transform hover:-translate-y-1 hover:shadow-md h-full min-h-[160px] sm:min-h-[170px]"
                   >
                     <div className="mb-4 transform transition-transform duration-300 hover:scale-110">
                       {item.icon}
                     </div>
-                    <span className="text-sm md:text-base font-bold text-gray-800 leading-tight">
+                     <span className="text-sm font-bold text-gray-800 leading-tight md:text-base">
                       {item.label}
                     </span>
                   </div>
@@ -378,13 +390,13 @@ export default function VolunteerPage() {
           </section>
 
           {/* Join as Volunteer Button floating over background at bottom */}
-          <section className="text-center mt-4 mb-24 z-10">
+          <section className="text-center mt-4 mb-24 z-10 px-4">
             <motion.button
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.7 }}
               onClick={() => setIsOpen(true)}
-              className="bg-[#C58A2B] hover:bg-[#b07821] text-white font-bold text-base md:text-lg px-12 py-4 rounded-[12px] transition-all duration-300 shadow-[0_8px_30px_rgba(197,138,43,0.3)] hover:shadow-[0_15px_40px_rgba(197,138,43,0.5)] transform hover:-translate-y-0.5 uppercase tracking-widest"
+              className="w-full max-w-sm bg-[#C58A2B] hover:bg-[#b07821] text-white font-bold text-base md:text-lg px-8 sm:px-12 py-4 rounded-[12px] transition-all duration-300 shadow-[0_8px_30px_rgba(197,138,43,0.3)] hover:shadow-[0_15px_40px_rgba(197,138,43,0.5)] transform hover:-translate-y-0.5 uppercase tracking-[0.2em] sm:tracking-widest"
             >
               JOIN AS VOLUNTEER
             </motion.button>
@@ -394,7 +406,7 @@ export default function VolunteerPage() {
 
         {/* Navy Bottom Strip */}
         <div className="relative z-10 bg-[#07284A] py-6 w-full text-center border-t border-[#C58A2B]/10">
-          <p className="text-[#C58A2B] font-medium tracking-wide text-sm md:text-base">
+          <p className="px-4 text-[#C58A2B] font-medium tracking-wide text-xs sm:text-sm md:text-base">
             One Purpose • One Humanity • One Journey • One Evolution
           </p>
         </div>
@@ -421,7 +433,7 @@ export default function VolunteerPage() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.28, ease: "easeOut" }}
-              className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative z-10"
+              className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative z-10"
             >
               {/* Header */}
               <div className="flex items-center justify-between p-6 md:p-8 border-b border-gray-100">
@@ -438,7 +450,7 @@ export default function VolunteerPage() {
 
               {submitted ? (
                 /* Success State inside modal */
-                <div className="p-12 text-center">
+                  <div className="p-6 text-center sm:p-12">
                   <div className="text-7xl mb-6">✅</div>
                   <h3 className="font-sans font-bold text-2xl text-gray-800 mb-3">Application Submitted!</h3>
                   <p className="text-gray-500 mb-8 max-w-md mx-auto leading-relaxed">
@@ -453,12 +465,12 @@ export default function VolunteerPage() {
                 </div>
               ) : (
                 /* Form Fields */
-                <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-5">
+                 <form onSubmit={handleSubmit} className="space-y-5 p-4 sm:p-6 md:p-8">
                   
                   {/* Row 1: Name and Email */}
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1">Full Name *</label>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">Full Name <span className="text-red-500 font-bold">*</span></label>
                       <input
                         type="text"
                         name="name"
@@ -471,7 +483,7 @@ export default function VolunteerPage() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1">Email Address *</label>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">Email Address <span className="text-red-500 font-bold">*</span></label>
                       <input
                         type="email"
                         name="email"
@@ -487,7 +499,7 @@ export default function VolunteerPage() {
                   {/* Row 2: Phone and DOB */}
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1">Phone Number *</label>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">Phone Number <span className="text-red-500 font-bold">*</span></label>
                       <input
                         type="tel"
                         name="phone"
@@ -500,7 +512,7 @@ export default function VolunteerPage() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1">Date of Birth *</label>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">Date of Birth <span className="text-red-500 font-bold">*</span></label>
                       <input
                         type="date"
                         name="dob"
@@ -512,10 +524,10 @@ export default function VolunteerPage() {
                     </div>
                   </div>
 
-                  {/* Row 3: Gender and Location */}
+                  {/* Row 3: Gender and Type */}
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1">Gender *</label>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">Gender <span className="text-red-500 font-bold">*</span></label>
                       <select
                         name="gender"
                         value={form.gender}
@@ -532,22 +544,81 @@ export default function VolunteerPage() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1">Location *</label>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">Application Type <span className="text-red-500 font-bold">*</span></label>
+                      <select
+                        name="type"
+                        value={form.type}
+                        onChange={handleChange}
+                        className={`w-full px-4 py-2.5 rounded-xl border ${errors.type ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-[#C58A2B] focus:border-transparent outline-none transition-all text-gray-800 font-medium bg-white`}
+                      >
+                        <option value="volunteer">Volunteer</option>
+                        <option value="intern">Intern</option>
+                      </select>
+                      {errors.type && <p className="text-red-500 text-xs mt-1 font-medium">{errors.type}</p>}
+                    </div>
+                  </div>
+
+                  {/* Row 4: City and Country */}
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">City <span className="text-red-500 font-bold">*</span></label>
                       <input
                         type="text"
-                        name="location"
-                        value={form.location}
+                        name="city"
+                        value={form.city}
                         onChange={handleChange}
-                        className={`w-full px-4 py-2.5 rounded-xl border ${errors.location ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-[#C58A2B] focus:border-transparent outline-none transition-all text-gray-800 font-medium`}
-                        placeholder="e.g. Bangalore, India"
+                        className={`w-full px-4 py-2.5 rounded-xl border ${errors.city ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-[#C58A2B] focus:border-transparent outline-none transition-all text-gray-800 font-medium`}
+                        placeholder="Your city"
                       />
-                      {errors.location && <p className="text-red-500 text-xs mt-1 font-medium">{errors.location}</p>}
+                      {errors.city && <p className="text-red-500 text-xs mt-1 font-medium">{errors.city}</p>}
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">Country <span className="text-red-500 font-bold">*</span></label>
+                      <input
+                        type="text"
+                        name="country"
+                        value={form.country}
+                        onChange={handleChange}
+                        className={`w-full px-4 py-2.5 rounded-xl border ${errors.country ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-[#C58A2B] focus:border-transparent outline-none transition-all text-gray-800 font-medium`}
+                        placeholder="Your country"
+                      />
+                      {errors.country && <p className="text-red-500 text-xs mt-1 font-medium">{errors.country}</p>}
+                    </div>
+                  </div>
+
+                  {/* Row 5: Education and Occupation */}
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">Education <span className="text-red-500 font-bold">*</span></label>
+                      <input
+                        type="text"
+                        name="education"
+                        value={form.education}
+                        onChange={handleChange}
+                        className={`w-full px-4 py-2.5 rounded-xl border ${errors.education ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-[#C58A2B] focus:border-transparent outline-none transition-all text-gray-800 font-medium`}
+                        placeholder="Your education"
+                      />
+                      {errors.education && <p className="text-red-500 text-xs mt-1 font-medium">{errors.education}</p>}
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">Occupation <span className="text-red-500 font-bold">*</span></label>
+                      <input
+                        type="text"
+                        name="occupation"
+                        value={form.occupation}
+                        onChange={handleChange}
+                        className={`w-full px-4 py-2.5 rounded-xl border ${errors.occupation ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-[#C58A2B] focus:border-transparent outline-none transition-all text-gray-800 font-medium`}
+                        placeholder="Your occupation"
+                      />
+                      {errors.occupation && <p className="text-red-500 text-xs mt-1 font-medium">{errors.occupation}</p>}
                     </div>
                   </div>
 
                   {/* Areas of Interest Multi-select checkboxes */}
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Areas of Interest *</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Areas of Interest <span className="text-red-500 font-bold">*</span></label>
                     <div className="flex flex-wrap gap-2">
                       {['Events', 'Retreats', 'Teaching Support', 'Environmental Restoration', 'Social Media & Outreach', 'Community Development'].map((area) => {
                         const isSelected = form.areas.includes(area);
@@ -570,9 +641,23 @@ export default function VolunteerPage() {
                     {errors.areas && <p className="text-red-500 text-xs mt-1 font-medium">{errors.areas}</p>}
                   </div>
 
+                  {/* Skills */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Skills <span className="text-red-500 font-bold">*</span></label>
+                    <textarea
+                      name="skills"
+                      rows={3}
+                      value={form.skills}
+                      onChange={handleChange}
+                      className={`w-full px-4 py-2.5 rounded-xl border ${errors.skills ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-[#C58A2B] focus:border-transparent outline-none transition-all text-gray-800 font-medium`}
+                      placeholder="List your skills, separated by commas"
+                    />
+                    {errors.skills && <p className="text-red-500 text-xs mt-1 font-medium">{errors.skills}</p>}
+                  </div>
+
                   {/* Availability Dropdown */}
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Availability *</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Availability <span className="text-red-500 font-bold">*</span></label>
                     <select
                       name="availability"
                       value={form.availability}
@@ -589,9 +674,23 @@ export default function VolunteerPage() {
                     {errors.availability && <p className="text-red-500 text-xs mt-1 font-medium">{errors.availability}</p>}
                   </div>
 
+                  {/* Experience */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Experience <span className="text-red-500 font-bold">*</span></label>
+                    <textarea
+                      name="experience"
+                      rows={3}
+                      value={form.experience}
+                      onChange={handleChange}
+                      className={`w-full px-4 py-2.5 rounded-xl border ${errors.experience ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-[#C58A2B] focus:border-transparent outline-none transition-all text-gray-800 font-medium`}
+                      placeholder="Tell us about your relevant experience"
+                    />
+                    {errors.experience && <p className="text-red-500 text-xs mt-1 font-medium">{errors.experience}</p>}
+                  </div>
+
                   {/* Why do you want to volunteer with us? Textarea */}
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Why do you want to volunteer with us? *</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Why do you want to volunteer with us? <span className="text-red-500 font-bold">*</span></label>
                     <textarea
                       name="motivation"
                       rows={4}

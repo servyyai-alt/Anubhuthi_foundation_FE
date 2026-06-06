@@ -35,6 +35,7 @@ import beforeRestorationImage from '../assets/before-restoration.png.png';
 import duringRestorationImage from '../assets/during-restoration.png.png';
 import afterRestorationImage from '../assets/after-restoration.png.png';
 import communityCultureImage from '../assets/community-culture.png.png';
+import legalBg from '../assets/legal.jpeg';
 
 const revealViewport = { once: true, amount: 0.2 };
 
@@ -103,7 +104,7 @@ export function AboutPage() {
             <span className="mx-2">›</span>
             <span>About</span>
           </nav>
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-earth-800">About Us</h1>
+          <h1 className="font-serif text-3xl font-bold text-earth-800 md:text-5xl">About Us</h1>
         </div>
       </div>
 
@@ -191,10 +192,14 @@ export function PhilosophyPage() {
   ];
 
   return (
-    <section
-      className="
+    <>
+      <Helmet><title>Philosophy - Anubhuthi Foundation</title></Helmet>
+      <section
+        className="
 relative
-py-32
+py-24
+sm:py-28
+md:py-32
 bg-cover
 bg-center
 overflow-hidden
@@ -226,10 +231,13 @@ px-6
           <p
             className="
 uppercase
-tracking-[8px]
+tracking-[0.28em]
+sm:tracking-[8px]
 text-orange-400
-text-sm
-mb-6
+text-[11px]
+sm:text-sm
+mb-5
+sm:mb-6
 "
           >
             ANUBHUTHI PHILOSOPHY
@@ -238,7 +246,8 @@ mb-6
           <h1
             className="
 font-serif
-text-6xl
+text-4xl
+sm:text-5xl
 md:text-8xl
 font-bold
 leading-tight
@@ -249,12 +258,14 @@ leading-tight
 
           <p
             className="
-mt-8
+mt-6
 max-w-2xl
 mx-auto
 text-gray-300
-text-xl
-leading-9
+text-lg
+sm:text-xl
+leading-8
+sm:leading-9
 "
           >
             Understanding life through awareness,
@@ -263,13 +274,16 @@ leading-9
         </div>
 
         <motion.div
-          className="
+            className="
 grid
 grid-cols-2
+sm:grid-cols-3
 md:grid-cols-4
 lg:grid-cols-7
-gap-10
-mt-24
+gap-6
+sm:gap-8
+mt-16
+sm:mt-24
 "
           initial="hidden"
           whileInView="visible"
@@ -287,8 +301,12 @@ group
             >
               <div
                 className="
-w-28
-h-28
+w-20
+h-20
+sm:w-24
+sm:h-24
+lg:w-28
+lg:h-28
 mx-auto
 rounded-full
 overflow-hidden
@@ -311,9 +329,12 @@ object-cover
 
               <h3
                 className="
-mt-5
+mt-4
 font-semibold
-text-lg
+text-sm
+sm:text-base
+lg:text-lg
+break-words
 "
               >
                 {item.title}
@@ -326,9 +347,13 @@ text-lg
           className="
 grid
 lg:grid-cols-2
-gap-24
+gap-10
+sm:gap-14
+lg:gap-20
 items-center
-mt-32
+mt-16
+sm:mt-24
+lg:mt-32
 "
         >
           <motion.div
@@ -340,9 +365,13 @@ mt-32
             <p
               className="
 uppercase
-tracking-[6px]
+tracking-[0.22em]
+sm:tracking-[6px]
 text-orange-400
-mb-5
+text-[11px]
+sm:text-sm
+mb-4
+sm:mb-5
 "
             >
               Conscious Understanding
@@ -351,9 +380,13 @@ mb-5
             <h2
               className="
 font-serif
-text-6xl
+text-3xl
+sm:text-4xl
+lg:text-5xl
+xl:text-6xl
 font-bold
 leading-tight
+break-words
 "
             >
               To Live Meaningfully
@@ -362,22 +395,26 @@ leading-tight
 
             <div
               className="
-space-y-7
-mt-12
-text-xl
+space-y-4
+sm:space-y-5
+mt-8
+sm:mt-10
+text-base
+sm:text-lg
+lg:text-xl
 text-gray-200
 "
             >
               {understandingItems.map((item) => (
-                <p key={item.label} className="flex items-center gap-3">
-                  <span className="text-orange-400">{item.icon}</span>
-                  <span>{item.label}</span>
+                <p key={item.label} className="flex items-start gap-3">
+                  <span className="mt-0.5 shrink-0 text-orange-400">{item.icon}</span>
+                  <span className="break-words">{item.label}</span>
                 </p>
               ))}
             </div>
           </motion.div>
 
-          <div className="relative">
+          <div className="relative w-full max-w-xl mx-auto lg:max-w-none">
             <div
               className="
 absolute
@@ -391,9 +428,13 @@ blur-[120px]
               src={meditation}
               className="
 relative
-rounded-[40px]
+rounded-[24px]
+sm:rounded-[32px]
+lg:rounded-[40px]
 shadow-2xl
 w-full
+max-h-[70vh]
+object-cover
 "
             />
           </div>
@@ -401,13 +442,15 @@ w-full
 
         <motion.div
           className="
-mt-32
+mt-24
 bg-white/5
 backdrop-blur-xl
 border
 border-white/10
-rounded-[40px]
-p-16
+rounded-[32px]
+p-6
+sm:p-10
+lg:p-16
 text-center
 "
           initial="hidden"
@@ -418,7 +461,9 @@ text-center
           <h2
             className="
 font-serif
-text-5xl
+text-3xl
+sm:text-4xl
+lg:text-5xl
 font-bold
 leading-tight
 "
@@ -430,12 +475,14 @@ leading-tight
 
           <p
             className="
-mt-8
+mt-6
 max-w-3xl
 mx-auto
 text-gray-300
-leading-9
-text-lg
+leading-7
+sm:leading-8
+text-base
+sm:text-lg
 "
           >
             Human transformation begins through
@@ -443,23 +490,11 @@ text-lg
             living.
           </p>
 
-          <button
-            className="
-mt-10
-bg-orange-500
-hover:bg-orange-600
-px-10
-py-4
-rounded-full
-font-semibold
-duration-300
-"
-          >
-            Explore Philosophy
-          </button>
+          <Link to="/donate?modal=true" className="inline-block mt-10 mb-4 rounded-full bg-orange-500 px-6 py-3 font-semibold text-white duration-300 hover:bg-orange-600 sm:px-10 sm:py-4">Explore Philosophy</Link>
         </motion.div>
       </div>
     </section>
+    </>
   );
 }
 
@@ -588,14 +623,17 @@ export function DNIAcademyPage() {
   };
 
   return (
-    <section className="bg-[#faf6ef]">
-      <section
-        className="
+    <>
+      <Helmet><title>DNI Academy - Anubhuthi Foundation</title></Helmet>
+      <section className="bg-[#faf6ef]">
+        <section
+          className="
 relative
 min-h-[90vh]
 bg-cover
 bg-center
 text-white
+overflow-hidden
 "
         style={{
           backgroundImage: `url(${dniBg})`,
@@ -615,8 +653,11 @@ py-28
           <p
             className="
 uppercase
-tracking-[8px]
+tracking-[0.26em]
+sm:tracking-[8px]
 text-orange-400
+text-[11px]
+sm:text-sm
 "
           >
             Decode of Natural Intelligence
@@ -624,7 +665,8 @@ text-orange-400
 
           <h1
             className="
-text-6xl
+text-4xl
+sm:text-5xl
 md:text-8xl
 font-serif
 font-bold
@@ -637,10 +679,12 @@ leading-tight
 
           <p
             className="
-mt-8
-text-xl
+mt-6
+text-lg
+sm:text-xl
 max-w-3xl
-leading-10
+leading-8
+sm:leading-10
 text-gray-300
 "
           >
@@ -652,9 +696,12 @@ text-gray-300
           <motion.div
             className="
 grid
+sm:grid-cols-2
 md:grid-cols-3
-gap-8
-mt-20
+gap-5
+sm:gap-6
+mt-14
+sm:mt-20
 "
             initial="hidden"
             whileInView="visible"
@@ -668,8 +715,10 @@ mt-20
 bg-white/10
 backdrop-blur
 rounded-3xl
-p-6
+p-5
+sm:p-6
 text-center
+break-words
 "
                 variants={fadeUpItem}
               >
@@ -680,14 +729,15 @@ text-center
         </div>
       </section>
 
-      <section className="py-28">
+      <section className="py-20 sm:py-24 lg:py-28">
         <div
           className="
 max-w-7xl
 mx-auto
 grid
 lg:grid-cols-2
-gap-20
+gap-12
+lg:gap-20
 px-6
 "
         >
@@ -699,10 +749,15 @@ px-6
           >
             <h2
               className="
-text-5xl
+text-3xl
+sm:text-4xl
+lg:text-5xl
 font-bold
 font-serif
-mb-12
+mb-8
+sm:mb-10
+lg:mb-12
+break-words
 "
             >
               Who Can Join?
@@ -710,9 +765,9 @@ mb-12
 
             <div className="space-y-5">
               {whoCanJoin.map((item, index) => (
-                <p key={index} className="flex items-center gap-3 text-xl">
-                  <span className="text-orange-400">{joinIcons[item]}</span>
-                  <span>{item}</span>
+                <p key={index} className="flex items-start gap-3 text-base sm:text-lg lg:text-xl">
+                  <span className="mt-0.5 shrink-0 text-orange-400">{joinIcons[item]}</span>
+                  <span className="break-words">{item}</span>
                 </p>
               ))}
             </div>
@@ -720,8 +775,12 @@ mb-12
             <img
               src={whojoin}
               className="
-rounded-[30px]
+rounded-[24px]
+sm:rounded-[30px]
 mt-10
+w-full
+max-h-[26rem]
+object-cover
 "
             />
           </motion.div>
@@ -734,10 +793,15 @@ mt-10
           >
             <h2
               className="
-text-5xl
+text-3xl
+sm:text-4xl
+lg:text-5xl
 font-bold
 font-serif
-mb-12
+mb-8
+sm:mb-10
+lg:mb-12
+break-words
 "
             >
               Training Format
@@ -745,9 +809,9 @@ mb-12
 
             <div className="space-y-5">
               {trainingFormat.map((item, index) => (
-                <p key={index} className="flex items-center gap-3 text-xl">
-                  <span className="text-orange-400">{trainingIcons[item]}</span>
-                  <span>{item}</span>
+                <p key={index} className="flex items-start gap-3 text-base sm:text-lg lg:text-xl">
+                  <span className="mt-0.5 shrink-0 text-orange-400">{trainingIcons[item]}</span>
+                  <span className="break-words">{item}</span>
                 </p>
               ))}
             </div>
@@ -755,8 +819,12 @@ mb-12
             <img
               src={training}
               className="
-rounded-[30px]
+rounded-[24px]
+sm:rounded-[30px]
 mt-10
+w-full
+max-h-[26rem]
+object-cover
 "
             />
           </motion.div>
@@ -765,7 +833,9 @@ mt-10
 
       <section
         className="
-py-28
+py-20
+sm:py-24
+lg:py-28
 bg-white
 "
       >
@@ -779,9 +849,13 @@ px-6
           <h2
             className="
 text-center
-text-6xl
+text-3xl
+sm:text-4xl
+lg:text-5xl
+xl:text-6xl
 font-serif
 font-bold
+break-words
 "
           >
             DNI Programs
@@ -790,10 +864,14 @@ font-bold
           <div
             className="
 grid
-md:grid-cols-2
+sm:grid-cols-2
 lg:grid-cols-4
-gap-8
-mt-20
+gap-5
+sm:gap-6
+lg:gap-8
+mt-12
+sm:mt-16
+lg:mt-20
 "
           >
             {[
@@ -826,19 +904,6 @@ mb-4
                 <p className="text-gray-600">
                   Transformative experiential learning.
                 </p>
-
-                <button
-                  className="
-mt-8
-bg-orange-500
-text-white
-px-8
-py-3
-rounded-full
-"
-                >
-                  Explore
-                </button>
               </div>
             ))}
           </div>
@@ -847,17 +912,24 @@ rounded-full
 
       <section
         className="
-py-28
+py-20
+sm:py-24
+lg:py-28
 bg-[#1d1208]
 text-center
 text-white
+px-6
 "
       >
         <h2
           className="
-text-6xl
+text-3xl
+sm:text-4xl
+lg:text-5xl
+xl:text-6xl
 font-serif
 font-bold
+break-words
 "
         >
           One Purpose • One Humanity
@@ -869,8 +941,12 @@ font-bold
           className="
 max-w-3xl
 mx-auto
-mt-8
-leading-9
+mt-6
+sm:mt-8
+leading-7
+sm:leading-9
+text-base
+sm:text-lg
 text-gray-300
 "
         >
@@ -879,19 +955,28 @@ text-gray-300
           intelligence and purpose.
         </p>
 
-        <button
+        <Link
+          to="/careers"
           className="
+inline-block
 mt-10
 bg-orange-500
-px-10
-py-4
+hover:bg-orange-600
+text-white
+px-6
+sm:px-10
+py-3
+sm:py-4
 rounded-full
+font-semibold
+duration-300
 "
         >
           Apply Now
-        </button>
+        </Link>
+        </section>
       </section>
-    </section>
+    </>
   );
 }
 
@@ -981,13 +1066,13 @@ export function TempleRestorationPage() {
     <>
       <Helmet><title>Temple Restoration Mission - Anubhuthi Foundation</title></Helmet>
 
-      <div className="bg-[#F5EFE4] pt-16 sm:pt-20">
+      <div className="bg-[#F5EFE4]">
         <section className="bg-[#F5EFE4] relative overflow-hidden">
           <div
             className="relative grid min-h-[auto] w-full grid-cols-1 items-stretch lg:min-h-[960px] lg:grid-cols-[45%_55%] lg:grid-rows-[auto_1fr]"
           >
             <div
-              className="flex flex-col justify-center bg-[#021B3A]/85 px-5 py-10 text-white sm:px-6 sm:py-12 lg:col-start-1 lg:row-start-1 lg:items-end lg:bg-[#021B3A]/80 lg:py-10 lg:pl-12 lg:pr-8 lg:backdrop-blur-[3px]"
+              className="flex flex-col justify-center bg-[#021B3A]/85 px-5 pt-24 pb-10 text-white sm:px-6 sm:pt-28 sm:pb-12 lg:col-start-1 lg:row-start-1 lg:items-end lg:bg-[#021B3A]/80 lg:pt-28 lg:pb-10 lg:pl-12 lg:pr-8 lg:backdrop-blur-[3px]"
               style={{ zIndex: 20 }}
             >
               <div className="w-full max-w-[600px] text-left">
@@ -1094,7 +1179,7 @@ export function TempleRestorationPage() {
 
         <div className="bg-[#021B3A]">
           <div className="mx-auto w-full px-5 py-5 text-center font-sans text-[16px] font-medium tracking-[0.01em] text-[#D8A24A] sm:px-6 sm:text-[20px] lg:px-12 lg:text-[24px]">
-            One Purpose <span className="mx-2 text-white">•</span> One Humanity <span className="mx-2 text-white">•</span> One Journey <span className="mx-2 text-white">•</span> One Evolution
+            One Purpose <span className="mx-2 text-white">&bull;</span> One Humanity <span className="mx-2 text-white">&bull;</span> One Journey <span className="mx-2 text-white">&bull;</span> One Evolution
           </div>
         </div>
       </div>
@@ -1107,22 +1192,134 @@ export function LegalPage() {
   return (
     <>
       <Helmet><title>Legal & Compliance - Anubhuthi Foundation</title></Helmet>
-      <PageHeader title="Legal & Compliance" subtitle="Transparency" breadcrumb={[{ label: 'Home', path: '/' }, { label: 'Legal' }]} />
-      <section className="py-20 bg-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          {[
-            { title: 'Registration & Legal Status', content: 'Anubhuthi Foundation is registered as a non-profit charitable trust under the Indian Trusts Act 1882. Registration No: [REG-2015-XXXX]. We are also registered under the Foreign Contribution Regulation Act (FCRA) and are eligible to receive international donations.' },
-            { title: '80G Tax Exemption', content: 'All donations to Anubhuthi Foundation are eligible for tax deduction under Section 80G of the Income Tax Act, 1961. Donors will receive official receipts for all contributions above Rs. 500.' },
-            { title: 'Annual Reports & Audits', content: 'Our financial statements are audited annually by independent chartered accountants. Annual reports are available for public inspection and will be provided upon written request.' },
-            { title: 'Privacy Policy', content: 'We are committed to protecting your personal information. We collect only the data necessary to serve you and do not sell or share your information with third parties. All payment processing is handled through secure, PCI-compliant payment gateways.' },
-            { title: 'Refund Policy', content: 'Program fees are refundable up to 14 days before the program start date, minus a 10% administrative fee. Donations are non-refundable but may be redirected to another cause of your choice upon written request within 30 days.' },
-          ].map((section) => (
-            <div key={section.title}>
-              <h2 className="font-serif text-2xl font-bold text-earth-800 mb-3">{section.title}</h2>
-              <p className="text-earth-600 leading-relaxed">{section.content}</p>
-            </div>
-          ))}
+      
+      <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#011126]">
+        {/* Soft background zoom animation */}
+        <motion.div 
+          className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${legalBg})` }}
+          initial={{ scale: 1.05 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+        />
+        
+        {/* Dark blue gradient overlay for readability */}
+        <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#011126]/95 via-[#011126]/70 to-[#011126]/40 md:to-transparent"></div>
+
+        <div className="relative z-20 max-w-7xl mx-auto px-6 w-full pt-20 pb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            
+            {/* LEFT SIDE */}
+            <motion.div 
+              className="text-white"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: {
+                    staggerChildren: 0.15,
+                    delayChildren: 0.2
+                  }
+                }
+              }}
+            >
+              <motion.h1 
+                variants={{
+                  hidden: { opacity: 0, y: 30, filter: 'blur(10px)' },
+                  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 1, ease: "easeOut" } }
+                }}
+                className="mb-8 font-serif text-4xl font-bold leading-tight tracking-wide text-white drop-shadow-2xl md:text-6xl"
+              >
+                LEGAL &<br/>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e7ad43] to-[#f9d689] drop-shadow-[0_0_20px_rgba(231,173,67,0.4)]">
+                  COMPLIANCE
+                </span>
+              </motion.h1>
+
+              <motion.p 
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+                }}
+                className="text-lg md:text-xl text-gray-200 mb-10 leading-relaxed font-light"
+              >
+                Anubhuthi Foundation operates as a Section 8<br className="hidden xl:block" />
+                Non-Profit Organization under the Companies<br className="hidden xl:block" />
+                Act, 2013.
+              </motion.p>
+
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+                }}
+              >
+                <p className="text-[#e7ad43] font-semibold text-xl mb-6 font-serif tracking-wide">
+                  The Foundation complies with:
+                </p>
+
+                <ul className="space-y-4 mb-10">
+                  {[
+                    'Companies Act',
+                    'Income Tax Regulations',
+                    'CSR Guidelines',
+                    'Applicable MCA Regulations',
+                    'FEMA Guidelines'
+                  ].map((item, i) => (
+                    <motion.li 
+                      key={i}
+                      variants={{
+                        hidden: { opacity: 0, x: -30, filter: 'blur(5px)' },
+                        visible: { opacity: 1, x: 0, filter: 'blur(0px)', transition: { duration: 0.6, ease: "easeOut" } }
+                      }}
+                      className="group flex items-center gap-4 text-lg text-gray-200 font-medium transition-all duration-300 hover:text-white hover:translate-x-2 cursor-default"
+                    >
+                      <span className="relative flex-shrink-0 w-7 h-7 rounded-full bg-[#e7ad43]/20 flex items-center justify-center border border-[#e7ad43]/40 transition-all duration-300 group-hover:bg-[#e7ad43]/40 group-hover:border-[#e7ad43]/80 group-hover:shadow-[0_0_15px_rgba(231,173,67,0.6)] group-hover:scale-110">
+                        <svg className="w-4 h-4 text-[#e7ad43] group-hover:text-white transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </span>
+                      {item}
+                    </motion.li>
+                  ))}
+                </ul>
+
+                <p className="text-gray-400 text-sm italic font-light">
+                  (Subject to updates)
+                </p>
+              </motion.div>
+            </motion.div>
+
+            {/* RIGHT SIDE: Kept empty so the background image (legal scale) shines through */}
+            <div className="hidden md:block"></div>
+
+          </div>
         </div>
+      </section>
+
+      {/* Quote Section Before Footer */}
+      <section className="bg-white py-16 sm:py-20 overflow-hidden">
+        <motion.div 
+          className="max-w-7xl mx-auto px-6 text-center flex justify-center"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={{
+            hidden: { opacity: 0, scale: 0.9, filter: 'blur(10px)' },
+            visible: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 1.2, ease: "easeOut" } }
+          }}
+        >
+          <div className="py-6 sm:py-8 inline-block max-w-4xl">
+            <motion.h3 
+              whileHover={{ scale: 1.05, filter: "drop-shadow(0px 0px 12px rgba(249,115,22,0.5))" }}
+              transition={{ duration: 0.4 }}
+              className="text-2xl sm:text-3xl lg:text-4xl font-serif text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 tracking-wide m-0 cursor-default"
+            >
+              One Purpose &bull; One Humanity &bull; One Evolution
+            </motion.h3>
+          </div>
+        </motion.div>
       </section>
     </>
   );

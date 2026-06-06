@@ -309,9 +309,9 @@ export default function HeroSection() {
         items-end
         justify-between
         gap-8
-        pt-24
+        pt-20
         pb-0
-        md:pt-28
+        md:pt-24
         lg:items-end
         lg:gap-10
         lg:pt-28
@@ -343,11 +343,12 @@ export default function HeroSection() {
                 className="
                 relative
                 top-0
-                w-[340px]
-                sm:w-[420px]
-                md:w-[500px]
-                lg:w-[600px]
-                xl:w-[660px]
+                w-full
+                max-w-[260px]
+                sm:max-w-[360px]
+                md:max-w-[460px]
+                lg:w-[540px]
+                xl:w-[620px]
                 max-h-[80vh]
                 object-contain
                 object-bottom

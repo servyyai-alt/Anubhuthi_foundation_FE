@@ -230,44 +230,59 @@ export default function Navbar() {
     isRouteActive(link.path) ||
     link.children?.some((child) => isRouteActive(child.path));
 
+  // Determine if the current route has a dark hero header where the transparent navbar overlay is appropriate
+  const isDarkHeroPage = 
+    location.pathname === '/' ||
+    location.pathname === '/philosophy' ||
+    location.pathname === '/dni-academy' ||
+    location.pathname === '/programs' ||
+    location.pathname.startsWith('/programs/') ||
+    location.pathname === '/retreats' ||
+    location.pathname === '/temple-restoration' ||
+    location.pathname === '/events' ||
+    location.pathname === '/careers' ||
+    location.pathname === '/volunteer' ||
+    location.pathname === '/media' ||
+    location.pathname === '/contact' ||
+    location.pathname === '/donate' ||
+    location.pathname === '/legal';
+
+  const showDarkNavbar = scrolled || !isDarkHeroPage;
+
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
-      scrolled 
+      showDarkNavbar 
         ? "bg-[#07284A] shadow-[0_4px_20px_rgba(0,0,0,0.12)] border-b border-[#C58A2B]/15" 
         : "bg-transparent shadow-none"
     }`}>
 
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-        <div className="flex items-center justify-between h-20">
+        <div className="flex h-18 items-center justify-between sm:h-20">
 
           {/* Logo */}
-
           <Link
             to="/"
-            className="flex items-center gap-3"
+            className="flex min-w-0 items-center gap-2.5 sm:gap-3"
           >
-
             <img
               src={logo}
               alt="logo"
-              className="w-20 h-20 object-contain transition-all duration-300"
+              className="h-11 w-11 object-contain transition-all duration-300 sm:h-14 sm:w-14"
             />
-
-            <div className="leading-none flex flex-col justify-center">
-              <span className="text-xl font-sans font-bold tracking-wide text-white transition-colors duration-300">
+            <div className="flex min-w-0 flex-col justify-center leading-none">
+              <span className="truncate text-base font-sans font-bold tracking-wide text-white transition-colors duration-300 sm:text-xl">
                 ANUBHUTHI
               </span>
-              <span className="text-[10px] font-sans font-semibold tracking-[0.25em] mt-0.5 text-white transition-colors duration-300">
+              <span className="mt-0.5 truncate text-[9px] font-sans font-semibold tracking-[0.2em] text-white transition-colors duration-300 sm:text-[10px] sm:tracking-[0.25em]">
                 FOUNDATION
               </span>
             </div>
-
           </Link>
 
           {/* Desktop Menu */}
 
-          <div className="hidden lg:flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-5 xl:gap-6">
 
             {navLinks.map((link) => (
 
@@ -403,7 +418,7 @@ export default function Navbar() {
 
           <button
             onClick={() => setOpen(!open)}
-            className="lg:hidden transition-colors duration-300 text-white hover:text-orange-400"
+            className="rounded-xl p-2 text-white transition-colors duration-300 hover:text-orange-400 lg:hidden"
           >
             {open ? (
               <FaTimes size={22} />
@@ -434,10 +449,10 @@ export default function Navbar() {
               opacity: 0,
               height: 0,
             }}
-            className="border-t bg-[#07284A] text-white border-[#C58A2B]/20"
+            className="border-t border-[#C58A2B]/20 bg-[#07284A] text-white lg:hidden"
           >
 
-            <div className="p-5 space-y-3">
+            <div className="max-h-[calc(100vh-72px)] overflow-y-auto p-4 sm:p-5">
 
               {navLinks.map((link) => (
                 <div key={link.label}>

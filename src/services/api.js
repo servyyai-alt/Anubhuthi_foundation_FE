@@ -81,8 +81,14 @@ export const careersAPI = {
   create: (data) => api.post('/careers', data),
   update: (id, data) => api.put(`/careers/${id}`, data),
   delete: (id) => api.delete(`/careers/${id}`),
-  apply: (id, data) => api.post(`/careers/${id}/apply`, data),
+  apply: (id, data) => {
+    const isFormData = data instanceof FormData;
+    return api.post(`/careers/${id}/apply`, data, isFormData ? {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    } : {});
+  },
   getApplications: (id) => api.get(`/careers/${id}/applications`),
+  getAllApplications: () => api.get('/careers/admin/applications/all'),
 };
 
 // Testimonials

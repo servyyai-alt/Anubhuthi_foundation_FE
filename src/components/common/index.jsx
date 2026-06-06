@@ -53,9 +53,7 @@ export const LinkButton = ({ children, to, variant = 'primary', size = 'md', cla
 export const SectionTitle = ({ subtitle, title, description, center = false, light = false }) => (
   <div className={`mb-12 ${center ? 'text-center' : ''}`}>
     {subtitle && (
-      <p className={`text-sm font-semibold tracking-widest uppercase mb-3 ${light ? 'text-saffron-300' : 'text-saffron-500'}`}>
-        ✦ {subtitle} ✦
-      </p>
+      <p className={`text-sm font-semibold tracking-widest uppercase mb-3 ${light ? 'text-saffron-300' : 'text-saffron-500'}`}> {subtitle} </p>
     )}
     <h2 className={`font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight ${light ? 'text-white' : 'text-earth-800'}`}>
       {title}
@@ -101,10 +99,16 @@ export const ErrorMsg = ({ message }) => (
 );
 
 // Form Input
-export const FormInput = ({ label, error, className = '', ...props }) => (
+export const FormInput = ({ label, error, className = '', required, ...props }) => (
   <div className={className}>
-    {label && <label className="block text-sm font-medium text-earth-700 mb-1.5">{label}</label>}
+    {label && (
+      <label className="block text-sm font-medium text-earth-700 mb-1.5">
+        {label}
+        {required && <span className="text-red-500 font-bold ml-1">*</span>}
+      </label>
+    )}
     <input
+      required={required}
       className={`w-full px-4 py-3 bg-white border rounded-xl text-earth-800 placeholder-earth-300 outline-none transition-colors
         ${error ? 'border-red-400 focus:border-red-500' : 'border-earth-200 focus:border-saffron-400'}`}
       {...props}
@@ -114,11 +118,17 @@ export const FormInput = ({ label, error, className = '', ...props }) => (
 );
 
 // Form Textarea
-export const FormTextarea = ({ label, error, className = '', rows = 4, ...props }) => (
+export const FormTextarea = ({ label, error, className = '', rows = 4, required, ...props }) => (
   <div className={className}>
-    {label && <label className="block text-sm font-medium text-earth-700 mb-1.5">{label}</label>}
+    {label && (
+      <label className="block text-sm font-medium text-earth-700 mb-1.5">
+        {label}
+        {required && <span className="text-red-500 font-bold ml-1">*</span>}
+      </label>
+    )}
     <textarea
       rows={rows}
+      required={required}
       className={`w-full px-4 py-3 bg-white border rounded-xl text-earth-800 placeholder-earth-300 outline-none transition-colors resize-none
         ${error ? 'border-red-400 focus:border-red-500' : 'border-earth-200 focus:border-saffron-400'}`}
       {...props}
@@ -128,10 +138,16 @@ export const FormTextarea = ({ label, error, className = '', rows = 4, ...props 
 );
 
 // Form Select
-export const FormSelect = ({ label, error, className = '', children, ...props }) => (
+export const FormSelect = ({ label, error, className = '', children, required, ...props }) => (
   <div className={className}>
-    {label && <label className="block text-sm font-medium text-earth-700 mb-1.5">{label}</label>}
+    {label && (
+      <label className="block text-sm font-medium text-earth-700 mb-1.5">
+        {label}
+        {required && <span className="text-red-500 font-bold ml-1">*</span>}
+      </label>
+    )}
     <select
+      required={required}
       className={`w-full px-4 py-3 bg-white border rounded-xl text-earth-800 outline-none transition-colors
         ${error ? 'border-red-400 focus:border-red-500' : 'border-earth-200 focus:border-saffron-400'}`}
       {...props}
@@ -179,7 +195,7 @@ export const PageHeader = ({ title, subtitle, breadcrumb, bg = 'parchment' }) =>
           ))}
         </nav>
       )}
-      {subtitle && <p className="text-saffron-500 text-sm font-semibold tracking-widest uppercase mb-3">✦ {subtitle} ✦</p>}
+      {subtitle && <p className="text-saffron-500 text-sm font-semibold tracking-widest uppercase mb-3"> {subtitle} </p>}
       <h1 className={`font-serif text-4xl md:text-5xl font-bold ${bg === 'dark' ? 'text-white' : 'text-earth-800'}`}>{title}</h1>
     </div>
   </div>

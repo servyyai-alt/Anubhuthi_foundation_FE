@@ -144,6 +144,7 @@ export default function DonatePage() {
     message: '',
     agreed: false
   });
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -151,12 +152,47 @@ export default function DonatePage() {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const validate = () => {
+    const newErrors = {};
+    if (!form.fullName.trim()) newErrors.fullName = 'Full Name is required';
+    if (!form.email.trim()) newErrors.email = 'Email Address is required';
+    else if (!/\S+@\S+\.\S+/.test(form.email)) newErrors.email = 'Enter a valid email address';
+    if (!form.phone.trim()) newErrors.phone = 'Phone Number is required';
+    if (!form.country.trim()) newErrors.country = 'Country is required';
+    if (!form.amount || Number(form.amount) <= 0) newErrors.amount = 'Valid amount is required';
+    if (!form.purpose.trim()) newErrors.purpose = 'Purpose is required';
+    if (!form.agreed) newErrors.agreed = 'You must agree to the terms';
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const mapCategoryToPurpose = (category) => {
+    switch (category) {
+      case 'General Fund':
+        return 'general';
+      case 'Temple Restoration':
+        return 'temple-restoration';
+      case 'Sponsor A Program':
+        return 'programs';
+      case 'Student Scholarship':
+        return 'retreat-scholarship';
+      case 'Retreat Sponsorship':
+        return 'retreat-scholarship';
+      default:
+        return 'general';
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.fullName || !form.email || !form.phone || !form.country || !form.amount || !form.agreed) {
-      toast.error('Please fill all required fields and agree to terms.');
+    if (!validate()) {
+      toast.error('Please correct the highlighted errors.');
       return;
     }
     
@@ -166,7 +202,12 @@ export default function DonatePage() {
       const orderRes = await donationsAPI.createOrder({ amount: donationAmount });
       const { order, key } = orderRes.data;
 
-      if (window.Razorpay) {
+      // Construct a combined message so that both the user note and the specified purpose are stored
+      const combinedMessage = form.purpose 
+        ? `Purpose: ${form.purpose}${form.message ? ` | Notes: ${form.message}` : ''}`
+        : form.message;
+
+      if (window.Razorpay && key && key !== 'rzp_test_demo') {
         const options = {
           key,
           amount: order.amount,
@@ -175,18 +216,30 @@ export default function DonatePage() {
           description: `Donation: ${form.donationCategory}`,
           order_id: order.id,
           handler: async (response) => {
-            await donationsAPI.verify({
-              donorName: form.fullName,
-              email: form.email,
-              phone: form.phone,
-              amount: donationAmount,
-              purpose: form.donationCategory,
-              paymentId: response.razorpay_payment_id,
-              orderId: response.razorpay_order_id
-            });
-            toast.success('Thank you! Your offering has been received.');
-            setIsModalOpen(false);
-            setForm({ ...form, amount: '', message: '', agreed: false });
+            try {
+              await donationsAPI.verify({
+                donorName: form.fullName,
+                email: form.email,
+                phone: form.phone,
+                amount: donationAmount,
+                purpose: mapCategoryToPurpose(form.donationCategory),
+                donationCategory: form.donationCategory,
+                offeringType: form.offeringType,
+                country: form.country,
+                message: combinedMessage,
+                paymentId: response.razorpay_payment_id,
+                orderId: response.razorpay_order_id
+              });
+              toast.success('Thank you! Your offering has been received.');
+              setIsModalOpen(false);
+              setForm({
+                fullName: '', email: '', phone: '', country: '', offeringType: 'One Time',
+                donationCategory: 'General Fund', amount: '', purpose: '', message: '', agreed: false
+              });
+              setErrors({});
+            } catch (err) {
+              toast.error('Verification failed. Please contact support.');
+            }
           },
           prefill: { name: form.fullName, email: form.email, contact: form.phone },
           theme: { color: '#b07c46' }
@@ -198,12 +251,21 @@ export default function DonatePage() {
           email: form.email,
           phone: form.phone,
           amount: donationAmount,
-          purpose: form.donationCategory,
-          paymentId: `pay_demo_${Date.now()}`,
-          orderId: order.id
+          purpose: mapCategoryToPurpose(form.donationCategory),
+          donationCategory: form.donationCategory,
+          offeringType: form.offeringType,
+          country: form.country,
+          message: combinedMessage,
+          paymentId: `mock_pay_${Date.now()}`,
+          orderId: order?.id || `mock_ord_${Date.now()}`
         });
-        toast.success('Offering recorded! (Demo mode)');
+        toast.success('Thank you! Your offering has been received.');
         setIsModalOpen(false);
+        setForm({
+          fullName: '', email: '', phone: '', country: '', offeringType: 'One Time',
+          donationCategory: 'General Fund', amount: '', purpose: '', message: '', agreed: false
+        });
+        setErrors({});
       }
     } catch (err) {
       toast.error('Submission failed. Please try again.');
@@ -231,7 +293,7 @@ export default function DonatePage() {
       <script src="https://checkout.razorpay.com/v1/checkout.js" async />
 
       {/* Hero Section */}
-      <section className="relative w-full h-screen min-h-[600px] flex items-center pt-28 pb-12 md:pt-36 md:pb-20">
+      <section className="relative flex min-h-[100svh] w-full items-center pt-28 pb-12 md:pt-36 md:pb-20">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img 
@@ -262,7 +324,7 @@ export default function DonatePage() {
             DONATION OPTIONS
           </h2>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 px-4">
+          <div className="grid grid-cols-2 gap-6 px-2 sm:px-4 md:grid-cols-3 lg:grid-cols-6 lg:gap-8">
             {donationOptions.map((opt, idx) => (
               <div key={idx} className="flex flex-col items-center group">
                 <div className="mb-6 transform transition-transform group-hover:scale-110">
@@ -364,39 +426,43 @@ export default function DonatePage() {
                 </button>
               </div>
 
-              <form onSubmit={handleSubmit} className="p-8 space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6 p-5 sm:p-8">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
-                    <input required type="text" name="fullName" value={form.fullName} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#b07c46] focus:border-transparent outline-none" />
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Full Name <span className="text-red-500 font-bold">*</span></label>
+                    <input type="text" name="fullName" value={form.fullName} onChange={handleChange} className={`w-full px-4 py-2 border ${errors.fullName ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-2 focus:ring-[#b07c46] focus:border-transparent outline-none`} />
+                    {errors.fullName && <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
-                    <input required type="email" name="email" value={form.email} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#b07c46] focus:border-transparent outline-none" />
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Email Address <span className="text-red-500 font-bold">*</span></label>
+                    <input type="email" name="email" value={form.email} onChange={handleChange} className={`w-full px-4 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-2 focus:ring-[#b07c46] focus:border-transparent outline-none`} />
+                    {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                   </div>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
-                    <input required type="tel" name="phone" value={form.phone} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#b07c46] focus:border-transparent outline-none" />
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number <span className="text-red-500 font-bold">*</span></label>
+                    <input type="tel" name="phone" value={form.phone} onChange={handleChange} className={`w-full px-4 py-2 border ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-2 focus:ring-[#b07c46] focus:border-transparent outline-none`} />
+                    {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Country *</label>
-                    <input required type="text" name="country" value={form.country} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#b07c46] focus:border-transparent outline-none" />
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Country <span className="text-red-500 font-bold">*</span></label>
+                    <input type="text" name="country" value={form.country} onChange={handleChange} className={`w-full px-4 py-2 border ${errors.country ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-2 focus:ring-[#b07c46] focus:border-transparent outline-none`} />
+                    {errors.country && <p className="text-red-500 text-xs mt-1">{errors.country}</p>}
                   </div>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Offering Type *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Offering Type <span className="text-red-500 font-bold">*</span></label>
                     <select name="offeringType" value={form.offeringType} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#b07c46] focus:border-transparent outline-none bg-white">
                       <option value="One Time">One Time</option>
                       <option value="Monthly">Monthly</option>
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Donation Category *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Donation Category <span className="text-red-500 font-bold">*</span></label>
                     <select name="donationCategory" value={form.donationCategory} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#b07c46] focus:border-transparent outline-none bg-white">
                       <option value="General Fund">General Fund</option>
                       <option value="Temple Restoration">Temple Restoration</option>
@@ -409,12 +475,14 @@ export default function DonatePage() {
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Offering Amount (₹) *</label>
-                    <input required type="number" min="1" name="amount" value={form.amount} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#b07c46] focus:border-transparent outline-none" />
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Offering Amount (₹) <span className="text-red-500 font-bold">*</span></label>
+                    <input type="number" min="1" name="amount" value={form.amount} onChange={handleChange} className={`w-full px-4 py-2 border ${errors.amount ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-2 focus:ring-[#b07c46] focus:border-transparent outline-none`} />
+                    {errors.amount && <p className="text-red-500 text-xs mt-1">{errors.amount}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Purpose of Contribution *</label>
-                    <input required type="text" name="purpose" value={form.purpose} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#b07c46] focus:border-transparent outline-none" />
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Purpose of Contribution <span className="text-red-500 font-bold">*</span></label>
+                    <input type="text" name="purpose" value={form.purpose} onChange={handleChange} className={`w-full px-4 py-2 border ${errors.purpose ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-2 focus:ring-[#b07c46] focus:border-transparent outline-none`} />
+                    {errors.purpose && <p className="text-red-500 text-xs mt-1">{errors.purpose}</p>}
                   </div>
                 </div>
 
@@ -423,18 +491,21 @@ export default function DonatePage() {
                   <textarea name="message" value={form.message} onChange={handleChange} rows="3" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#b07c46] focus:border-transparent outline-none resize-none"></textarea>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <input required type="checkbox" id="agreed" name="agreed" checked={form.agreed} onChange={handleChange} className="w-4 h-4 text-[#b07c46] focus:ring-[#b07c46] border-gray-300 rounded" />
-                  <label htmlFor="agreed" className="text-sm text-gray-600 cursor-pointer">
-                    I agree to the foundation's donation terms.
-                  </label>
+                <div>
+                  <div className="flex items-center gap-3">
+                    <input type="checkbox" id="agreed" name="agreed" checked={form.agreed} onChange={handleChange} className="w-4 h-4 text-[#b07c46] focus:ring-[#b07c46] border-gray-300 rounded" />
+                    <label htmlFor="agreed" className="text-sm text-gray-600 cursor-pointer">
+                      I agree to the foundation's donation terms.
+                    </label>
+                  </div>
+                  {errors.agreed && <p className="text-red-500 text-xs mt-1">{errors.agreed}</p>}
                 </div>
 
-                <div className="pt-4 border-t border-gray-100 flex justify-end">
+                <div className="flex justify-stretch border-t border-gray-100 pt-4 sm:justify-end">
                   <button 
                     type="submit" 
                     disabled={loading || !form.agreed}
-                    className={`bg-[#0a1e35] text-white px-8 py-3 rounded-md font-medium tracking-wide transition-colors flex items-center justify-center min-w-[200px]
+                    className={`w-full bg-[#0a1e35] text-white px-6 py-3 rounded-md font-medium tracking-wide transition-colors flex items-center justify-center sm:min-w-[200px] sm:w-auto
                       ${loading || !form.agreed ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#153457]'}`}
                   >
                     {loading ? (

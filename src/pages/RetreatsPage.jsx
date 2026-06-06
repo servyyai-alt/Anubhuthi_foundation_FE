@@ -218,11 +218,11 @@ export default function RetreatsPage() {
         <title>Himalayan Retreats - Anubhuthi Foundation</title>
         <meta name="description" content="Sacred retreats, nature journeys, and conscious living programs from Anubhuthi Foundation." />
       </Helmet>
-      <section className="bg-[#f8f2e8] pt-20">
+      <section className="bg-[#f8f2e8]">
 
       {/* HERO */}
 
-      <div className="relative min-h-[calc(100vh-80px)] py-12 md:py-16 lg:py-20 flex items-center overflow-hidden">
+      <div className="relative flex min-h-[100svh] items-center overflow-hidden pt-20 pb-12 md:py-16 lg:py-20">
         {/* Cinematic Zoom + Parallax background */}
         <motion.div
           className="absolute inset-0 bg-cover bg-center"
@@ -238,6 +238,7 @@ export default function RetreatsPage() {
             repeatType: "reverse",
           }}
         />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/20 to-black/45" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 text-center text-white w-full">
 
@@ -245,28 +246,36 @@ export default function RetreatsPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="
-            text-4xl
-            md:text-6xl
-            font-bold
-            font-serif
-            "
-          >
-            TRANSFORM THROUGH NATURE
-          </motion.h1>
+             className="
+             text-3xl
+             sm:text-4xl
+             md:text-6xl
+             font-bold
+             font-serif
+             text-white
+             drop-shadow-[0_4px_18px_rgba(0,0,0,0.75)]
+             "
+           >
+             TRANSFORM THROUGH NATURE
+           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
             className="
-            mt-5
-            max-w-3xl
-            mx-auto
-            text-gray-200
-            leading-8
-            "
-          >
+             mt-5
+             max-w-3xl
+             mx-auto
+             text-[#f8f2e8]
+             drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)]
+              text-base
+              sm:text-lg
+              md:text-2xl
+              leading-7
+              md:leading-8
+             "
+           >
             Anubhuthi Foundation organizes transformative
             journeys across the Himalayas and other
             nature-rich destinations.
@@ -277,11 +286,14 @@ export default function RetreatsPage() {
           <div
             className="
             grid
-            grid-cols-2
-            md:grid-cols-4
-            lg:grid-cols-7
-            gap-6
-            mt-16
+             grid-cols-2
+             sm:grid-cols-3
+             md:grid-cols-4
+             lg:grid-cols-7
+             gap-4
+             sm:gap-6
+             mt-12
+             sm:mt-16
             "
           >
             {topItems.map((item, index) => (
@@ -293,7 +305,7 @@ export default function RetreatsPage() {
                 className="group cursor-pointer flex flex-col items-center"
               >
                 <motion.div
-                  className="w-28 h-28 rounded-full overflow-hidden border-2 border-[#d7b56d]"
+                  className="w-24 h-24 rounded-full overflow-hidden border-2 border-[#d7b56d] sm:h-28 sm:w-28"
                   whileHover={{
                     scale: 1.08,
                     boxShadow: "0 0 25px rgba(215, 181, 109, 0.75)",
@@ -341,7 +353,8 @@ export default function RetreatsPage() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="
             text-center
-            text-4xl
+             text-3xl
+             sm:text-4xl
             font-bold
             font-serif
             text-[#1d3557]
@@ -354,8 +367,9 @@ export default function RetreatsPage() {
           <div
             className="
             grid
-            md:grid-cols-2
-            lg:grid-cols-6
+             sm:grid-cols-2
+             lg:grid-cols-3
+             xl:grid-cols-6
             gap-5
             "
           >
@@ -451,7 +465,9 @@ export default function RetreatsPage() {
             className="
             bg-white
             rounded-3xl
-            p-10
+             p-6
+             sm:p-8
+             lg:p-10
             border
             border-[#e7d7bc]
             grid
@@ -469,7 +485,8 @@ export default function RetreatsPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
                 className="
-                text-4xl
+                 text-3xl
+                 sm:text-4xl
                 font-serif
                 font-bold
                 text-[#1d3557]

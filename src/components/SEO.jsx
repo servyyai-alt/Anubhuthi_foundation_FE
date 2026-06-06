@@ -70,17 +70,17 @@ export const orgSchema = {
   description: 'A spiritual organization offering transformative programs, Himalayan retreats, and Vedic wisdom.',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'Anubhuthi Ashram',
-    addressLocality: 'Rishikesh',
-    addressRegion: 'Uttarakhand',
-    postalCode: '249201',
+    streetAddress: 'Door No : 3/37B, Vadamalaipatti, Musiri Taluk, Thathiengarpet post',
+    addressLocality: 'Tiruchirappalli District',
+    addressRegion: 'Tamilnadu',
+    postalCode: '621214',
     addressCountry: 'IN',
   },
   contactPoint: {
     '@type': 'ContactPoint',
-    telephone: '+91-98765-43210',
+    telephone: '+91-63815-86747',
     contactType: 'customer service',
-    email: 'namaste@anubhuthifoundation.org',
+    email: 'gurunana180@gmail.com',
   },
   sameAs: [
     'https://facebook.com/anubhuthifoundation',

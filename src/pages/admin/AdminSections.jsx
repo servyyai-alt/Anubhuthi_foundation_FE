@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaBookOpen, FaCalendarAlt, FaMountain, FaBriefcase, FaHandsHelping, FaDonate, FaQuoteLeft, FaEnvelope, FaPhotoVideo } from 'react-icons/fa';
+import { FaBookOpen, FaCalendarAlt, FaMountain, FaBriefcase, FaHandsHelping, FaDonate, FaQuoteLeft, FaEnvelope, FaPhotoVideo, FaSearch } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import { format } from 'date-fns';
 import AdminCRUD from './AdminCRUD';
@@ -397,61 +397,235 @@ export function AdminRetreats() {
 ========================= */
 
 export function AdminCareers() {
+  const [activeTab, setActiveTab] = useState('openings');
+
   return (
-    <AdminCRUD
-      title="Careers"
-      // icon={<FaBriefcase />}
-      fetchFn={careersAPI.getAllAdmin}
-      createFn={careersAPI.create}
-      updateFn={careersAPI.update}
-      deleteFn={careersAPI.delete}
-      searchKey="title"
-      columns={[
-        { key: 'title', label: 'Title' },
-        { key: 'department', label: 'Department' },
-        {
-          key: 'type',
-          label: 'Type',
-          render: (v) => <Badge color="saffron">{v}</Badge>,
-        },
-        { key: 'location', label: 'Location' },
-        { key: 'isRemote', label: 'Remote', render: (v) => (v ? 'Yes' : 'No') },
-        {
-          key: 'isActive',
-          label: 'Status',
-          render: (v) => (
-            <Badge color={v ? 'green' : 'red'}>
-              {v ? 'Open' : 'Closed'}
-            </Badge>
-          ),
-        },
-      ]}
-      defaultValues={{
-        title: '',
-        department: '',
-        type: 'full-time',
-        location: 'Rishikesh',
-        description: '',
-        isRemote: false,
-        isActive: true,
-      }}
-      formFields={[
-        { name: 'title', label: 'Job Title', required: true },
-        { name: 'department', label: 'Department' },
-        {
-          name: 'type',
-          label: 'Employment Type',
-          type: 'select',
-          options: ['full-time', 'part-time', 'contract', 'internship', 'volunteer'],
-        },
-        { name: 'location', label: 'Location' },
-        { name: 'salary', label: 'Salary / Stipend' },
-        { name: 'applicationDeadline', label: 'Application Deadline', type: 'date' },
-        { name: 'description', label: 'Job Description', type: 'textarea', fullWidth: true },
-        { name: 'isRemote', label: 'Remote', type: 'checkbox', checkLabel: 'Remote work allowed' },
-        { name: 'isActive', label: 'Active', type: 'checkbox', checkLabel: 'Published & accepting applications' },
-      ]}
-    />
+    <div className="flex flex-col h-full">
+      <div className="px-8 pt-8 pb-2">
+        <h1 className="font-serif text-3xl font-bold text-gray-800 mb-6">Careers</h1>
+        <div className="flex border-b border-gray-200 gap-6">
+          <button
+            className={`pb-3 font-medium transition-colors ${activeTab === 'openings' ? 'border-b-2 border-saffron-600 text-saffron-600' : 'text-gray-500 hover:text-gray-700'}`}
+            onClick={() => setActiveTab('openings')}
+          >
+            Job Openings
+          </button>
+          <button
+            className={`pb-3 font-medium transition-colors ${activeTab === 'applications' ? 'border-b-2 border-saffron-600 text-saffron-600' : 'text-gray-500 hover:text-gray-700'}`}
+            onClick={() => setActiveTab('applications')}
+          >
+            Applications
+          </button>
+        </div>
+      </div>
+      <div>
+        {activeTab === 'openings' ? (
+          <div className="-mt-4">
+            <AdminCRUD
+              title="Job Openings"
+              fetchFn={careersAPI.getAllAdmin}
+              createFn={careersAPI.create}
+              updateFn={careersAPI.update}
+              deleteFn={careersAPI.delete}
+              searchKey="title"
+              columns={[
+                { key: 'title', label: 'Title' },
+                { key: 'department', label: 'Department' },
+                {
+                  key: 'type',
+                  label: 'Type',
+                  render: (v) => <Badge color="saffron">{v}</Badge>,
+                },
+                { key: 'location', label: 'Location' },
+                { key: 'isRemote', label: 'Remote', render: (v) => (v ? 'Yes' : 'No') },
+                {
+                  key: 'isActive',
+                  label: 'Status',
+                  render: (v) => (
+                    <Badge color={v ? 'green' : 'red'}>
+                      {v ? 'Open' : 'Closed'}
+                    </Badge>
+                  ),
+                },
+              ]}
+              defaultValues={{
+                title: '',
+                department: '',
+                type: 'full-time',
+                location: 'Rishikesh',
+                description: '',
+                responsibilities: '',
+                requirements: '',
+                benefits: '',
+                isRemote: false,
+                isActive: true,
+              }}
+              preparePayload={(form) => {
+                const payload = { ...form };
+                ['responsibilities', 'requirements', 'benefits'].forEach(field => {
+                  if (typeof payload[field] === 'string') {
+                    payload[field] = payload[field].split(',').map(s => s.trim()).filter(Boolean);
+                  }
+                });
+                return payload;
+              }}
+              formFields={[
+                { name: 'title', label: 'Job Title', required: true },
+                { name: 'department', label: 'Department' },
+                {
+                  name: 'type',
+                  label: 'Employment Type',
+                  type: 'select',
+                  options: ['full-time', 'part-time', 'contract', 'internship', 'volunteer'],
+                },
+                { name: 'location', label: 'Location' },
+                { name: 'salary', label: 'Salary / Stipend' },
+                { name: 'applicationDeadline', label: 'Application Deadline', type: 'date' },
+                { name: 'description', label: 'Job Description', type: 'textarea', fullWidth: true },
+                { name: 'responsibilities', label: 'Responsibilities', type: 'textarea', fullWidth: true, isArray: true, placeholder: 'Develop features, write tests' },
+                { name: 'requirements', label: 'Requirements', type: 'textarea', fullWidth: true, isArray: true, placeholder: '3+ years experience, React knowledge' },
+                { name: 'benefits', label: 'Benefits', type: 'textarea', fullWidth: true, isArray: true, placeholder: 'Health insurance, Paid time off' },
+                { name: 'isRemote', label: 'Remote', type: 'checkbox', checkLabel: 'Remote work allowed' },
+                { name: 'isActive', label: 'Active', type: 'checkbox', checkLabel: 'Published & accepting applications' },
+              ]}
+            />
+          </div>
+        ) : (
+          <AdminApplications />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function AdminApplications() {
+  const [applications, setApplications] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [expandedAppId, setExpandedAppId] = useState(null);
+  const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    careersAPI.getAllApplications()
+      .then(res => setApplications(res.data.data || []))
+      .catch(() => toast.error("Failed to fetch applications"))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const filteredApplications = applications.filter((app) => {
+    if (!search.trim()) return true;
+    const query = search.toLowerCase();
+    return [
+      app.name,
+      app.email,
+      app.phone,
+      app.career?.title,
+      app.linkedIn,
+      app.portfolio,
+      app.notes,
+      app.experience,
+    ]
+      .filter(Boolean)
+      .some((value) => String(value).toLowerCase().includes(query));
+  });
+
+  return (
+    <div className="p-8">
+      <div className="relative mb-6 max-w-full sm:max-w-sm">
+        <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" size={14} />
+        <input
+          type="text"
+          placeholder="Search applications..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-9 pr-4 text-sm text-gray-700 outline-none focus:border-saffron-400"
+        />
+      </div>
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        {loading ? (
+          <div className="flex justify-center py-16"><Spinner /></div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[860px] text-sm">
+              <thead className="bg-gray-50 border-b border-gray-100">
+                <tr>
+                  {["Name", "Email", "Phone", "Job Title", "Resume", "Cover Letter", "Date", "Actions"].map(h => (
+                    <th key={h} className="text-left px-4 py-3 text-gray-500 font-semibold text-xs uppercase tracking-wider">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {filteredApplications.length > 0 ? filteredApplications.map(app => (
+                  <React.Fragment key={app._id}>
+                    <tr className={`hover:bg-gray-50 transition-colors cursor-pointer ${expandedAppId === app._id ? 'bg-saffron-50/20' : ''}`} onClick={() => setExpandedAppId(expandedAppId === app._id ? null : app._id)}>
+                      <td className="px-4 py-3 font-medium text-gray-800">{app.name}</td>
+                      <td className="px-4 py-3 text-gray-500">{app.email}</td>
+                      <td className="px-4 py-3 text-gray-500">{app.phone}</td>
+                      <td className="px-4 py-3 text-gray-800 font-medium">{app.career?.title || 'General Application'}</td>
+                      <td className="px-4 py-3">
+                        {app.resumeUrl ? (
+                          <a href={app.resumeUrl} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="text-saffron-600 hover:underline font-semibold">View Resume</a>
+                        ) : '—'}
+                      </td>
+                      <td className="px-4 py-3">
+                        {app.coverLetter ? (
+                          <a href={app.coverLetter} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="text-saffron-600 hover:underline font-semibold">View Cover Letter</a>
+                        ) : '—'}
+                      </td>
+                      <td className="px-4 py-3 text-gray-400">{app.createdAt ? format(new Date(app.createdAt), 'dd MMM yy') : '—'}</td>
+                      <td className="px-4 py-3">
+                        <button className="text-saffron-600 hover:text-saffron-700 font-semibold text-xs uppercase tracking-wider">
+                          {expandedAppId === app._id ? 'Hide' : 'Details'}
+                        </button>
+                      </td>
+                    </tr>
+                    {expandedAppId === app._id && (
+                      <tr className="bg-gray-50/40">
+                        <td colSpan="8" className="px-6 py-4">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs md:text-sm text-gray-700">
+                            <div>
+                              <p className="font-semibold text-gray-400 uppercase text-[10px] tracking-wider mb-1">LinkedIn Profile</p>
+                              {app.linkedIn ? (
+                                <a href={app.linkedIn} target="_blank" rel="noreferrer" className="text-saffron-600 hover:underline break-all">{app.linkedIn}</a>
+                              ) : (
+                                <span className="text-gray-400">Not provided</span>
+                              )}
+                            </div>
+                            <div>
+                              <p className="font-semibold text-gray-400 uppercase text-[10px] tracking-wider mb-1">Portfolio URL</p>
+                              {app.portfolio ? (
+                                <a href={app.portfolio} target="_blank" rel="noreferrer" className="text-saffron-600 hover:underline break-all">{app.portfolio}</a>
+                              ) : (
+                                <span className="text-gray-400">Not provided</span>
+                              )}
+                            </div>
+                            <div>
+                              <p className="font-semibold text-gray-400 uppercase text-[10px] tracking-wider mb-1">Years of Experience</p>
+                              <span className="text-gray-800 font-medium">{app.experience || 'Not specified'}</span>
+                            </div>
+                            <div>
+                              <p className="font-semibold text-gray-400 uppercase text-[10px] tracking-wider mb-1">Applied Date & Time</p>
+                              <span className="text-gray-800 font-medium">{app.createdAt ? format(new Date(app.createdAt), 'dd MMM yyyy, hh:mm a') : '—'}</span>
+                            </div>
+                            <div className="md:col-span-2">
+                              <p className="font-semibold text-gray-400 uppercase text-[10px] tracking-wider mb-1">Cover Letter Message / Notes</p>
+                              <div className="p-3 bg-white border border-gray-100 rounded-xl whitespace-pre-wrap text-gray-800 leading-relaxed font-sans text-xs md:text-sm shadow-inner">
+                                {app.notes || <span className="text-gray-400 italic">No notes provided by candidate</span>}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
+                )) : (
+                  <tr><td colSpan="8" className="py-10 text-center text-gray-400">No applications found</td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -499,14 +673,14 @@ export function AdminVolunteers() {
         { key: 'type', label: 'Type', render: (v) => <Badge color="saffron">{v}</Badge> },
         { key: 'city', label: 'City' },
         { key: 'availability', label: 'Availability' },
-        { key: 'status', label: 'Status', render: (v) => <Badge color={statusColors[v] || 'earth'}>{v}</Badge> },
-        { key: 'createdAt', label: 'Applied', render: (v) => (v ? format(new Date(v), 'dd MMM yy') : 'â€”') },
+        { key: 'createdAt', label: 'Applied', render: (v) => (v ? format(new Date(v), 'dd MMM yy') : '—') },
       ]}
       defaultValues={{
         name: '',
         email: '',
         phone: '',
-        age: '',
+        dob: '',
+        gender: '',
         city: '',
         country: 'India',
         education: '',
@@ -517,19 +691,19 @@ export function AdminVolunteers() {
         motivation: '',
         areas: '',
         type: 'volunteer',
-        status: 'pending',
         notes: '',
       }}
       formFields={[
-        { name: 'name', label: 'Name', required: true },
-        { name: 'email', label: 'Email', type: 'email', required: true },
-        { name: 'phone', label: 'Phone' },
-        { name: 'age', label: 'Age', type: 'number' },
-        { name: 'city', label: 'City' },
-        { name: 'country', label: 'Country' },
-        { name: 'education', label: 'Education' },
-        { name: 'occupation', label: 'Occupation' },
-        { name: 'type', label: 'Type', type: 'select', options: ['volunteer', 'intern'] },
+        { name: 'name', label: 'Name', disabled: true },
+        { name: 'email', label: 'Email', type: 'email', disabled: true },
+        { name: 'phone', label: 'Phone', disabled: true },
+        { name: 'dob', label: 'Date of Birth', type: 'date', disabled: true },
+        { name: 'gender', label: 'Gender', disabled: true },
+        { name: 'city', label: 'City', disabled: true },
+        { name: 'country', label: 'Country', disabled: true },
+        { name: 'education', label: 'Education', disabled: true },
+        { name: 'occupation', label: 'Occupation', disabled: true },
+        { name: 'type', label: 'Type', type: 'select', options: ['volunteer', 'intern'], disabled: true },
         {
           name: 'availability',
           label: 'Availability',
@@ -541,6 +715,7 @@ export function AdminVolunteers() {
             { value: 'remote', label: 'Remote / Online only' },
             { value: 'flexible', label: 'Flexible' },
           ],
+          disabled: true,
         },
         {
           name: 'skills',
@@ -548,7 +723,7 @@ export function AdminVolunteers() {
           type: 'textarea',
           fullWidth: true,
           isArray: true,
-          placeholder: 'Teaching, design, coordination',
+          disabled: true,
         },
         {
           name: 'areas',
@@ -556,11 +731,10 @@ export function AdminVolunteers() {
           type: 'textarea',
           fullWidth: true,
           isArray: true,
-          placeholder: 'Events, media, retreats',
+          disabled: true,
         },
-        { name: 'experience', label: 'Experience', type: 'textarea', fullWidth: true },
-        { name: 'motivation', label: 'Motivation', type: 'textarea', fullWidth: true },
-        { name: 'status', label: 'Status', type: 'select', options: ['pending', 'reviewing', 'accepted', 'rejected'] },
+        { name: 'experience', label: 'Experience', type: 'textarea', fullWidth: true, disabled: true },
+        { name: 'motivation', label: 'Motivation', type: 'textarea', fullWidth: true, disabled: true },
         { name: 'notes', label: 'Internal Notes', type: 'textarea', fullWidth: true },
       ]}
     />
@@ -575,13 +749,19 @@ export function AdminDonations() {
   const [donations, setDonations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
+  const [expandedDonationId, setExpandedDonationId] = useState(null);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     donationsAPI
       .getAll()
       .then((res) => {
-        setDonations(res.data.data || []);
-        setTotal(res.data.totalAmount || 0);
+        const fetchedDonations = res.data.data || [];
+        setDonations(fetchedDonations);
+        const completedSum = fetchedDonations
+          .filter(d => d.status === 'completed')
+          .reduce((sum, d) => sum + (Number(d.amount) || 0), 0);
+        setTotal(completedSum);
       })
       .catch(() => {
         toast.error("Failed to load donations");
@@ -595,6 +775,27 @@ export function AdminDonations() {
     failed: "red",
     refunded: "blue",
   };
+
+  const filteredDonations = donations.filter((donation) => {
+    if (!search.trim()) return true;
+    const query = search.toLowerCase();
+    return [
+      donation.isAnonymous ? 'anonymous' : donation.donorName,
+      donation.email,
+      donation.purpose,
+      donation.status,
+      donation.country,
+      donation.phone,
+      donation.paymentId,
+      donation.orderId,
+      donation.offeringType,
+      donation.donationCategory,
+      donation.message,
+      donation.amount,
+    ]
+      .filter((value) => value !== undefined && value !== null)
+      .some((value) => String(value).toLowerCase().includes(query));
+  });
 
   return (
     <div className="p-8">
@@ -611,6 +812,17 @@ export function AdminDonations() {
         </p>
       </div>
 
+      <div className="relative mb-6 max-w-full sm:max-w-sm">
+        <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" size={14} />
+        <input
+          type="text"
+          placeholder="Search donations..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-9 pr-4 text-sm text-gray-700 outline-none focus:border-saffron-400"
+        />
+      </div>
+
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         {loading ? (
           <div className="flex justify-center py-16">
@@ -618,7 +830,7 @@ export function AdminDonations() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full min-w-[860px] text-sm">
               <thead className="bg-gray-50 border-b border-gray-100">
                 <tr>
                   {[
@@ -628,6 +840,7 @@ export function AdminDonations() {
                     "Purpose",
                     "Status",
                     "Date",
+                    "Actions"
                   ].map((h) => (
                     <th
                       key={h}
@@ -640,41 +853,86 @@ export function AdminDonations() {
               </thead>
 
               <tbody className="divide-y divide-gray-50">
-                {donations.length > 0 ? (
-                  donations.map((d) => (
-                    <tr key={d._id} className="hover:bg-gray-50">
-                      <td className="px-4 py-3 font-medium text-gray-800">
-                        {d.isAnonymous ? "Anonymous" : d.donorName}
-                      </td>
+                {filteredDonations.length > 0 ? (
+                  filteredDonations.map((d) => (
+                    <React.Fragment key={d._id}>
+                      <tr className={`hover:bg-gray-50 transition-colors cursor-pointer ${expandedDonationId === d._id ? 'bg-saffron-50/20' : ''}`} onClick={() => setExpandedDonationId(expandedDonationId === d._id ? null : d._id)}>
+                        <td className="px-4 py-3 font-medium text-gray-800">
+                          {d.isAnonymous ? "Anonymous" : d.donorName}
+                        </td>
 
-                      <td className="px-4 py-3 text-gray-500">
-                        {d.email}
-                      </td>
+                        <td className="px-4 py-3 text-gray-500">
+                          {d.email}
+                        </td>
 
-                      <td className="px-4 py-3 font-bold text-saffron-600">
-                        ₹{d.amount?.toLocaleString()}
-                      </td>
+                        <td className="px-4 py-3 font-bold text-saffron-600">
+                          ₹{d.amount?.toLocaleString()}
+                        </td>
 
-                      <td className="px-4 py-3 capitalize text-gray-500">
-                        {d.purpose?.replace(/-/g, " ")}
-                      </td>
+                        <td className="px-4 py-3 capitalize text-gray-500">
+                          {d.purpose?.replace(/-/g, " ")}
+                        </td>
 
-                      <td className="px-4 py-3">
-                        <Badge color={statusColors[d.status] || "earth"}>
-                          {d.status}
-                        </Badge>
-                      </td>
+                        <td className="px-4 py-3">
+                          <Badge color={statusColors[d.status] || "earth"}>
+                            {d.status}
+                          </Badge>
+                        </td>
 
-                      <td className="px-4 py-3 text-gray-400">
-                        {d.createdAt
-                          ? format(new Date(d.createdAt), "dd MMM yy")
-                          : "—"}
-                      </td>
-                    </tr>
+                        <td className="px-4 py-3 text-gray-400">
+                          {d.createdAt
+                            ? format(new Date(d.createdAt), "dd MMM yy")
+                            : "—"}
+                        </td>
+                        <td className="px-4 py-3">
+                          <button className="text-saffron-600 hover:text-saffron-700 font-semibold text-xs uppercase tracking-wider">
+                            {expandedDonationId === d._id ? 'Hide' : 'Details'}
+                          </button>
+                        </td>
+                      </tr>
+                      {expandedDonationId === d._id && (
+                        <tr className="bg-gray-50/40">
+                          <td colSpan="7" className="px-6 py-4">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs md:text-sm text-gray-700">
+                              <div>
+                                <p className="font-semibold text-gray-400 uppercase text-[10px] tracking-wider mb-1">Offering Type</p>
+                                <span className="text-gray-800 font-medium">{d.offeringType || 'One Time'}</span>
+                              </div>
+                              <div>
+                                <p className="font-semibold text-gray-400 uppercase text-[10px] tracking-wider mb-1">Donation Category</p>
+                                <span className="text-gray-800 font-medium">{d.donationCategory || d.purpose || '—'}</span>
+                              </div>
+                              <div>
+                                <p className="font-semibold text-gray-400 uppercase text-[10px] tracking-wider mb-1">Country</p>
+                                <span className="text-gray-800 font-medium">{d.country || '—'}</span>
+                              </div>
+                              <div>
+                                <p className="font-semibold text-gray-400 uppercase text-[10px] tracking-wider mb-1">Phone Number</p>
+                                <span className="text-gray-800 font-medium">{d.phone || '—'}</span>
+                              </div>
+                              <div>
+                                <p className="font-semibold text-gray-400 uppercase text-[10px] tracking-wider mb-1">Payment ID</p>
+                                <span className="text-gray-855 text-gray-500 font-mono break-all">{d.paymentId || '—'}</span>
+                              </div>
+                              <div>
+                                <p className="font-semibold text-gray-400 uppercase text-[10px] tracking-wider mb-1">Order ID</p>
+                                <span className="text-gray-855 text-gray-500 font-mono break-all">{d.orderId || '—'}</span>
+                              </div>
+                              <div className="md:col-span-3">
+                                <p className="font-semibold text-gray-400 uppercase text-[10px] tracking-wider mb-1">Message / Notes</p>
+                                <div className="p-3 bg-white border border-gray-100 rounded-xl whitespace-pre-wrap text-gray-800 leading-relaxed font-sans text-xs md:text-sm shadow-inner">
+                                  {d.message || <span className="text-gray-400 italic">No notes provided with this offering</span>}
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="6" className="py-10 text-center">
+                    <td colSpan="7" className="py-10 text-center">
                       <div className="text-gray-400 font-medium">
                         No donation records available yet
                       </div>
@@ -695,35 +953,99 @@ export function AdminDonations() {
 ========================= */
 
 export function AdminTestimonials() {
+  const [activeTab, setActiveTab] = useState('user');
+
   return (
-    <AdminCRUD
-      title="Testimonials"
-      // icon={<FaQuoteLeft />}
-      fetchFn={testimonialsAPI.getAllAdmin}
-      createFn={testimonialsAPI.createAdmin}
-      updateFn={testimonialsAPI.update}
-      deleteFn={testimonialsAPI.delete}
-      searchKey="name"
-      columns={[
-        { key: 'name', label: 'Name' },
-        { key: 'designation', label: 'Designation' },
-        { key: 'program', label: 'Program' },
-        { key: 'rating', label: 'Rating', render: (v) => 'â­'.repeat(v || 5) },
-        { key: 'isApproved', label: 'Approved', render: (v) => <Badge color={v ? 'green' : 'red'}>{v ? 'Yes' : 'Pending'}</Badge> },
-        { key: 'isFeatured', label: 'Featured', render: (v) => (v ? 'Yes' : 'No') },
-      ]}
-      defaultValues={{ name: '', designation: '', content: '', rating: 5, isApproved: false, isFeatured: false }}
-      formFields={[
-        { name: 'name', label: 'Name', required: true },
-        { name: 'designation', label: 'Designation' },
-        { name: 'location', label: 'Location' },
-        { name: 'program', label: 'Program Attended' },
-        { name: 'rating', label: 'Rating', type: 'select', options: ['1', '2', '3', '4', '5'] },
-        { name: 'content', label: 'Testimonial', type: 'textarea', fullWidth: true, required: true },
-        { name: 'isApproved', label: 'Approved', type: 'checkbox', checkLabel: 'Approve & publish' },
-        { name: 'isFeatured', label: 'Featured', type: 'checkbox', checkLabel: 'Show as featured' },
-      ]}
-    />
+    <div className="flex flex-col h-full">
+      <div className="px-8 pt-8 pb-2">
+        <h1 className="font-serif text-3xl font-bold text-gray-800 mb-6">Testimonials</h1>
+        <div className="flex border-b border-gray-200 gap-6">
+          <button
+            className={`pb-3 font-medium transition-colors ${activeTab === 'user' ? 'border-b-2 border-saffron-600 text-saffron-600' : 'text-gray-500 hover:text-gray-700'}`}
+            onClick={() => setActiveTab('user')}
+          >
+            User Submitted
+          </button>
+          <button
+            className={`pb-3 font-medium transition-colors ${activeTab === 'admin' ? 'border-b-2 border-saffron-600 text-saffron-600' : 'text-gray-500 hover:text-gray-700'}`}
+            onClick={() => setActiveTab('admin')}
+          >
+            Admin Created
+          </button>
+        </div>
+      </div>
+      <div>
+        {activeTab === 'admin' ? (
+          <div className="-mt-4">
+            <AdminCRUD
+              title="Admin Testimonials"
+              fetchFn={async () => {
+                const res = await testimonialsAPI.getAllAdmin();
+                res.data.data = (res.data.data || []).filter(t => !t.isUserSubmitted);
+                return res;
+              }}
+              createFn={testimonialsAPI.createAdmin}
+              updateFn={testimonialsAPI.update}
+              deleteFn={testimonialsAPI.delete}
+              searchKey="name"
+              columns={[
+                { key: 'name', label: 'Name' },
+                { key: 'designation', label: 'Designation' },
+                { key: 'program', label: 'Program' },
+                { key: 'rating', label: 'Rating', render: (v) => '★'.repeat(v || 5) },
+                { key: 'isApproved', label: 'Approved', render: (v) => <Badge color={v ? 'green' : 'red'}>{v ? 'Yes' : 'No'}</Badge> },
+                { key: 'isFeatured', label: 'Featured', render: (v) => (v ? 'Yes' : 'No') },
+              ]}
+              defaultValues={{ name: '', designation: '', content: '', rating: 5, isApproved: true, isFeatured: false }}
+              formFields={[
+                { name: 'name', label: 'Name', required: true },
+                { name: 'designation', label: 'Designation' },
+                { name: 'location', label: 'Location' },
+                { name: 'program', label: 'Program Attended' },
+                { name: 'rating', label: 'Rating', type: 'select', options: ['1', '2', '3', '4', '5'] },
+                { name: 'content', label: 'Testimonial', type: 'textarea', fullWidth: true, required: true },
+                { name: 'isApproved', label: 'Approved', type: 'checkbox', checkLabel: 'Approve & publish' },
+                { name: 'isFeatured', label: 'Featured', type: 'checkbox', checkLabel: 'Show as featured' },
+              ]}
+            />
+          </div>
+        ) : (
+          <div className="-mt-4">
+            <AdminCRUD
+              title="User Testimonials"
+              hideCreate={true}
+              fetchFn={async () => {
+                const res = await testimonialsAPI.getAllAdmin();
+                res.data.data = (res.data.data || []).filter(t => t.isUserSubmitted);
+                return res;
+              }}
+              createFn={() => {}}
+              updateFn={testimonialsAPI.update}
+              deleteFn={testimonialsAPI.delete}
+              searchKey="name"
+              columns={[
+                { key: 'name', label: 'Name' },
+                { key: 'program', label: 'Program' },
+                { key: 'rating', label: 'Rating', render: (v) => '★'.repeat(v || 5) },
+                { key: 'isApproved', label: 'Status', render: (v) => <Badge color={v ? 'green' : 'red'}>{v ? 'Approved' : 'Pending'}</Badge> },
+                { key: 'isFeatured', label: 'Featured', render: (v) => (v ? 'Yes' : 'No') },
+              ]}
+              defaultValues={{ name: '', designation: '', content: '', rating: 5, isApproved: false, isFeatured: false }}
+              formFields={[
+                { name: 'name', label: 'Name', readOnly: true },
+                { name: 'designation', label: 'Designation', readOnly: true },
+                { name: 'location', label: 'Location', readOnly: true },
+                { name: 'program', label: 'Program Attended', readOnly: true },
+                { name: 'rating', label: 'Rating', type: 'select', options: ['1', '2', '3', '4', '5'], disabled: true },
+                { name: 'content', label: 'Testimonial', type: 'textarea', fullWidth: true, readOnly: true },
+                { name: 'isApproved', label: 'Approved', type: 'checkbox', checkLabel: 'Approve & publish' },
+                { name: 'isFeatured', label: 'Featured', type: 'checkbox', checkLabel: 'Show as featured' },
+              ]}
+            />
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -732,8 +1054,6 @@ export function AdminTestimonials() {
 ========================= */
 
 export function AdminContacts() {
-  const statusColors = { new: 'saffron', read: 'blue', replied: 'green', closed: 'earth' };
-
   return (
     <AdminCRUD
       title="Contact Messages"
@@ -742,19 +1062,22 @@ export function AdminContacts() {
       createFn={() => Promise.resolve()}
       updateFn={contactAPI.update}
       deleteFn={contactAPI.delete}
+      hideCreate={true}
       searchKey="name"
       columns={[
         { key: 'name', label: 'Name' },
         { key: 'email', label: 'Email' },
         { key: 'type', label: 'Type', render: (v) => <Badge color="earth">{v}</Badge> },
         { key: 'subject', label: 'Subject' },
-        { key: 'status', label: 'Status', render: (v) => <Badge color={statusColors[v] || 'earth'}>{v}</Badge> },
-        { key: 'createdAt', label: 'Date', render: (v) => (v ? format(new Date(v), 'dd MMM yy') : 'â€”') },
+        { key: 'createdAt', label: 'Date', render: (v) => (v ? format(new Date(v), 'dd MMM yy') : '—') },
       ]}
-      defaultValues={{ status: 'new', reply: '' }}
+      defaultValues={{ name: '', email: '', phone: '', subject: '', message: '', reply: '' }}
       formFields={[
-        { name: 'status', label: 'Status', type: 'select', options: ['new', 'read', 'replied', 'closed'] },
-        { name: 'reply', label: 'Internal Reply Notes', type: 'textarea', fullWidth: true },
+        { name: 'name', label: 'Name', readOnly: true },
+        { name: 'email', label: 'Email', readOnly: true },
+        { name: 'phone', label: 'Phone', readOnly: true },
+        { name: 'subject', label: 'Subject', readOnly: true, fullWidth: true },
+        { name: 'message', label: 'Message', type: 'textarea', fullWidth: true, readOnly: true },
       ]}
     />
   );
