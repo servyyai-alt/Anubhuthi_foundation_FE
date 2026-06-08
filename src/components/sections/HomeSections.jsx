@@ -1013,8 +1013,8 @@ export function MediaPublicationsSection({ mediaItems = [] }) {
         <div className="grid lg:grid-cols-3 gap-6">
           {items.map((item, index) => {
             const Icon = mediaIconMap[item.type] || FaNewspaper;
-            const href = item.type === 'video' ? '/media' : item.url || '/media';
-            const isExternal = item.type !== 'video' && item.url;
+            const href = (item.type === 'video' || item.type === 'podcast') ? `/media?id=${item._id}` : item.url || '/media';
+            const isExternal = item.type !== 'video' && item.type !== 'podcast' && item.url;
 
             return (
               <motion.div

@@ -417,7 +417,12 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
 
           <button
-            onClick={() => setOpen(!open)}
+            onClick={() => {
+              setOpen(!open);
+              if (!open) {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }}
             className="rounded-xl p-2 text-white transition-colors duration-300 hover:text-orange-400 lg:hidden"
           >
             {open ? (

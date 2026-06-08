@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { FaFilePdf, FaHeadphones, FaImages, FaNewspaper, FaPlay, FaTimes } from 'react-icons/fa';
-import { Badge, EmptyState, LoadingPage } from '../components/common';
-import { Link } from 'react-router-dom';
+import { FaFilePdf, FaFileWord, FaHeadphones, FaImages, FaMusic, FaNewspaper, FaPlay, FaRegClock, FaTimes } from 'react-icons/fa';
+import { Badge, EmptyState } from '../components/common';
+import { Link, useSearchParams } from 'react-router-dom';
+import AudioPlayer from '../components/common/AudioPlayer';
 import { mediaAPI } from '../services/api';
 import mediaBg from '../assets/media-publications-bg.png';
 
@@ -23,15 +24,218 @@ const typeColors = {
   document: 'saffron',
 };
 
+const previewShells = {
+  video: 'from-[#041B36] via-[#0B3B68] to-[#C58A2B]',
+  podcast: 'from-[#0A2540] via-[#123C6A] to-[#1D6D86]',
+  article: 'from-[#F8F1E5] via-[#FFF8EF] to-[#E9D5B4]',
+  gallery: 'from-[#092B23] via-[#0E5A49] to-[#C58A2B]',
+  document: 'from-[#1A2340] via-[#36436B] to-[#C58A2B]',
+};
+
+function getFileExtension(value = '') {
+  const clean = String(value).split('?')[0].split('#')[0];
+  const match = clean.match(/\.([a-z0-9]+)$/i);
+  return match ? match[1].toLowerCase() : '';
+}
+
+function isItemDocument(item) {
+  if (!item) return false;
+  const extension = (item?.fileExtension || getFileExtension(item?.url)).toLowerCase();
+  const mimeType = (item?.mimeType || '').toLowerCase();
+  return ['pdf', 'doc', 'docx'].includes(extension)
+    || mimeType === 'application/pdf'
+    || mimeType === 'application/msword'
+    || mimeType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+}
+
+function getResourceViewUrl(item) {
+  let url = item?.url || '';
+  if (!url || url === '#') return '';
+  
+  // Ensure HTTPS for Cloudinary and other remote resources
+  if (url.startsWith('http://') && !url.includes('localhost')) {
+    url = url.replace('http://', 'https://');
+  }
+
+  const extension = (item?.fileExtension || getFileExtension(url)).toLowerCase();
+  const mimeType = (item?.mimeType || '').toLowerCase();
+  const isDoc = ['doc', 'docx'].includes(extension)
+    || mimeType === 'application/msword'
+    || mimeType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
+  if (isDoc) {
+    return `https://docs.google.com/gview?embedded=1&url=${encodeURIComponent(url)}`;
+  }
+
+  return url;
+}
+
+function SmartImage({ src, alt, className, fallback }) {
+  const [failed, setFailed] = useState(false);
+
+  if (!src || failed) {
+    return fallback;
+  }
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      onError={() => setFailed(true)}
+      className={className}
+    />
+  );
+}
+
+function MediaCardSkeleton() {
+  return (
+    <div className="overflow-hidden rounded-[30px] border border-earth-100 bg-white shadow-sm">
+      <div className="aspect-[16/10] animate-pulse bg-gradient-to-br from-earth-100 via-saffron-50 to-earth-100" />
+      <div className="space-y-3 p-5">
+        <div className="h-4 w-20 animate-pulse rounded-full bg-earth-100" />
+        <div className="h-6 w-4/5 animate-pulse rounded-full bg-earth-100" />
+        <div className="h-4 w-full animate-pulse rounded-full bg-earth-50" />
+        <div className="h-4 w-2/3 animate-pulse rounded-full bg-earth-50" />
+      </div>
+    </div>
+  );
+}
+
+function MediaCardPreview({ item }) {
+  const previewUrl = item.cardPreviewUrl || '';
+  const previewKind = item.cardPreviewKind || item.type;
+  const excerpt = item.excerpt || item.description || '';
+  const galleryCount = item.galleryCount || item.gallery?.length || 0;
+  const documentExtension = item.fileExtension || 'file';
+
+  if (previewKind === 'image' || previewKind === 'pdf') {
+    return (
+      <SmartImage
+        src={previewUrl}
+        alt={item.title}
+        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+        fallback={
+          <div className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${previewShells[item.type] || previewShells.article}`}>
+            <div className="rounded-full border border-white/20 bg-white/10 p-5 text-white/80 backdrop-blur">
+              {(typeIcons[item.type] ? React.createElement(typeIcons[item.type], { size: 36 }) : <FaNewspaper size={36} />)}
+            </div>
+          </div>
+        }
+      />
+    );
+  }
+
+  if (item.type === 'podcast') {
+    return (
+      <div className={`relative h-full w-full overflow-hidden bg-gradient-to-br ${previewShells.podcast}`}>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.24),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(197,138,43,0.28),transparent_42%)]" />
+        <div className="relative flex h-full flex-col justify-between p-6 text-white">
+          <div className="flex items-center justify-between text-white/75">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em]">
+              <FaMusic size={10} />
+              Podcast
+            </span>
+            {item.duration ? (
+              <span className="inline-flex items-center gap-1 text-xs font-medium">
+                <FaRegClock size={11} />
+                {item.duration}
+              </span>
+            ) : null}
+          </div>
+          <div>
+            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/12 shadow-[0_18px_30px_rgba(0,0,0,0.16)] backdrop-blur">
+              <FaHeadphones size={28} />
+            </div>
+            <p className="line-clamp-3 max-w-[18rem] text-sm leading-6 text-white/80">
+              {excerpt || 'Listen to guided conversations, teachings, and contemplative audio from the Anubhuthi library.'}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (item.type === 'article') {
+    return (
+      <div className={`relative h-full w-full overflow-hidden bg-gradient-to-br ${previewShells.article}`}>
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.72),transparent_55%),radial-gradient(circle_at_bottom_right,rgba(197,138,43,0.16),transparent_34%)]" />
+        <div className="relative flex h-full flex-col justify-between p-6 text-earth-800">
+          <div className="inline-flex w-max items-center gap-2 rounded-full bg-white/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-earth-500 shadow-sm">
+            <FaNewspaper size={10} />
+            Article
+          </div>
+          <div className="space-y-3">
+            <h4 className="line-clamp-3 font-serif text-2xl font-bold leading-tight">{item.title}</h4>
+            <p className="line-clamp-3 text-sm leading-6 text-earth-600">
+              {excerpt || 'Read a concise knowledge preview with insights, context, and key takeaways from this article.'}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (item.type === 'gallery') {
+    return (
+      <div className={`relative h-full w-full overflow-hidden bg-gradient-to-br ${previewShells.gallery}`}>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.12),transparent_48%)]" />
+        <div className="relative flex h-full flex-col justify-between p-6 text-white">
+          <span className="inline-flex w-max items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em]">
+            <FaImages size={10} />
+            Gallery
+          </span>
+          <div>
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/12 backdrop-blur">
+              <FaImages size={24} />
+            </div>
+            <p className="text-sm text-white/80">{galleryCount} image{galleryCount === 1 ? '' : 's'} available</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`relative h-full w-full overflow-hidden bg-gradient-to-br ${previewShells.document}`}>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.2),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(197,138,43,0.25),transparent_34%)]" />
+      <div className="relative flex h-full flex-col justify-between p-6 text-white">
+        <div className="inline-flex w-max items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em]">
+          {documentExtension === 'doc' || documentExtension === 'docx' ? <FaFileWord size={10} /> : <FaFilePdf size={10} />}
+          {documentExtension.toUpperCase()}
+        </div>
+        <div>
+          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/12 backdrop-blur">
+            {documentExtension === 'doc' || documentExtension === 'docx' ? <FaFileWord size={28} /> : <FaFilePdf size={28} />}
+          </div>
+          <p className="line-clamp-2 text-sm leading-6 text-white/80">{item.fileName || item.title}</p>
+          {item.mimeType ? <p className="mt-2 text-xs uppercase tracking-[0.16em] text-white/55">{item.mimeType}</p> : null}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function MediaPage() {
   const [media, setMedia] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [activeItem, setActiveItem] = useState(null);
   const [activeGalleryImage, setActiveGalleryImage] = useState('');
+  const [searchParams] = useSearchParams();
+  const itemId = searchParams.get('id');
 
   const { scrollY } = useScroll();
   const bgY = useTransform(scrollY, [0, 500], [0, 150]);
+
+  useEffect(() => {
+    if (media.length > 0 && itemId) {
+      const found = media.find((m) => m._id === itemId);
+      if (found) {
+        setActiveItem(found);
+      }
+    }
+  }, [media, itemId]);
 
   useEffect(() => {
     mediaAPI.getAll()
@@ -46,7 +250,7 @@ export default function MediaPage() {
       return;
     }
 
-    const images = [activeItem.thumbnail, ...(activeItem.gallery || [])].filter(Boolean);
+    const images = [activeItem.cardPreviewUrl, activeItem.previewImage, activeItem.thumbnail, ...(activeItem.gallery || [])].filter(Boolean);
     setActiveGalleryImage(images[0] || '');
   }, [activeItem]);
 
@@ -56,10 +260,12 @@ export default function MediaPage() {
   const activeImages = useMemo(() => {
     if (!activeItem) return [];
 
-    return [activeItem.thumbnail, ...(activeItem.gallery || [])]
+    return [activeItem.cardPreviewUrl, activeItem.previewImage, activeItem.thumbnail, ...(activeItem.gallery || [])]
       .filter(Boolean)
       .filter((src, index, arr) => arr.indexOf(src) === index);
   }, [activeItem]);
+
+  const activeResourceUrl = activeItem ? getResourceViewUrl(activeItem) : '';
 
   const handleCtaClick = (type) => {
     setFilter(type);
@@ -187,6 +393,37 @@ export default function MediaPage() {
                 <div className="mb-6 aspect-video overflow-hidden rounded-3xl bg-black">
                   <iframe src={activeItem.url} className="h-full w-full" allowFullScreen title={activeItem.title} />
                 </div>
+              ) : activeResourceUrl && (activeItem.type === 'article' || activeItem.type === 'document') && isItemDocument(activeItem) ? (
+                <div className="mb-6 overflow-hidden rounded-3xl border border-earth-100 bg-white relative h-[28rem] sm:h-[34rem]">
+                  {activeResourceUrl.includes('docs.google.com') ? (
+                    <iframe
+                      src={activeResourceUrl}
+                      title={activeItem.title}
+                      className="h-full w-full border-none"
+                    />
+                  ) : (
+                    <object
+                      data={activeResourceUrl}
+                      type="application/pdf"
+                      className="h-full w-full"
+                    >
+                      <div className="flex h-full w-full flex-col items-center justify-center bg-gray-50 p-6 text-center">
+                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-sm">
+                          <FaFilePdf size={28} className="text-red-500" />
+                        </div>
+                        <p className="mb-4 text-earth-600">Your browser does not support inline PDF viewing, or the file could not be loaded.</p>
+                        <a
+                          href={activeResourceUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="rounded-full bg-[#07284A] px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#C58A2B]"
+                        >
+                          Download / View PDF Directly
+                        </a>
+                      </div>
+                    </object>
+                  )}
+                </div>
               ) : activeGalleryImage ? (
                 <div className="mb-6 overflow-hidden rounded-3xl bg-earth-100">
                   <img src={activeGalleryImage} alt={activeItem.title} className="h-64 w-full object-cover sm:h-80 lg:h-[28rem]" />
@@ -212,10 +449,21 @@ export default function MediaPage() {
                 <p className="mb-6 text-base leading-8 text-earth-600">{activeItem.description}</p>
               )}
 
+              {activeItem.type === 'podcast' && activeItem.url && activeItem.url !== '#' && (
+                <div className="w-full mb-6">
+                  <AudioPlayer
+                    src={activeItem.url}
+                    title={activeItem.title}
+                    artist={activeItem.category || 'Anubhuthi Wisdom Podcast'}
+                    cover={activeItem.thumbnail}
+                  />
+                </div>
+              )}
+
               <div className="flex flex-wrap gap-3 text-sm">
-                {activeItem.url && activeItem.url !== '#' && activeItem.type !== 'video' && (
+                {activeResourceUrl && activeItem.type !== 'video' && activeItem.type !== 'podcast' && (
                   <a
-                    href={activeItem.url}
+                    href={activeResourceUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="rounded-full bg-saffron-500 px-5 py-3 font-medium text-white transition-colors hover:bg-saffron-600"
@@ -256,54 +504,80 @@ export default function MediaPage() {
             ))}
           </div>
 
-          {loading ? <LoadingPage /> : filtered.length === 0 ? (
+          {loading ? (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <MediaCardSkeleton key={index} />
+              ))}
+            </div>
+          ) : filtered.length === 0 ? (
             <EmptyState  title="No Content Yet" description="We are building our media library. Check back soon!" />
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
               {filtered.map((item, i) => {
-                const Icon = typeIcons[item.type] || FaNewspaper;
-                const imageSrc = item.thumbnail || item.gallery?.[0];
-                const mediaCount = item.gallery?.length || 0;
+                const mediaCount = item.galleryCount || item.gallery?.length || 0;
+                const excerpt = item.excerpt || item.description || '';
 
                 return (
                   <motion.div key={item._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
                     <button
                       type="button"
                       onClick={() => setActiveItem(item)}
-                      className="group h-full w-full overflow-hidden rounded-3xl bg-white text-left shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-400 hover:-translate-y-2 border border-transparent hover:border-[#C58A2B]/30"
+                      className="group flex h-full w-full flex-col overflow-hidden rounded-[30px] border border-[#EADFCB] bg-[linear-gradient(180deg,#fffdf9_0%,#ffffff_100%)] text-left shadow-[0_12px_34px_rgba(15,23,42,0.07)] transition-all duration-500 hover:-translate-y-2 hover:border-[#C58A2B]/35 hover:shadow-[0_26px_60px_rgba(15,23,42,0.16)]"
                     >
-                      <div className="relative flex h-44 items-center justify-center overflow-hidden bg-gradient-to-br from-earth-100 to-saffron-50">
-                        {imageSrc ? (
-                          <img src={imageSrc} alt={item.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                        ) : (
-                          <Icon className="text-6xl text-earth-300" />
-                        )}
-                        {imageSrc && <div className="absolute inset-0 bg-earth-900/20" />}
+                      <div className="relative aspect-[16/10] overflow-hidden">
+                        <MediaCardPreview item={item} />
+                        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,12,27,0.02)_0%,rgba(2,12,27,0.18)_100%)] transition-colors duration-500 group-hover:bg-[linear-gradient(180deg,rgba(2,12,27,0.04)_0%,rgba(2,12,27,0.28)_100%)]" />
                         {item.type === 'video' && (
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-saffron-500/90 shadow-saffron">
-                              <FaPlay className="ml-1 text-white" size={16} />
+                          <div className="absolute inset-0 flex items-center justify-center opacity-85 transition duration-300 group-hover:opacity-100">
+                            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/20 text-white shadow-[0_18px_35px_rgba(0,0,0,0.22)] backdrop-blur-md transition duration-300 group-hover:scale-110 group-hover:bg-[#C58A2B]/90">
+                              <FaPlay className="ml-1" size={18} />
                             </div>
                           </div>
                         )}
-                        <div className="absolute left-3 top-3 flex items-center gap-2">
+                        <div className="absolute left-4 top-4 flex items-center gap-2">
                           <Badge color={typeColors[item.type] || 'earth'}>{item.type}</Badge>
-                          {mediaCount > 0 && (
-                            <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-earth-600">
-                              {mediaCount} image{mediaCount > 1 ? 's' : ''}
+                          {item.type === 'gallery' && mediaCount > 0 && (
+                            <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-earth-600 shadow-sm">
+                              {mediaCount} Image{mediaCount > 1 ? 's' : ''}
                             </span>
                           )}
                         </div>
+                        {(item.cardBadge || item.duration) && (
+                          <div className="absolute bottom-4 right-4">
+                            <span className="inline-flex items-center gap-1 rounded-full bg-[#021B3A]/72 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white backdrop-blur">
+                              {item.type === 'podcast' && <FaHeadphones size={10} />}
+                              {item.type === 'document' && (item.fileExtension === 'doc' || item.fileExtension === 'docx') && <FaFileWord size={10} />}
+                              {item.type === 'document' && item.fileExtension !== 'doc' && item.fileExtension !== 'docx' && <FaFilePdf size={10} />}
+                              {item.cardBadge || item.duration}
+                            </span>
+                          </div>
+                        )}
                       </div>
 
-                      <div className="flex h-full flex-col p-5">
-                        <h3 className="mb-2 font-serif font-bold leading-snug text-earth-800">{item.title}</h3>
-                        {item.description && (
-                          <p className="flex-1 text-sm leading-relaxed text-earth-500">
-                            {item.description.length > 140 ? `${item.description.slice(0, 140)}...` : item.description}
-                          </p>
-                        )}
-                        <div className="mt-4 text-sm font-medium text-saffron-600">
+                      <div className="flex flex-1 flex-col p-6">
+                        <div className="mb-3 flex items-center justify-between gap-3">
+                          <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-earth-400">
+                            {item.category || item.type}
+                          </span>
+                          {item.publishDate ? (
+                            <span className="text-xs text-earth-400">
+                              {new Date(item.publishDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                            </span>
+                          ) : null}
+                        </div>
+                        <h3 className="mb-3 min-h-[3.5rem] font-serif text-[1.45rem] font-bold leading-tight text-earth-800 transition-colors duration-300 group-hover:text-[#A36E1E]">
+                          {item.title}
+                        </h3>
+                        <p className="line-clamp-3 flex-1 text-sm leading-7 text-earth-500">
+                          {excerpt || 'Open this media resource to view the full content, insights, or supporting materials.'}
+                        </p>
+                        <div className="mt-5 flex items-center justify-between text-sm">
+                          <span className="font-medium text-earth-400">
+                            {item.type === 'document' ? 'Preview available' : 'Open item'}
+                          </span>
+                          <span className="font-semibold uppercase tracking-[0.18em] text-saffron-600 transition-transform duration-300 group-hover:translate-x-1">
+                          </span>
                           View details →
                         </div>
                       </div>

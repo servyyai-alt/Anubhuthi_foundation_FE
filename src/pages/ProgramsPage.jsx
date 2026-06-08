@@ -184,7 +184,7 @@ export default function ProgramsPage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.1 }}
                     transition={{ duration: 0.7, ease: "easeOut", delay: i * 0.1 }}
-                    className="group relative mx-auto flex h-[300px] w-full max-w-[420px] min-w-0 flex-col overflow-hidden rounded-[16px] border border-earth-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#D4A84F]/30 hover:shadow-[0_12px_30px_rgba(212,168,79,0.08)]"
+                    className="group relative flex h-[300px] mx-auto w-full max-w-[420px] min-w-0 flex-col overflow-hidden rounded-[16px] border border-earth-100 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-[#D4A84F]/30 hover:shadow-[0_12px_30px_rgba(212,168,79,0.08)]"
                   >
                     {/* Card Image Area - Compact (h-32) */}
                     <div className="relative h-32 w-full overflow-hidden">
@@ -205,13 +205,13 @@ export default function ProgramsPage() {
                         className="absolute inset-0 transition-opacity duration-600 ease-in-out bg-gradient-to-t from-black/65 to-transparent opacity-75 group-hover:opacity-90"
                       />
 
-                      {/* Floating badges */}
-                      <div className="absolute left-4 top-4 flex gap-2">
-                        <span className="bg-[#D4A84F]/15 text-[#D4A84F] border border-[#D4A84F]/20 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                      {/* Floating badges (opaque for visibility) */}
+                      <div className="absolute left-3 top-3 flex flex-wrap gap-2 z-10">
+                        <span className="bg-[#D4A84F] text-white px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider shadow-md">
                           {prog.category}
                         </span>
                         {prog.isFeatured && (
-                          <span className="bg-white/20 text-white border border-white/30 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                          <span className="bg-[#07284A] text-white px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider shadow-md">
                             Featured
                           </span>
                         )}

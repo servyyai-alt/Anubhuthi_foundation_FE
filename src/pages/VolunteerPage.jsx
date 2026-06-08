@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes, FaRegCheckCircle } from 'react-icons/fa';
 import { volunteersAPI } from '../services/api';
 import volunteerBg from '../assets/volunteer.png';
 
@@ -366,9 +366,7 @@ export default function VolunteerPage() {
               <h2 className="font-sans font-bold text-2xl md:text-3xl lg:text-4xl text-[#07284A] tracking-wider mb-2 uppercase">
                 INTERNSHIP PROGRAMS
               </h2>
-               <p className="mb-6 text-sm font-medium tracking-wide text-gray-600 sm:text-base md:mb-8 md:text-lg">
-                Available for:
-              </p>
+
 
               {/* Sub cards inside */}
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-6 lg:grid-cols-6">
@@ -451,7 +449,9 @@ export default function VolunteerPage() {
               {submitted ? (
                 /* Success State inside modal */
                   <div className="p-6 text-center sm:p-12">
-                  <div className="text-7xl mb-6">✅</div>
+                  <div className="flex justify-center mb-6">
+                    <FaRegCheckCircle className="text-green-500" size={72} />
+                  </div>
                   <h3 className="font-sans font-bold text-2xl text-gray-800 mb-3">Application Submitted!</h3>
                   <p className="text-gray-500 mb-8 max-w-md mx-auto leading-relaxed">
                     Thank you for your willingness to serve. We will review your application and get in touch with you shortly.

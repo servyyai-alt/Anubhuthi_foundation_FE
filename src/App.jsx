@@ -10,6 +10,7 @@ import { ScrollToTop } from './components/ScrollUtils';
 // Layout
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
+import FloatingWhatsApp from './components/layout/FloatingWhatsApp';
 
 // Public Pages
 import HomePage from './pages/HomePage';
@@ -44,6 +45,7 @@ function PublicLayout({ children }) {
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
+      <FloatingWhatsApp />
     </div>
   );
 }
