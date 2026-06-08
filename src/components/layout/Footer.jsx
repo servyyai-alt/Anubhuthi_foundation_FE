@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaFacebook, FaInstagram, FaYoutube, FaTwitter, FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaYoutube, FaTwitter, FaMapMarkerAlt, FaPhoneAlt , FaEnvelope } from 'react-icons/fa';
 import logo from '../../assets/logo.jpeg';
 import leastActionLogo from '../../assets/least action logo.png';
 
@@ -101,7 +101,7 @@ export default function Footer() {
                 </a>
               </li>
               <li className="flex gap-3">
-                <FaPhone className="text-[#e7ad43] mt-0.5 flex-shrink-0" />
+                <FaPhoneAlt  className="text-[#e7ad43] mt-0.5 flex-shrink-0" />
                 <a href="tel:+916381586747" className="text-[#9fb3c8] hover:text-[#e7ad43] text-sm transition-colors">
                   +91 63815 86747
                 </a>
