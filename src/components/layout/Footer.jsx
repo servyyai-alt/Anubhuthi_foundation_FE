@@ -100,11 +100,11 @@ export default function Footer() {
                   Anubhuthi Foundation, Door No : 3/37B, Vadamalaipatti, Musiri Taluk, Thathiengarpet post, Tiruchirappalli District-621214, Tamilnadu. INDIA.
                 </a>
               </li>
-              <li className="flex justify-between items-start gap-3">
+              <li className="flex gap-3">
+                <FaPhone className="text-[#e7ad43] mt-0.5 flex-shrink-0" />
                 <a href="tel:+916381586747" className="text-[#9fb3c8] hover:text-[#e7ad43] text-sm transition-colors">
                   +91 63815 86747
                 </a>
-                <FaPhone className="text-[#e7ad43] mt-0.5 flex-shrink-0" />
               </li>
               <li className="flex gap-3">
                 <FaEnvelope className="text-[#e7ad43] mt-0.5 flex-shrink-0" />
