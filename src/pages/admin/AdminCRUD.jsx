@@ -335,11 +335,19 @@ export default function AdminCRUD({
                             )
                           ) : (
                             (form[field.previewKey] || form[field.urlKey]) && (
-                              <img
-                                src={form[field.previewKey] || form[field.urlKey]}
-                                alt={field.label}
-                                className="h-32 w-full rounded-2xl border border-gray-100 object-cover"
-                              />
+                              (form[field.previewKey] || form[field.urlKey]).match(/\.(mp4|webm|ogg)$/i) || form[field.previewKey]?.startsWith('data:video/') ? (
+                                <video
+                                  src={form[field.previewKey] || form[field.urlKey]}
+                                  controls
+                                  className="h-32 w-full rounded-2xl border border-gray-100 object-cover"
+                                />
+                              ) : (
+                                <img
+                                  src={form[field.previewKey] || form[field.urlKey]}
+                                  alt={field.label}
+                                  className="h-32 w-full rounded-2xl border border-gray-100 object-cover"
+                                />
+                              )
                             )
                           )}
                           {field.galleryKey && Array.isArray(form[field.galleryKey]) && form[field.galleryKey].length > 0 && (

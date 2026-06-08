@@ -199,11 +199,18 @@ export function AdminEvents() {
       deleteFn={eventsAPI.delete}
       searchKey="title"
       transformFormChange={syncEventPricing}
-      preparePayload={(form) => ({
-        ...form,
-        price: form.isFree ? 0 : Number(form.price) || 0,
-        isFree: form.isFree || !(Number(form.price) > 0),
-      })}
+      preparePayload={async (form) => {
+        const payload = { ...form };
+        if (payload.imageFile instanceof File) {
+          const uploadRes = await mediaAPI.uploadImage(payload.imageFile);
+          payload.image = uploadRes.data?.data?.url || '';
+        }
+        payload.price = payload.isFree ? 0 : Number(payload.price) || 0;
+        payload.isFree = payload.isFree || !(Number(payload.price) > 0);
+        delete payload.imageFile;
+        delete payload.imageFilePreview;
+        return payload;
+      }}
       columns={[
         { key: 'title', label: 'Title' },
         {
@@ -242,6 +249,8 @@ export function AdminEvents() {
         isFree: true,
         price: 0,
         isActive: true,
+        imageFile: null,
+        imageFilePreview: '',
       }}
       formFields={[
         { name: 'title', label: 'Title', required: true },
@@ -268,6 +277,14 @@ export function AdminEvents() {
         },
         { name: 'location', label: 'Location' },
         { name: 'image', label: 'Image URL', fullWidth: true },
+        {
+          name: 'imageFile',
+          label: 'Or Upload Image File',
+          type: 'file',
+          fullWidth: true,
+          urlKey: 'image',
+          previewKey: 'imageFilePreview',
+        },
         { name: 'price', label: 'Price (₹)', type: 'number' },
         { name: 'maxParticipants', label: 'Max Participants', type: 'number' },
         {
@@ -319,6 +336,16 @@ export function AdminRetreats() {
       updateFn={retreatsAPI.update}
       deleteFn={retreatsAPI.delete}
       searchKey="title"
+      preparePayload={async (form) => {
+        const payload = { ...form };
+        if (payload.imageFile instanceof File) {
+          const uploadRes = await mediaAPI.uploadImage(payload.imageFile);
+          payload.image = uploadRes.data?.data?.url || '';
+        }
+        delete payload.imageFile;
+        delete payload.imageFilePreview;
+        return payload;
+      }}
       columns={[
         { key: 'title', label: 'Title' },
         { key: 'location', label: 'Location' },
@@ -353,6 +380,8 @@ export function AdminRetreats() {
         difficulty: 'moderate',
         maxParticipants: 20,
         isActive: true,
+        imageFile: null,
+        imageFilePreview: '',
       }}
       formFields={[
         { name: 'title', label: 'Title', required: true },
@@ -376,6 +405,14 @@ export function AdminRetreats() {
           placeholder: 'e.g. 7 Days',
         },
         { name: 'image', label: 'Image URL', fullWidth: true },
+        {
+          name: 'imageFile',
+          label: 'Or Upload Image File',
+          type: 'file',
+          fullWidth: true,
+          urlKey: 'image',
+          previewKey: 'imageFilePreview',
+        },
         { name: 'price', label: 'Price (₹)', type: 'number' },
         { name: 'maxParticipants', label: 'Max Participants', type: 'number' },
         {
@@ -1132,10 +1169,17 @@ export function AdminMedia() {
       }
     }
 
+    if (payload.videoFile instanceof File) {
+      const uploadRes = await mediaAPI.uploadImage(payload.videoFile);
+      payload.url = uploadRes.data?.data?.url || '';
+    }
+
     delete payload.imageFile;
-      delete payload.imageFilePreview;
-      delete payload.imageFiles;
-      delete payload.imageFilesPreview;
+    delete payload.imageFilePreview;
+    delete payload.imageFiles;
+    delete payload.imageFilesPreview;
+    delete payload.videoFile;
+    delete payload.videoFilePreview;
 
     return payload;
   };
@@ -1157,12 +1201,21 @@ export function AdminMedia() {
         { key: 'isFeatured', label: 'Featured', render: (v) => (v ? 'Yes' : 'No') },
         { key: 'isActive', label: 'Status', render: (v) => <Badge color={v ? 'green' : 'red'}>{v ? 'Active' : 'Hidden'}</Badge> },
       ]}
-      defaultValues={{ title: '', type: 'video', description: '', thumbnail: '', gallery: [], imageFile: null, imageFilePreview: '', imageFiles: [], imageFilesPreview: [], category: '', isFeatured: false, isActive: true }}
+      defaultValues={{ title: '', type: 'video', description: '', thumbnail: '', gallery: [], imageFile: null, imageFilePreview: '', imageFiles: [], imageFilesPreview: [], category: '', isFeatured: false, isActive: true, videoFile: null, videoFilePreview: '' }}
       formFields={[
         { name: 'title', label: 'Title', required: true },
         { name: 'type', label: 'Type', type: 'select', options: ['video', 'article', 'podcast', 'gallery', 'document'] },
         { name: 'category', label: 'Category' },
         { name: 'url', label: 'Resource / Video URL', fullWidth: true },
+        {
+          name: 'videoFile',
+          label: 'Or Upload Video/Resource File',
+          type: 'file',
+          fullWidth: true,
+          accept: 'video/*,audio/*,.pdf',
+          urlKey: 'url',
+          previewKey: 'videoFilePreview',
+        },
         { name: 'embedCode', label: 'Embed Code', type: 'textarea', fullWidth: true },
         { name: 'imageFile', label: 'Image Upload', type: 'file', fullWidth: true, urlKey: 'thumbnail', previewKey: 'imageFilePreview' },
         { name: 'imageFiles', label: 'Gallery Images', type: 'file', fullWidth: true, multiple: true, previewKey: 'imageFilesPreview', galleryKey: 'gallery' },
