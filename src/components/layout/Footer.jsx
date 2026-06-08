@@ -140,8 +140,8 @@ export default function Footer() {
             </Link>
             <span className="hidden sm:inline text-[#021B3A]">|</span>
             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 text-center sm:text-left">
-              <img src={leastActionLogo} alt="Least Action Logo" className="h-8 md:h-10 w-auto object-contain" />
-              <span className="text-[#829ab1] text-sm md:text-base">Powered by Least Action Company Pvt Ltd</span>
+              <img src={leastActionLogo} alt="Least Action Logo" className="h-6 md:h-7 w-auto object-contain" />
+              <span className="text-[#829ab1] text-xs md:text-sm">Powered by Least Action Company Pvt Ltd</span>
             </div>
           </div>
         </div>

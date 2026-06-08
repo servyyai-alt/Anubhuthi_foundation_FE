@@ -159,8 +159,7 @@ export default function ProgramsPage() {
           {/* Program Grid rendering with category change transitions */}
           {loading ? (
             <div 
-              className="grid gap-6 w-full"
-              style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))' }}
+              className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3"
             >
               {[1, 2, 3].map((n) => (
                 <SkeletonCard key={n} />
@@ -176,8 +175,7 @@ export default function ProgramsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.3 }}
-                className="grid gap-6 w-full"
-                style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))' }}
+                className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3"
               >
                 {filtered.map((prog, i) => (
                   <motion.div
@@ -186,7 +184,7 @@ export default function ProgramsPage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.1 }}
                     transition={{ duration: 0.7, ease: "easeOut", delay: i * 0.1 }}
-                    className="group relative flex h-[300px] min-w-0 flex-col overflow-hidden rounded-[16px] border border-earth-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#D4A84F]/30 hover:shadow-[0_12px_30px_rgba(212,168,79,0.08)]"
+                    className="group relative mx-auto flex h-[300px] w-full max-w-[420px] min-w-0 flex-col overflow-hidden rounded-[16px] border border-earth-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#D4A84F]/30 hover:shadow-[0_12px_30px_rgba(212,168,79,0.08)]"
                   >
                     {/* Card Image Area - Compact (h-32) */}
                     <div className="relative h-32 w-full overflow-hidden">

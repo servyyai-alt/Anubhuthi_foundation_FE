@@ -1070,80 +1070,25 @@ export function MediaPublicationsSection({ mediaItems = [] }) {
 
 // --- Why Join Us ---
 const reasons = [
-  { 
-    title: 'Authentic Lineage', 
-    desc: 'Our teachings come from an unbroken chain of master-student transmission rooted in the Himalayan tradition.', 
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" className="w-12 h-12 mx-auto mb-4" stroke="currentColor" strokeWidth="1.5">
-        <path d="M2 20L8.5 7L13 15L17 8L22 20H2Z" stroke="url(#lineageGoldGradient)" strokeLinecap="round" strokeLinejoin="round" />
-        <circle cx="12" cy="4" r="2" fill="#F5D07A" />
-        <path d="M12 7V9" stroke="#F5D07A" strokeLinecap="round" />
-        <defs>
-          <linearGradient id="lineageGoldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#F5D07A" />
-            <stop offset="100%" stopColor="#D4A84F" />
-          </linearGradient>
-        </defs>
-      </svg>
-    ) 
+  {
+    title: 'Authentic Lineage',
+    desc: 'Our teachings come from an unbroken chain of master-student transmission rooted in the Himalayan tradition.',
+    tone: 'from-[#6a432d] via-[#7e5236] to-[#8d5d3b]',
   },
-  { 
-    title: 'Transformative Community', 
-    desc: 'Join a global sangha of dedicated seekers supporting each other on the path.', 
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" className="w-12 h-12 mx-auto mb-4" stroke="currentColor" strokeWidth="1.5">
-        <circle cx="12" cy="7" r="2.5" stroke="url(#communityGoldGradient)" />
-        <path d="M5.5 19.5C5.5 15.5 8.5 13 12 13C15.5 13 18.5 15.5 18.5 19.5" stroke="url(#communityGoldGradient)" strokeLinecap="round" />
-        <circle cx="6" cy="11" r="2" stroke="url(#communityGoldGradient)" />
-        <path d="M2 21C2 18.5 4 16.5 6.5 16.5C7.5 16.5 8.5 17 9 17.5" stroke="url(#communityGoldGradient)" strokeLinecap="round" />
-        <circle cx="18" cy="11" r="2" stroke="url(#communityGoldGradient)" />
-        <path d="M22 21C22 18.5 20 16.5 17.5 16.5C16.5 16.5 15.5 17 15 17.5" stroke="url(#communityGoldGradient)" strokeLinecap="round" />
-        <defs>
-          <linearGradient id="communityGoldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#F5D07A" />
-            <stop offset="100%" stopColor="#D4A84F" />
-          </linearGradient>
-        </defs>
-      </svg>
-    ) 
+  {
+    title: 'Transformative Community',
+    desc: 'Join a global sangha of dedicated seekers supporting each other on the path.',
+    tone: 'from-[#4c3428] via-[#674434] to-[#7f553e]',
   },
-  { 
-    title: 'Holistic Approach', 
-    desc: 'We integrate physical practices, mental training, emotional healing, and spiritual awakening.', 
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" className="w-12 h-12 mx-auto mb-4" stroke="currentColor" strokeWidth="1.5">
-        <circle cx="12" cy="12" r="9" stroke="url(#holisticGoldGradient)" />
-        <path d="M12 3C12 3 16.5 7.5 12 12C7.5 16.5 12 21 12 21" stroke="url(#holisticGoldGradient)" />
-        <circle cx="12" cy="7.5" r="1.5" fill="#F5D07A" />
-        <circle cx="12" cy="16.5" r="1.5" fill="#D4A84F" />
-        <defs>
-          <linearGradient id="holisticGoldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#F5D07A" />
-            <stop offset="100%" stopColor="#D4A84F" />
-          </linearGradient>
-        </defs>
-      </svg>
-    ) 
+  {
+    title: 'Holistic Approach',
+    desc: 'We integrate physical practices, mental training, emotional healing, and spiritual awakening.',
+    tone: 'from-[#5a2f24] via-[#744131] to-[#8f5841]',
   },
-  { 
-    title: 'Sacred Locations', 
-    desc: 'Our retreats and programs happen in the most powerful spiritual vortexes in India and beyond.', 
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" className="w-12 h-12 mx-auto mb-4" stroke="currentColor" strokeWidth="1.5">
-        <path d="M4 20H20" stroke="url(#locationGoldGradient)" strokeLinecap="round" />
-        <path d="M6 20V13H18V20" stroke="url(#locationGoldGradient)" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M9 13V20" stroke="url(#locationGoldGradient)" />
-        <path d="M15 13V20" stroke="url(#locationGoldGradient)" />
-        <path d="M12 4C9 8 6 9 6 13H18C18 9 15 8 12 4Z" stroke="url(#locationGoldGradient)" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M12 2V4" stroke="#F5D07A" strokeLinecap="round" />
-        <defs>
-          <linearGradient id="locationGoldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#F5D07A" />
-            <stop offset="100%" stopColor="#D4A84F" />
-          </linearGradient>
-        </defs>
-      </svg>
-    ) 
+  {
+    title: 'Sacred Locations',
+    desc: 'Our retreats and programs happen in the most powerful spiritual vortexes in India and beyond.',
+    tone: 'from-[#493126] via-[#644233] to-[#7d5440]',
   },
 ];
 
@@ -1181,11 +1126,11 @@ export function WhyJoinUsSection() {
             <motion.div
               key={r.title}
               variants={prefersReducedMotion || isMobile ? {} : animationVariants.staggerItem}
-              className="text-center p-6 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-colors"
+              className={`rounded-[28px] border border-white/10 bg-gradient-to-br ${r.tone} p-8 text-center shadow-[0_18px_40px_rgba(0,0,0,0.14)] transition-all duration-300 hover:-translate-y-2 hover:border-[#f5d07a]/35 hover:shadow-[0_28px_50px_rgba(0,0,0,0.22)]`}
             >
-              {r.icon}
-              <h3 className="font-serif text-lg font-bold text-white mb-2">{r.title}</h3>
-              <p className="text-earth-300 text-sm leading-relaxed">{r.desc}</p>
+              <div className="mx-auto mb-6 h-px w-16 bg-gradient-to-r from-transparent via-[#f5d07a] to-transparent opacity-80" />
+              <h3 className="mb-4 font-serif text-2xl font-bold text-white">{r.title}</h3>
+              <p className="text-[15px] leading-8 text-[#f4e8da]">{r.desc}</p>
             </motion.div>
           ))}
         </motion.div>

@@ -10,12 +10,6 @@ import {
   FaChevronRight,
   FaTimes,
   FaSpinner,
-  FaCompass,
-  FaMountain,
-  FaHandsHelping,
-  FaGraduationCap,
-  FaLandmark,
-  FaHeart,
   FaArrowRight
 } from 'react-icons/fa';
 
@@ -26,6 +20,49 @@ import { animationVariants, transitionConfig, useReducedMotion, useIsMobile } fr
 import contactHeroGuide from '../assets/contact_hero_guide.png';
 import contactFounderPortrait from '../assets/contact_founder_portrait.png';
 import contactCtaBg from '../assets/contact_cta_bg.png';
+
+const AwarenessIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" stroke="currentColor" strokeWidth="1.8">
+    <circle cx="12" cy="12" r="8" />
+    <path d="M12 8.5a3.5 3.5 0 1 0 3.5 3.5" strokeLinecap="round" />
+    <path d="M12 4v2M20 12h-2M12 20v-2M4 12h2" strokeLinecap="round" />
+  </svg>
+);
+
+const RetreatIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" stroke="currentColor" strokeWidth="1.8">
+    <path d="M3 18h18" strokeLinecap="round" />
+    <path d="m5 18 5-8 3 4 2-3 4 7" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M16.5 6.5 18 5l1.5 1.5L18 8l-1.5-1.5Z" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const VolunteerIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" stroke="currentColor" strokeWidth="1.8">
+    <path d="M7.5 13.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM16.5 13.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+    <path d="M3.5 19c.6-2.3 2.4-3.5 4-3.5 1.7 0 3.4 1.2 4 3.5M12.5 19c.6-2.3 2.3-3.5 4-3.5 1.6 0 3.4 1.2 4 3.5" strokeLinecap="round" />
+  </svg>
+);
+
+const AcademyIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" stroke="currentColor" strokeWidth="1.8">
+    <path d="m4 9 8-4 8 4-8 4-8-4Z" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M7 10.5V15c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5v-4.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const TempleIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" stroke="currentColor" strokeWidth="1.8">
+    <path d="M5 20h14M7 20v-7h10v7M6 13h12M8.5 9h7" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="m12 4 4 3H8l4-3Z" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const SupportIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" stroke="currentColor" strokeWidth="1.8">
+    <path d="M12 19s-6-3.8-6-8.3A3.7 3.7 0 0 1 9.8 7c1 0 1.8.4 2.2 1.1.4-.7 1.2-1.1 2.2-1.1A3.7 3.7 0 0 1 18 10.7C18 15.2 12 19 12 19Z" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
 
 export default function ContactPage() {
   const prefersReducedMotion = useReducedMotion();
@@ -282,37 +319,37 @@ export default function ContactPage() {
   // How can we help cards details
   const helpCards = [
     {
-      icon: FaCompass,
+      icon: AwarenessIcon,
       title: 'Join Awareness Programs',
       type: 'programs',
       desc: 'Participate in conscious awareness drives and community circles.'
     },
     {
-      icon: FaMountain,
+      icon: RetreatIcon,
       title: 'Retreat Participation',
       type: 'retreats',
       desc: 'Embark on a life-changing inner journey in the silence of the Himalayas.'
     },
     {
-      icon: FaHandsHelping,
+      icon: VolunteerIcon,
       title: 'Volunteer Opportunities',
       type: 'volunteer',
       desc: 'Offer your skills and support to nurture human evolution.'
     },
     {
-      icon: FaGraduationCap,
+      icon: AcademyIcon,
       title: 'DNI Academy Training',
       type: 'programs',
       desc: 'Engage in profound spiritual and scientific training modules.'
     },
     {
-      icon: FaLandmark,
+      icon: TempleIcon,
       title: 'Temple Restoration Mission',
       type: 'general',
       desc: 'Participate in reviving ancient energy centers and sacred geometry.'
     },
     {
-      icon: FaHeart,
+      icon: SupportIcon,
       title: 'Donation & Support',
       type: 'general',
       desc: 'Support our non-profit initiatives with your financial support.'
@@ -606,24 +643,24 @@ export default function ContactPage() {
                   variants={prefersReducedMotion ? {} : animationVariants.staggerItem}
                   transition={transitionConfig}
                   onClick={() => handleOpenModal(card.type, `${card.title} Inquiry`)}
-                  className="group relative bg-white border border-orange-100/30 p-8 rounded-2xl shadow-warm hover:-translate-y-2 hover:shadow-warm-lg hover:border-orange-300 transition-all duration-300 cursor-pointer flex flex-col justify-between"
-                >
-                  {/* Subtle hover border glow */}
-                  <div className="absolute inset-0 rounded-2xl border border-transparent group-hover:border-orange-500/20 transition-all duration-300" />
+                className="group relative overflow-hidden rounded-[28px] border border-[#eed9bc] bg-[linear-gradient(180deg,#fffdfa_0%,#fff6e8_100%)] p-8 shadow-[0_18px_40px_rgba(153,98,36,0.10)] transition-all duration-300 cursor-pointer flex flex-col justify-between hover:-translate-y-2 hover:border-[#d89d49]/45 hover:shadow-[0_24px_50px_rgba(153,98,36,0.16)]"
+              >
+                  <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#f4d58d] via-[#ef9d38] to-[#f6e1b1] opacity-70 transition-opacity duration-300 group-hover:opacity-100" />
+                  <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#f6c26b]/15 blur-2xl transition-transform duration-500 group-hover:scale-125" />
                   
                   <div>
-                    <div className="w-12 h-12 bg-orange-50 group-hover:bg-orange-500 group-hover:scale-110 rounded-xl flex items-center justify-center mb-6 transition-all duration-300">
-                      <HelpIcon className="text-orange-500 group-hover:text-white transition-colors duration-300" size={18} />
+                    <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#efc88c] bg-white/80 text-[#d27d1e] shadow-[0_12px_24px_rgba(210,125,30,0.12)] transition-all duration-300 group-hover:scale-110 group-hover:bg-[#d9801d] group-hover:text-white">
+                      <HelpIcon />
                     </div>
-                    <h3 className="font-serif text-lg font-bold text-earth-800 mb-3 group-hover:text-orange-500 transition-colors duration-300">
+                    <h3 className="font-serif text-[1.85rem] leading-tight font-bold text-earth-800 mb-3 transition-colors duration-300 group-hover:text-[#b76c17]">
                       {card.title}
                     </h3>
-                    <p className="text-earth-500 text-sm font-light leading-relaxed">
+                    <p className="text-earth-600 text-base font-light leading-8">
                       {card.desc}
                     </p>
                   </div>
                   
-                  <div className="flex items-center text-orange-500 text-xs font-semibold uppercase mt-8 tracking-widest gap-2 opacity-80 group-hover:opacity-100 group-hover:translate-x-2 transition-all duration-300">
+                  <div className="mt-8 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.28em] text-[#d9801d] transition-all duration-300 group-hover:translate-x-2 group-hover:text-[#aa6214]">
                     Reach Out
                     <FaChevronRight size={10} className="transform group-hover:translate-x-0.5 transition-transform duration-300" />
                   </div>
