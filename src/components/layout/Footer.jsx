@@ -133,16 +133,16 @@ export default function Footer() {
 
       <div className="border-t border-[#021B3A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col lg:flex-row items-center justify-between gap-3">
-          <p className="text-[#829ab1] text-sm">© 2024 Anubhuthi Foundation. All rights reserved.</p>
+          <p className="text-[#829ab1] text-sm">© {new Date().getFullYear()} Anubhuthi Foundation. All rights reserved.</p>
           <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
             <Link to="/admin/login" className="text-[#829ab1] hover:text-[#e7ad43] text-sm md:text-base transition-colors">
               Admin Login
             </Link>
             <span className="hidden sm:inline text-[#021B3A]">|</span>
-            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 text-center sm:text-left">
+            <a href="https://www.leastactioncompany.com/" target="_blank" rel="noopener noreferrer" className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 text-center sm:text-left hover:opacity-80 transition-opacity">
               <img src={leastActionLogo} alt="Least Action Logo" className="h-6 md:h-7 w-auto object-contain" />
               <span className="text-[#829ab1] text-xs md:text-sm">Powered by Least Action Company Pvt Ltd</span>
-            </div>
+            </a>
           </div>
         </div>
       </div>
