@@ -23,7 +23,7 @@ export default function TestimonialsPage() {
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ name: '', designation: '', location: '', content: '', rating: 5, program: '' });
+  const [form, setForm] = useState({ name: '', designation: '', location: '', content: '', rating: 0, program: '' });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
@@ -78,7 +78,7 @@ export default function TestimonialsPage() {
       await testimonialsAPI.create(form);
       toast.success('Thank you! Your testimonial is under review.');
       setShowForm(false);
-      setForm({ name: '', designation: '', location: '', content: '', rating: 5, program: '' });
+      setForm({ name: '', designation: '', location: '', content: '', rating: 0, program: '' });
       setErrors({});
     } catch {
       toast.error('Submission failed. Please try again.');

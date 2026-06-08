@@ -146,6 +146,13 @@ export const mediaAPI = {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
   },
+  uploadDocument: (file) => {
+    const formData = new FormData();
+    formData.append('document', file);
+    return api.post('/media/upload-document', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  },
 };
 
 // Analytics

@@ -143,6 +143,7 @@ export function AdminPrograms() {
           label: 'Full Description',
           type: 'textarea',
           fullWidth: true,
+          required: true,
         },
         { name: 'instructorName', label: 'Instructor Name' },
         { name: 'location', label: 'Location' },
@@ -294,6 +295,13 @@ export function AdminEvents() {
           fullWidth: true,
         },
         {
+          name: 'description',
+          label: 'Full Description',
+          type: 'textarea',
+          fullWidth: true,
+          required: true,
+        },
+        {
           name: 'isFree',
           label: 'Free',
           type: 'checkbox',
@@ -432,6 +440,7 @@ export function AdminRetreats() {
           label: 'Full Description',
           type: 'textarea',
           fullWidth: true,
+          required: true,
         },
         {
           name: 'isFeatured',
@@ -539,7 +548,7 @@ export function AdminCareers() {
                 { name: 'location', label: 'Location' },
                 { name: 'salary', label: 'Salary / Stipend' },
                 { name: 'applicationDeadline', label: 'Application Deadline', type: 'date' },
-                { name: 'description', label: 'Job Description', type: 'textarea', fullWidth: true },
+                { name: 'description', label: 'Job Description', type: 'textarea', fullWidth: true, required: true },
                 { name: 'responsibilities', label: 'Responsibilities', type: 'textarea', fullWidth: true, isArray: true, placeholder: 'Develop features, write tests' },
                 { name: 'requirements', label: 'Requirements', type: 'textarea', fullWidth: true, isArray: true, placeholder: '3+ years experience, React knowledge' },
                 { name: 'benefits', label: 'Benefits', type: 'textarea', fullWidth: true, isArray: true, placeholder: 'Health insurance, Paid time off' },
@@ -621,12 +630,12 @@ function AdminApplications() {
                       <td className="px-4 py-3 text-gray-800 font-medium">{app.career?.title || 'General Application'}</td>
                       <td className="px-4 py-3">
                         {app.resumeUrl ? (
-                          <a href={app.resumeUrl} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="text-saffron-600 hover:underline font-semibold">View Resume</a>
+                          <a href={app.resumeUrl.replace(/\.[a-zA-Z0-9]+$/, '.pdf')} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="text-saffron-600 hover:underline font-semibold">View Resume</a>
                         ) : '—'}
                       </td>
                       <td className="px-4 py-3">
                         {app.coverLetter ? (
-                          <a href={app.coverLetter} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="text-saffron-600 hover:underline font-semibold">View Cover Letter</a>
+                          <a href={app.coverLetter.replace(/\.[a-zA-Z0-9]+$/, '.pdf')} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="text-saffron-600 hover:underline font-semibold">View Cover Letter</a>
                         ) : '—'}
                       </td>
                       <td className="px-4 py-3 text-gray-400">{app.createdAt ? format(new Date(app.createdAt), 'dd MMM yy') : '—'}</td>
@@ -752,16 +761,16 @@ export function AdminVolunteers() {
         notes: '',
       }}
       formFields={[
-        { name: 'name', label: 'Name', disabled: true },
-        { name: 'email', label: 'Email', type: 'email', disabled: true },
-        { name: 'phone', label: 'Phone', disabled: true },
-        { name: 'dob', label: 'Date of Birth', type: 'date', disabled: true },
-        { name: 'gender', label: 'Gender', disabled: true },
-        { name: 'city', label: 'City', disabled: true },
-        { name: 'country', label: 'Country', disabled: true },
-        { name: 'education', label: 'Education', disabled: true },
-        { name: 'occupation', label: 'Occupation', disabled: true },
-        { name: 'type', label: 'Type', type: 'select', options: ['volunteer', 'intern'], disabled: true },
+        { name: 'name', label: 'Name' },
+        { name: 'email', label: 'Email', type: 'email' },
+        { name: 'phone', label: 'Phone' },
+        { name: 'dob', label: 'Date of Birth', type: 'date' },
+        { name: 'gender', label: 'Gender' },
+        { name: 'city', label: 'City' },
+        { name: 'country', label: 'Country' },
+        { name: 'education', label: 'Education' },
+        { name: 'occupation', label: 'Occupation' },
+        { name: 'type', label: 'Type', type: 'select', options: ['volunteer', 'intern'] },
         {
           name: 'availability',
           label: 'Availability',
@@ -773,7 +782,6 @@ export function AdminVolunteers() {
             { value: 'remote', label: 'Remote / Online only' },
             { value: 'flexible', label: 'Flexible' },
           ],
-          disabled: true,
         },
         {
           name: 'skills',
@@ -781,7 +789,6 @@ export function AdminVolunteers() {
           type: 'textarea',
           fullWidth: true,
           isArray: true,
-          disabled: true,
         },
         {
           name: 'areas',
@@ -789,10 +796,9 @@ export function AdminVolunteers() {
           type: 'textarea',
           fullWidth: true,
           isArray: true,
-          disabled: true,
         },
-        { name: 'experience', label: 'Experience', type: 'textarea', fullWidth: true, disabled: true },
-        { name: 'motivation', label: 'Motivation', type: 'textarea', fullWidth: true, disabled: true },
+        { name: 'experience', label: 'Experience', type: 'textarea', fullWidth: true },
+        { name: 'motivation', label: 'Motivation', type: 'textarea', fullWidth: true },
         { name: 'notes', label: 'Internal Notes', type: 'textarea', fullWidth: true },
       ]}
     />
@@ -1151,6 +1157,22 @@ export function AdminContacts() {
 ========================= */
 
 export function AdminMedia() {
+  const getMediaResourceAccept = (form) => {
+    switch (form.type) {
+      case 'video':
+        return 'video/*';
+      case 'podcast':
+        return 'audio/*';
+      case 'document':
+        return '.pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+      case 'gallery':
+        return 'image/*';
+      case 'article':
+      default:
+        return 'image/*,video/*,audio/*,.pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    }
+  };
+
   const prepareMediaPayload = async (form) => {
     const payload = { ...form };
 
@@ -1172,6 +1194,15 @@ export function AdminMedia() {
     if (payload.videoFile instanceof File) {
       const uploadRes = await mediaAPI.uploadImage(payload.videoFile);
       payload.url = uploadRes.data?.data?.url || '';
+      payload.fileName = payload.videoFile.name || '';
+      payload.mimeType = payload.videoFile.type || '';
+    }
+
+    if (payload.documentFile instanceof File) {
+      const uploadRes = await mediaAPI.uploadDocument(payload.documentFile);
+      payload.url = uploadRes.data?.data?.url || '';
+      payload.fileName = uploadRes.data?.data?.fileName || payload.documentFile.name || '';
+      payload.mimeType = uploadRes.data?.data?.mimeType || payload.documentFile.type || '';
     }
 
     delete payload.imageFile;
@@ -1180,6 +1211,8 @@ export function AdminMedia() {
     delete payload.imageFilesPreview;
     delete payload.videoFile;
     delete payload.videoFilePreview;
+    delete payload.documentFile;
+    delete payload.documentFilePreview;
 
     return payload;
   };
@@ -1209,17 +1242,26 @@ export function AdminMedia() {
         { name: 'url', label: 'Resource / Video URL', fullWidth: true },
         {
           name: 'videoFile',
-          label: 'Or Upload Video/Resource File',
+          label: 'Or Upload Video/Resource File (Cloudinary)',
           type: 'file',
           fullWidth: true,
-          accept: 'video/*,audio/*,.pdf',
+          accept: getMediaResourceAccept,
           urlKey: 'url',
           previewKey: 'videoFilePreview',
+        },
+        {
+          name: 'documentFile',
+          label: 'Or Upload Document/PDF (Local Server / Dropbox)',
+          type: 'file',
+          fullWidth: true,
+          accept: '.pdf,.doc,.docx',
+          urlKey: 'url',
+          previewKey: 'documentFilePreview',
         },
         { name: 'embedCode', label: 'Embed Code', type: 'textarea', fullWidth: true },
         { name: 'imageFile', label: 'Image Upload', type: 'file', fullWidth: true, urlKey: 'thumbnail', previewKey: 'imageFilePreview' },
         { name: 'imageFiles', label: 'Gallery Images', type: 'file', fullWidth: true, multiple: true, previewKey: 'imageFilesPreview', galleryKey: 'gallery' },
-        { name: 'description', label: 'Description', type: 'textarea', fullWidth: true },
+        { name: 'description', label: 'Description', type: 'textarea', fullWidth: true, required: true },
         { name: 'isFeatured', label: 'Featured', type: 'checkbox', checkLabel: 'Show as featured' },
         { name: 'isActive', label: 'Active', type: 'checkbox', checkLabel: 'Published & visible' },
       ]}

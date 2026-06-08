@@ -4,6 +4,32 @@ import toast from 'react-hot-toast';
 import { FaEdit, FaPlus, FaSearch, FaTimes, FaTrash } from 'react-icons/fa';
 import { Button, Spinner } from '../../components/common';
 
+const VIDEO_EXTENSIONS = /\.(mp4|webm|ogg|mov|m4v|avi|mkv)$/i;
+const AUDIO_EXTENSIONS = /\.(mp3|wav|ogg|m4a|aac|flac)$/i;
+const PDF_EXTENSIONS = /\.pdf(?:$|\?)/i;
+const IMAGE_EXTENSIONS = /\.(png|jpe?g|gif|webp|bmp|svg|avif)(?:$|\?)/i;
+
+function getPreviewMeta(src, file) {
+  if (file?.type?.startsWith('video/')) return { kind: 'video', src };
+  if (file?.type?.startsWith('audio/')) return { kind: 'audio', src };
+  if (file?.type === 'application/pdf') return { kind: 'pdf', src };
+  if (file?.type?.startsWith('image/')) return { kind: 'image', src };
+
+  if (!src) return { kind: null, src: '' };
+
+  if (typeof src === 'string') {
+    if (src.startsWith('data:video/') || VIDEO_EXTENSIONS.test(src)) return { kind: 'video', src };
+    if (src.startsWith('data:audio/') || AUDIO_EXTENSIONS.test(src)) return { kind: 'audio', src };
+    if (src.startsWith('data:application/pdf') || PDF_EXTENSIONS.test(src)) return { kind: 'pdf', src };
+    if (src.startsWith('data:image/') || IMAGE_EXTENSIONS.test(src)) {
+      return { kind: 'image', src };
+    }
+    return { kind: 'file', src };
+  }
+
+  return { kind: 'file', src: '' };
+}
+
 // Generic admin table with create/edit/delete
 export default function AdminCRUD({
   title,
@@ -268,7 +294,9 @@ export default function AdminCRUD({
                         const helperText = typeof field.helperText === 'function' ? field.helperText(form, modal) : field.helperText;
                         return (
                           <>
-                      <label className="mb-1 block text-sm font-medium text-gray-700">{field.label}</label>
+                      <label className="mb-1 block text-sm font-medium text-gray-700">
+                        {field.label} {field.required && <span className="text-red-500 font-bold">*</span>}
+                      </label>
                       {field.type === 'textarea' ? (
                         <textarea
                           name={field.name}
@@ -310,16 +338,29 @@ export default function AdminCRUD({
                         </label>
                       ) : field.type === 'file' ? (
                         <div className="space-y-3">
-                          <input
-                            type="file"
-                            name={field.name}
-                            accept={field.accept || 'image/*'}
-                            multiple={!!field.multiple}
-                            onChange={handleChange}
-                            disabled={isDisabled}
-                            required={field.required && !form[field.urlKey]}
-                             className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-saffron-400 file:mr-3 file:rounded-lg file:border-0 file:bg-saffron-50 file:px-3 file:py-2 file:text-saffron-700"
-                          />
+                          <div className="flex gap-2 items-center w-full">
+                            <input
+                              key={form[field.name] ? 'has-file' : 'no-file'}
+                              type="file"
+                              name={field.name}
+                              accept={typeof field.accept === 'function' ? field.accept(form) : (field.accept || 'image/*')}
+                              multiple={!!field.multiple}
+                              onChange={handleChange}
+                              disabled={isDisabled}
+                              required={field.required && !form[field.urlKey]}
+                                className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-saffron-400 file:mr-3 file:rounded-lg file:border-0 file:bg-saffron-50 file:px-3 file:py-2 file:text-saffron-700"
+                            />
+                            {form[field.name] && (
+                              <button
+                                type="button"
+                                onClick={() => handleChange({ target: { name: field.name, type: 'file', files: [], multiple: !!field.multiple } })}
+                                className="flex-shrink-0 bg-red-50 text-red-500 hover:bg-red-100 rounded-lg p-2.5 transition-colors"
+                                title="Remove selected file"
+                              >
+                                <FaTimes />
+                              </button>
+                            )}
+                          </div>
                           {Array.isArray(form[field.previewKey]) ? (
                             form[field.previewKey].length > 0 && (
                               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -334,21 +375,71 @@ export default function AdminCRUD({
                               </div>
                             )
                           ) : (
-                            (form[field.previewKey] || form[field.urlKey]) && (
-                              (form[field.previewKey] || form[field.urlKey]).match(/\.(mp4|webm|ogg)$/i) || form[field.previewKey]?.startsWith('data:video/') ? (
-                                <video
-                                  src={form[field.previewKey] || form[field.urlKey]}
-                                  controls
-                                  className="h-32 w-full rounded-2xl border border-gray-100 object-cover"
-                                />
-                              ) : (
-                                <img
-                                  src={form[field.previewKey] || form[field.urlKey]}
-                                  alt={field.label}
-                                  className="h-32 w-full rounded-2xl border border-gray-100 object-cover"
-                                />
-                              )
-                            )
+                            (() => {
+                              const previewSrc = form[field.previewKey] || form[field.urlKey];
+                              if (!previewSrc) return null;
+
+                              const preview = getPreviewMeta(previewSrc, form[field.name]);
+
+                              if (preview.kind === 'video') {
+                                return (
+                                  <video
+                                    src={preview.src}
+                                    controls
+                                    className="h-32 w-full rounded-2xl border border-gray-100 object-cover"
+                                  />
+                                );
+                              }
+
+                              if (preview.kind === 'audio') {
+                                return (
+                                  <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
+                                    <p className="mb-2 text-sm font-medium text-gray-600">{field.label}</p>
+                                    <audio src={preview.src} controls className="w-full" />
+                                  </div>
+                                );
+                              }
+
+                              if (preview.kind === 'pdf') {
+                                return (
+                                  <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
+                                    <p className="text-sm font-medium text-gray-600">PDF selected</p>
+                                    <a
+                                      href={preview.src}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="mt-2 inline-flex text-sm font-semibold text-saffron-700 hover:underline"
+                                    >
+                                      Open PDF
+                                    </a>
+                                  </div>
+                                );
+                              }
+
+                              if (preview.kind === 'image') {
+                                return (
+                                  <img
+                                    src={preview.src}
+                                    alt={field.label}
+                                    className="h-32 w-full rounded-2xl border border-gray-100 object-cover"
+                                  />
+                                );
+                              }
+
+                              return (
+                                <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
+                                  <p className="text-sm font-medium text-gray-600">File selected</p>
+                                  <a
+                                    href={preview.src}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="mt-2 inline-flex text-sm font-semibold text-saffron-700 hover:underline"
+                                  >
+                                    Open file
+                                  </a>
+                                </div>
+                              );
+                            })()
                           )}
                           {field.galleryKey && Array.isArray(form[field.galleryKey]) && form[field.galleryKey].length > 0 && (
                             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">

@@ -100,11 +100,11 @@ export default function Footer() {
                   Anubhuthi Foundation, Door No : 3/37B, Vadamalaipatti, Musiri Taluk, Thathiengarpet post, Tiruchirappalli District-621214, Tamilnadu. INDIA.
                 </a>
               </li>
-              <li className="flex gap-3">
-                <FaPhone className="text-[#e7ad43] mt-0.5 flex-shrink-0" />
+              <li className="flex justify-between items-start gap-3">
                 <a href="tel:+916381586747" className="text-[#9fb3c8] hover:text-[#e7ad43] text-sm transition-colors">
                   +91 63815 86747
                 </a>
+                <FaPhone className="text-[#e7ad43] mt-0.5 flex-shrink-0" />
               </li>
               <li className="flex gap-3">
                 <FaEnvelope className="text-[#e7ad43] mt-0.5 flex-shrink-0" />
@@ -125,6 +125,11 @@ export default function Footer() {
                     </Link>
                   </li>
                 ))}
+                <li>
+                  <Link to="/admin/login" className="text-[#9fb3c8] hover:text-[#e7ad43] text-sm transition-colors mt-2 inline-block">
+                    Admin Login
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
@@ -133,16 +138,12 @@ export default function Footer() {
 
       <div className="border-t border-[#021B3A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col lg:flex-row items-center justify-between gap-3">
-          <p className="text-[#829ab1] text-sm">© 2024 Anubhuthi Foundation. All rights reserved.</p>
-          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
-            <Link to="/admin/login" className="text-[#829ab1] hover:text-[#e7ad43] text-sm md:text-base transition-colors">
-              Admin Login
-            </Link>
-            <span className="hidden sm:inline text-[#021B3A]">|</span>
-            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 text-center sm:text-left">
+          <p className="text-[#829ab1] text-sm text-center lg:text-left">© {new Date().getFullYear()} Anubhuthi Foundation. All rights reserved.</p>
+          <div className="flex items-center justify-center mt-2 lg:mt-0">
+            <a href="https://www.leastactioncompany.com/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity">
               <img src={leastActionLogo} alt="Least Action Logo" className="h-6 md:h-7 w-auto object-contain" />
-              <span className="text-[#829ab1] text-xs md:text-sm">Powered by Least Action Company Pvt Ltd</span>
-            </div>
+              <span className="text-[#829ab1] text-[11px] sm:text-xs md:text-sm whitespace-nowrap">Powered by Least Action Company Pvt Ltd</span>
+            </a>
           </div>
         </div>
       </div>
