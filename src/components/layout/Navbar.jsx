@@ -212,6 +212,9 @@ export default function Navbar() {
     setOpen(false);
     setDropdown(null);
     setMobileDropdown(null);
+    if (!location.hash) {
+      window.scrollTo(0, 0);
+    }
   }, [location]);
 
   useEffect(() => {
@@ -258,7 +261,7 @@ export default function Navbar() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-        <div className="flex h-18 items-center justify-between sm:h-20">
+        <div className="flex h-[96px] items-center justify-between sm:h-[112px]">
 
           {/* Logo */}
           <Link
@@ -268,7 +271,7 @@ export default function Navbar() {
             <img
               src={logo}
               alt="logo"
-              className="h-11 w-11 object-contain transition-all duration-300 sm:h-14 sm:w-14"
+              className="h-14 w-14 object-contain transition-all duration-300 sm:h-[60px] sm:w-[60px]"
             />
             <div className="flex min-w-0 flex-col justify-center leading-none">
               <span className="truncate text-base font-sans font-bold tracking-wide text-white transition-colors duration-300 sm:text-xl">
@@ -498,6 +501,11 @@ export default function Navbar() {
                                     : "text-white/80 hover:text-orange-400"
                                 }`
                               }
+                              onClick={() => {
+                                setOpen(false);
+                                setMobileDropdown(null);
+                                window.scrollTo(0, 0);
+                              }}
                             >
                               {child.label}
                             </NavLink>
@@ -515,6 +523,11 @@ export default function Navbar() {
                             : "text-white hover:text-orange-400"
                         }`
                       }
+                      onClick={() => {
+                        setOpen(false);
+                        setMobileDropdown(null);
+                        window.scrollTo(0, 0);
+                      }}
                     >
                       {link.label}
                     </NavLink>
