@@ -853,8 +853,8 @@ export function FeaturedProgramsSection({ programs = [], loading = false, error 
         {loading ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {skeletonCards.map((n) => (
-              <div key={n} className="bg-white/50 border border-earth-100 rounded-2xl overflow-hidden h-[360px] flex flex-col p-5 shadow-sm animate-pulse">
-                <div className="h-40 bg-earth-100/30 w-full rounded-xl mb-4" />
+              <div key={n} className="bg-white/50 border border-earth-100 rounded-2xl overflow-hidden h-full min-h-[420px] flex flex-col p-5 shadow-sm animate-pulse">
+                <div className="h-56 shrink-0 bg-earth-100/30 w-full rounded-xl mb-4" />
                 <div className="h-4 bg-earth-100/30 w-3/4 rounded-full mb-3" />
                 <div className="h-3 bg-earth-100/30 w-full rounded-full mb-2" />
                 <div className="h-3 bg-earth-100/30 w-5/6 rounded-full mb-4" />
@@ -885,7 +885,7 @@ export function FeaturedProgramsSection({ programs = [], loading = false, error 
               >
                 <Card className="h-full flex flex-col">
                   <div className="relative">
-                    <div className="h-40 bg-gradient-to-br from-saffron-100 to-earth-100 flex items-center justify-center overflow-hidden">
+                    <div className="h-56 shrink-0 bg-gradient-to-br from-saffron-100 to-earth-100 flex items-center justify-center overflow-hidden">
                       {prog.image ? (
                         <img src={prog.image} alt={prog.title} className="h-full w-full object-cover" />
                       ) : (

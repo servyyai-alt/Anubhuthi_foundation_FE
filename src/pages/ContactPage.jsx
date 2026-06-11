@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 import {
   FaMapMarkerAlt,
-  FaPhone,
+  FaPhoneAlt as FaPhone,
   FaEnvelope,
   FaGlobe,
   FaChevronRight,
@@ -18,7 +18,7 @@ import { animationVariants, transitionConfig, useReducedMotion, useIsMobile } fr
 
 // Image assets (generated and copied during execution)
 import contactHeroGuide from '../assets/contact_hero_guide.png';
-import contactFounderPortrait from '../assets/contact_founder_portrait.png';
+import contactFounderPortrait from '../assets/hero-section.png';
 import contactCtaBg from '../assets/contact_cta_bg.png';
 
 const AwarenessIcon = () => (
@@ -579,7 +579,7 @@ export default function ContactPage() {
                 <img
                   src={contactFounderPortrait}
                   alt="Guru Nana Portrait"
-                  className="w-full h-[400px] object-cover rounded-2xl transform hover:scale-[1.02] transition-transform duration-500"
+                  className="w-full h-auto max-h-[500px] object-contain object-bottom rounded-2xl transform hover:scale-[1.02] transition-transform duration-500"
                 />
               </div>
             </motion.div>

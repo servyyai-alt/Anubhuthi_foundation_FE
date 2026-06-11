@@ -8,8 +8,8 @@ import himalayaImg from '../assets/himalaya.png';
 const categories = ['all', 'meditation', 'yoga', 'healing', 'training', 'certification', 'workshop', 'retreat'];
 
 const SkeletonCard = () => (
-  <div className="animate-pulse bg-white border border-earth-100 rounded-[16px] overflow-hidden h-[300px] flex flex-col shadow-sm">
-    <div className="h-32 bg-earth-100/50 w-full" />
+  <div className="animate-pulse bg-white border border-earth-100 rounded-[16px] overflow-hidden h-full min-h-[420px] flex flex-col shadow-sm">
+    <div className="h-56 shrink-0 bg-earth-100/50 w-full" />
     <div className="p-4 flex-grow flex flex-col justify-between">
       <div>
         <div className="h-3 bg-earth-100/50 w-20 rounded-full mb-2" />
@@ -184,10 +184,10 @@ export default function ProgramsPage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.1 }}
                     transition={{ duration: 0.7, ease: "easeOut", delay: i * 0.1 }}
-                    className="group relative flex h-[300px] mx-auto w-full max-w-[420px] min-w-0 flex-col overflow-hidden rounded-[16px] border border-earth-100 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-[#D4A84F]/30 hover:shadow-[0_12px_30px_rgba(212,168,79,0.08)]"
+                    className="group relative flex h-full min-h-[420px] mx-auto w-full max-w-[420px] min-w-0 flex-col overflow-hidden rounded-[16px] border border-earth-100 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-[#D4A84F]/30 hover:shadow-[0_12px_30px_rgba(212,168,79,0.08)]"
                   >
-                    {/* Card Image Area - Compact (h-32) */}
-                    <div className="relative h-32 w-full overflow-hidden">
+                    {/* Card Image Area - Compact (h-56 shrink-0) */}
+                    <div className="relative h-56 shrink-0 w-full overflow-hidden">
                       {prog.image ? (
                         <img
                           src={prog.image}

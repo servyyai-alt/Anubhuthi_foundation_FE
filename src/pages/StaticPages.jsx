@@ -1286,9 +1286,7 @@ export function LegalPage() {
                   ))}
                 </ul>
 
-                <p className="text-gray-400 text-sm italic font-light">
-                  (Subject to updates)
-                </p>
+                
               </motion.div>
             </motion.div>
 

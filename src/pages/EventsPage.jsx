@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence, useInView, useScroll, useTransform } from 'framer-motion';
 import { format, isAfter, addMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isSameMonth, startOfDay } from 'date-fns';
-import { FaCalendar, FaMapMarkerAlt, FaVideo, FaClock, FaUsers, FaChevronDown, FaArrowRight, FaStar, FaCalendarAlt, FaListUl, FaRupeeSign, FaCheckCircle } from 'react-icons/fa';
+import { FaCalendar, FaMapMarkerAlt, FaVideo, FaClock, FaUsers, FaChevronDown, FaArrowRight, FaStar, FaCalendarAlt, FaListUl, FaRupeeSign, FaCheckCircle, FaSearchPlus } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { eventsAPI } from '../services/api';
 import { useReducedMotion, useIsMobile } from '../utils/animations';
@@ -408,211 +409,216 @@ function EventCard({ event, index, isActive, isHovered, onHover, onLeave, expand
   const isMobile = useIsMobile();
   const color = typeColors[event.type] || typeColors.other;
 
-  // Stagger entry animation on load
+  const [showImageModal, setShowImageModal] = useState(false);
+
   const entryDelay = isMobile ? 0 : Math.min(index, 6) * 0.1;
   const isFreeEvent = event.isFree === true || event.isFree === 'true';
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30, scale: 0.98 }}
-      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.6, delay: entryDelay, ease: 'easeOut' }}
-      onMouseEnter={onHover}
-      onMouseLeave={onLeave}
-      whileHover={isMobile ? {} : { 
-        y: -6,
-        boxShadow: '0 20px 40px rgba(2, 27, 58, 0.08)'
-      }}
-      className="group/card relative flex-1"
-    >
-      <div
-        className={`relative bg-white rounded-2xl border transition-all duration-400 overflow-hidden ${
-          isHovered || expanded 
-            ? 'shadow-[0_20px_50px_rgba(212,168,79,0.25)] border-[#D4A84F]' 
-            : 'shadow-sm border-earth-100'
-        }`}
+    <>
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, y: 30, scale: 0.98 }}
+        animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+        transition={{ duration: 0.6, delay: entryDelay, ease: 'easeOut' }}
+        onMouseEnter={onHover}
+        onMouseLeave={onLeave}
+        whileHover={isMobile ? {} : { 
+          y: -6,
+          boxShadow: '0 20px 40px rgba(2, 27, 58, 0.2)'
+        }}
+        className="group/card relative flex-1"
       >
-        {/* Event Image display */}
-        {event.image && (
-          <div className="relative h-32 w-full overflow-hidden bg-white sm:h-36">
-            <img src={event.image} alt={event.title} className="h-full w-full object-contain object-center transition-transform duration-500 group-hover/card:scale-[1.02]" />
-            {event.isFeatured && (
-              <div className="absolute top-3 right-3 z-10 flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#D4A84F] text-white text-[10px] font-bold uppercase tracking-wider shadow-md">
-                <FaStar className="text-[9px]" /> Featured
-              </div>
-            )}
-          </div>
-        )}
-
-        <div className="flex flex-col gap-4 p-4 sm:flex-row sm:p-5">
-          {/* Date block */}
-          {event.startDate ? (
-            <motion.div
-              animate={{
-                scale: isHovered ? 1.05 : 1,
-                boxShadow: isHovered ? '0 0 20px rgba(212, 168, 79, 0.4)' : '0 2px 4px rgba(0,0,0,0.02)'
+        <div
+          onClick={(e) => {
+            if (event.image) {
+              e.stopPropagation();
+              setShowImageModal(true);
+            }
+          }}
+          className={`relative rounded-2xl transition-all duration-400 overflow-hidden flex flex-col md:justify-end bg-[#010D1E] cursor-pointer min-h-[auto] md:min-h-[420px] ${
+            isHovered 
+              ? 'shadow-[0_20px_50px_rgba(212,168,79,0.3)] ring-2 ring-[#D4A84F] ring-offset-2 ring-offset-white' 
+              : 'shadow-lg ring-1 ring-[#010D1E]/10'
+          }`}
+        >
+          {/* Image Container */}
+          {event.image ? (
+            <div 
+              className="relative w-full h-64 md:absolute md:inset-0 md:h-full cursor-pointer overflow-hidden group/img shrink-0 bg-[#021B3A]"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowImageModal(true);
               }}
-              transition={{ duration: 0.3 }}
-              className={`flex-shrink-0 text-center rounded-xl px-3 py-2 min-w-[4rem] self-start bg-gradient-to-br ${color.bg}`}
             >
-              <div className={`${color.text} text-xs font-bold uppercase`}>
-                {format(new Date(event.startDate), 'MMM')}
+              <img 
+                src={event.image} 
+                alt={event.title} 
+                className="absolute inset-0 w-full h-full object-cover object-center md:object-cover transition-transform duration-700 group-hover/img:scale-105" 
+              />
+              
+              {/* Click to view overlay */}
+              <div className="absolute inset-0 bg-[#010D1E]/0 group-hover/img:bg-[#010D1E]/30 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover/img:opacity-100 md:opacity-0 pointer-events-none">
+                 <div className="flex items-center gap-2 bg-[#010D1E]/80 backdrop-blur-md px-4 py-2 rounded-full text-white text-xs font-bold uppercase tracking-wider shadow-xl border border-white/20 transform translate-y-4 group-hover/img:translate-y-0 transition-all duration-300">
+                   <FaSearchPlus size={14} /> View Image
+                 </div>
               </div>
-              {event.endDate && !isSameDay(new Date(event.startDate), new Date(event.endDate)) ? (
-                  <div className="py-1 font-serif text-base font-bold leading-none text-earth-800 sm:text-lg">
-                  {format(new Date(event.startDate), 'd')}–{format(new Date(event.endDate), 'd')}
-                </div>
-              ) : (
-                  <div className="font-serif text-2xl font-bold leading-none text-earth-800 sm:text-3xl">
-                  {format(new Date(event.startDate), 'd')}
-                </div>
-              )}
-              <div className="text-[10px] text-earth-500 mt-1 font-semibold uppercase tracking-wider">
-                {format(new Date(event.startDate), 'EEE')}
-              </div>
-            </motion.div>
-          ) : (
-            <div className="flex-shrink-0 text-center bg-stone-100 rounded-xl px-4 py-2 min-w-[4.5rem] self-start">
-              <div className="font-serif text-sm text-earth-400">TBD</div>
+
+              {/* Mobile bottom gradient to blend into content */}
+              <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#010D1E] via-[#010D1E]/80 to-transparent md:hidden pointer-events-none" />
             </div>
+          ) : (
+            <div className="relative w-full h-48 md:absolute md:inset-0 md:h-full bg-gradient-to-br from-[#021B3A] to-[#151C24] shrink-0" />
           )}
 
-          {/* Info */}
-            <div className="min-w-0 flex-1">
-              <div className="mb-2 flex flex-col items-start gap-2 sm:flex-row sm:items-start sm:justify-between">
-               <h3 className={`font-serif text-lg font-bold leading-snug text-earth-800 transition-colors duration-300 md:text-xl break-words`}
-                style={isHovered ? { color: GOLD } : {}}
+          {/* Desktop Gradient Overlay (covers whole card) */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#010D1E] via-[#010D1E]/70 to-transparent opacity-90 transition-opacity duration-500 group-hover/card:opacity-95 hidden md:block pointer-events-none" />
+
+          {/* Content Overlaid on Image (Desktop) or Below Image (Mobile) */}
+          <div className="relative z-10 flex flex-col p-5 sm:p-6 w-full gap-4 mt-auto md:bg-transparent bg-[#010D1E] md:bg-none">
+            
+            {/* Top Row: Date & Badge */}
+            <div className="flex flex-row items-start justify-between gap-3 w-full">
+              {event.startDate ? (
+                <motion.div
+                  animate={{
+                    scale: isHovered && !isMobile ? 1.05 : 1,
+                    boxShadow: isHovered && !isMobile ? '0 0 20px rgba(212, 168, 79, 0.4)' : '0 4px 10px rgba(0,0,0,0.3)'
+                  }}
+                  transition={{ duration: 0.3 }}
+                  className="flex-shrink-0 text-center rounded-xl px-3 py-2 min-w-[4rem] bg-gradient-to-br from-[#D4A84F] to-[#B3872E] text-[#010D1E] shadow-md border border-white/20 z-20 md:transform-none -mt-12 md:mt-0"
+                >
+                  <div className="text-xs font-bold uppercase text-[#010D1E]/80">
+                    {format(new Date(event.startDate), 'MMM')}
+                  </div>
+                  {event.endDate && !isSameDay(new Date(event.startDate), new Date(event.endDate)) ? (
+                      <div className="py-1 font-serif text-base font-bold leading-none text-[#010D1E] sm:text-lg">
+                      {format(new Date(event.startDate), 'd')}-{format(new Date(event.endDate), 'd')}
+                    </div>
+                  ) : (
+                      <div className="font-serif text-2xl font-bold leading-none text-[#010D1E] sm:text-3xl">
+                      {format(new Date(event.startDate), 'd')}
+                    </div>
+                  )}
+                  <div className="text-[10px] text-[#010D1E]/70 mt-1 font-semibold uppercase tracking-wider">
+                    {format(new Date(event.startDate), 'EEE')}
+                  </div>
+                </motion.div>
+              ) : (
+                <div className="flex-shrink-0 text-center bg-white/10 backdrop-blur-md rounded-xl px-4 py-2 min-w-[4.5rem] self-start border border-white/20 z-20 md:transform-none -mt-12 md:mt-0">
+                  <div className="font-serif text-sm text-white/80">TBD</div>
+                </div>
+              )}
+
+              <div className="flex flex-col items-end gap-2 ml-auto text-right z-20 md:transform-none -mt-8 md:mt-0">
+                <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/20 text-white backdrop-blur-md bg-[#010D1E]/50 md:bg-white/10 inline-block shadow-sm">
+                  {event.type}
+                </span>
+                {event.isFeatured && (
+                  <div className="flex items-center gap-1 px-3 py-1 rounded-full bg-[#D4A84F] text-[#010D1E] text-[10px] font-bold uppercase tracking-wider shadow-[0_0_15px_rgba(212,168,79,0.5)]">
+                    <FaStar className="text-[9px]" /> Featured
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Main Info */}
+            <div className="min-w-0 mt-2 md:mt-1">
+              <h3 className="font-serif text-xl font-bold leading-snug text-white transition-colors duration-300 md:text-2xl break-words drop-shadow-md"
+                style={isHovered && !isMobile ? { color: '#f6e1b1' } : {}}
               >
                 {event.title}
               </h3>
-                <span className={`shrink-0 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest border ${color.border} ${color.text} bg-white`}>
-                  {event.type}
+
+              {(event.shortDescription || event.description) && (
+                <p className="mt-2 mb-4 break-words text-white/80 text-sm leading-relaxed line-clamp-2">
+                {event.shortDescription || (event.description ? String(event.description).slice(0, 140) + '...' : '')}
+              </p>
+              )}
+
+              <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-white/90">
+                {event.time && (
+                  <span className="flex items-center gap-1.5">
+                    <FaClock size={11} style={{ color: '#D4A84F' }} />
+                    {event.time}
+                  </span>
+                )}
+                {event.isOnline ? (
+                  <span className="flex items-center gap-1.5 text-blue-300">
+                    <FaVideo size={11} />
+                    Online
+                  </span>
+                ) : event.location ? (
+                  <span className="flex items-center gap-1.5">
+                    <FaMapMarkerAlt size={11} style={{ color: '#D4A84F' }} />
+                    {event.location}
+                  </span>
+                ) : null}
+                {event.maxParticipants && (
+                  <span className="flex items-center gap-1.5">
+                    <FaUsers size={11} />
+                    Max {event.maxParticipants}
+                  </span>
+                )}
+                <span className="flex items-center gap-1 font-bold">
+                  {isFreeEvent ? 'Free' : (
+                    <>
+                      <FaRupeeSign size={11} />
+                      {event.price?.toLocaleString?.() ?? event.price}
+                    </>
+                  )}
                 </span>
               </div>
-
-             {(event.shortDescription || event.description) && (
-               <p className="mb-3 break-words text-earth-500 text-sm leading-relaxed line-clamp-2">
-                {event.shortDescription || (event.description ? String(event.description).slice(0, 140) + '…' : '')}
-              </p>
-             )}
-
-            <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-earth-500">
-              {event.time && (
-                <span className="flex items-center gap-1.5">
-                  <FaClock size={10} style={{ color: GOLD }} />
-                  {event.time}
-                </span>
-              )}
-              {event.isOnline ? (
-                <span className="flex items-center gap-1.5 text-indigo-600">
-                  <FaVideo size={10} />
-                  Online
-                </span>
-              ) : event.location ? (
-                <span className="flex items-center gap-1.5">
-                  <FaMapMarkerAlt size={10} style={{ color: GOLD }} />
-                  {event.location}
-                </span>
-              ) : null}
-              {event.maxParticipants && (
-                <span className="flex items-center gap-1.5">
-                  <FaUsers size={10} />
-                  Max {event.maxParticipants} Participants
-                </span>
-              )}
-              <span className={`flex items-center gap-1 font-bold ${isFreeEvent ? 'text-emerald-600' : ''}`}
-                style={!isFreeEvent ? { color: GOLD } : {}}
-              >
-                {isFreeEvent ? 'Free' : (
-                  <>
-                    <FaRupeeSign size={10} />
-                    {event.price?.toLocaleString?.() ?? event.price}
-                  </>
-                )}
-              </span>
             </div>
           </div>
+
+
+
         </div>
+      </motion.div>
 
-        {/* Expandable details */}
-        <AnimatePresence initial={false}>
-          {expanded && (
+      {/* Lightbox / Image Modal */}
+      {createPortal(
+        <AnimatePresence>
+          {showImageModal && (
             <motion.div
-              key="details"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
-              className="overflow-hidden border-t border-earth-100"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowImageModal(false);
+              }}
+              className="fixed inset-0 z-[99999] flex items-center justify-center p-4 sm:p-8 bg-[#010D1E]/95 backdrop-blur-lg"
             >
-              <div className="p-5 pt-4 space-y-3 bg-gradient-to-b from-white to-[#FAF9F5]">
-                {event.description && (
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: GOLD }}>
-                      About
-                    </p>
-                    <p className="text-sm text-earth-600 leading-relaxed whitespace-pre-line">
-                      {event.description}
-                    </p>
-                  </div>
-                )}
-
-                {event.venue && (
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: GOLD }}>Venue</p>
-                    <p className="text-sm text-earth-600 flex items-start gap-2">
-                      <FaMapMarkerAlt className="mt-0.5 shrink-0" size={11} style={{ color: GOLD }} />
-                      {event.venue}
-                    </p>
-                  </div>
-                )}
-
-                {event.schedule && (
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: GOLD }}>Schedule</p>
-                    <p className="text-sm text-earth-600 flex items-start gap-2">
-                      <FaClock className="mt-0.5 shrink-0" size={11} style={{ color: GOLD }} />
-                      {event.schedule}
-                    </p>
-                  </div>
-                )}
-
-                {event.registrationDetails && (
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: GOLD }}>Registration</p>
-                    <p className="text-sm text-earth-600 flex items-start gap-2">
-                      <FaCheckCircle className="mt-0.5 shrink-0" size={11} style={{ color: GOLD }} />
-                      {event.registrationDetails}
-                    </p>
-                  </div>
-                )}
-
-                {event.additionalInfo && (
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: GOLD }}>Additional Information</p>
-                    <p className="text-sm text-earth-600 leading-relaxed">{event.additionalInfo}</p>
-                  </div>
-                )}
-
-
-              </div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowImageModal(false);
+                }}
+                className="absolute top-6 right-6 sm:top-8 sm:right-8 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors border border-white/20 shadow-lg z-[100000]"
+              >
+                <span className="text-3xl leading-none -mt-1">×</span>
+              </button>
+              <motion.img
+                initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                src={event.image}
+                alt={event.title}
+                className="max-w-full max-h-full object-contain rounded-xl shadow-2xl relative z-[99999]"
+                onClick={(e) => e.stopPropagation()}
+              />
             </motion.div>
           )}
-        </AnimatePresence>
-
-        {/* Gold corner accent on hover */}
-        <div
-          className="absolute top-0 right-0 w-16 h-16 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 pointer-events-none"
-          style={{
-            background: `linear-gradient(135deg, transparent 50%, ${GOLD}22 50%)`,
-          }}
-        />
-      </div>
-    </motion.div>
+        </AnimatePresence>,
+        document.body
+      )}
+    </>
   );
 }
-
 /* ──────────────────────────────────────────────────────────────────
    TIMELINE MONTH SECTION (Animate vertical line on scroll)
    ────────────────────────────────────────────────────────────────── */

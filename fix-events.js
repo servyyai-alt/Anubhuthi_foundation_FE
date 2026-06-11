@@ -1,0 +1,255 @@
+const fs = require('fs');
+
+// 1. ContactPage.jsx founder image size fix
+let contactContent = fs.readFileSync('c:/anubhudhi foundation/Anubhuthi_foundation_FE/src/pages/ContactPage.jsx', 'utf8');
+contactContent = contactContent.replace(
+  /w-full h-\[400px\] object-cover rounded-2xl/g,
+  'w-full h-auto max-h-[500px] object-contain object-bottom rounded-2xl'
+);
+fs.writeFileSync('c:/anubhudhi foundation/Anubhuthi_foundation_FE/src/pages/ContactPage.jsx', contactContent);
+
+// 2. EventsPage.jsx EventCard Redesign
+let eventsContent = fs.readFileSync('c:/anubhudhi foundation/Anubhuthi_foundation_FE/src/pages/EventsPage.jsx', 'utf8');
+
+const eventCardStart = eventsContent.indexOf('function EventCard({ event, index, isActive, isHovered, onHover, onLeave, expanded, onToggleExpand }) {');
+
+if (eventCardStart !== -1) {
+  // Find the end of EventCard function. It ends right before unction TimelineView({
+  const timelineViewStart = eventsContent.indexOf('function TimelineView({', eventCardStart);
+  
+  if (timelineViewStart !== -1) {
+    const newEventCard = unction EventCard({ event, index, isActive, isHovered, onHover, onLeave, expanded, onToggleExpand }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, amount: 0.15 });
+  const isMobile = useIsMobile();
+  const color = typeColors[event.type] || typeColors.other;
+
+  const entryDelay = isMobile ? 0 : Math.min(index, 6) * 0.1;
+  const isFreeEvent = event.isFree === true || event.isFree === 'true';
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30, scale: 0.98 }}
+      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ duration: 0.6, delay: entryDelay, ease: 'easeOut' }}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+      whileHover={isMobile ? {} : { 
+        y: -6,
+        boxShadow: '0 20px 40px rgba(2, 27, 58, 0.2)'
+      }}
+      className="group/card relative flex-1"
+    >
+      <div
+        className={\elative rounded-2xl transition-all duration-400 overflow-hidden flex flex-col justify-end min-h-[420px] \\}
+      >
+        {/* Full Background Image */}
+        {event.image ? (
+          <img 
+            src={event.image} 
+            alt={event.title} 
+            className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover/card:scale-[1.03]" 
+          />
+        ) : (
+          <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#021B3A] to-[#151C24]" />
+        )}
+
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#010D1E] via-[#010D1E]/70 to-transparent opacity-90 transition-opacity duration-500 group-hover/card:opacity-95" />
+
+        {/* Content Overlaid on Image */}
+        <div className="relative z-10 flex flex-col p-6 w-full gap-4 mt-auto">
+          
+          {/* Top Row: Date & Badge */}
+          <div className="flex items-start justify-between gap-3">
+            {event.startDate ? (
+              <motion.div
+                animate={{
+                  scale: isHovered ? 1.05 : 1,
+                  boxShadow: isHovered ? '0 0 20px rgba(212, 168, 79, 0.4)' : '0 4px 10px rgba(0,0,0,0.3)'
+                }}
+                transition={{ duration: 0.3 }}
+                className={\lex-shrink-0 text-center rounded-xl px-3 py-2 min-w-[4rem] bg-gradient-to-br \\}
+              >
+                <div className={\\ text-xs font-bold uppercase\}>
+                  {format(new Date(event.startDate), 'MMM')}
+                </div>
+                {event.endDate && !isSameDay(new Date(event.startDate), new Date(event.endDate)) ? (
+                    <div className="py-1 font-serif text-base font-bold leading-none text-earth-800 sm:text-lg">
+                    {format(new Date(event.startDate), 'd')}–{format(new Date(event.endDate), 'd')}
+                  </div>
+                ) : (
+                    <div className="font-serif text-2xl font-bold leading-none text-earth-800 sm:text-3xl">
+                    {format(new Date(event.startDate), 'd')}
+                  </div>
+                )}
+                <div className="text-[10px] text-earth-600 mt-1 font-semibold uppercase tracking-wider">
+                  {format(new Date(event.startDate), 'EEE')}
+                </div>
+              </motion.div>
+            ) : (
+              <div className="flex-shrink-0 text-center bg-white/10 backdrop-blur-md rounded-xl px-4 py-2 min-w-[4.5rem] self-start border border-white/20">
+                <div className="font-serif text-sm text-white/80">TBD</div>
+              </div>
+            )}
+
+            <div className="flex flex-col items-end gap-2">
+              <span className={\px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/20 text-white backdrop-blur-md bg-white/10\}>
+                {event.type}
+              </span>
+              {event.isFeatured && (
+                <div className="flex items-center gap-1 px-3 py-1 rounded-full bg-[#D4A84F] text-[#010D1E] text-[10px] font-bold uppercase tracking-wider shadow-[0_0_15px_rgba(212,168,79,0.5)]">
+                  <FaStar className="text-[9px]" /> Featured
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Main Info */}
+          <div className="min-w-0 mt-2">
+            <h3 className="font-serif text-xl font-bold leading-snug text-white transition-colors duration-300 md:text-2xl break-words drop-shadow-md"
+              style={isHovered ? { color: '#f6e1b1' } : {}}
+            >
+              {event.title}
+            </h3>
+
+            {(event.shortDescription || event.description) && (
+              <p className="mt-2 mb-4 break-words text-white/80 text-sm leading-relaxed line-clamp-2">
+              {event.shortDescription || (event.description ? String(event.description).slice(0, 140) + '…' : '')}
+            </p>
+            )}
+
+            <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-white/90">
+              {event.time && (
+                <span className="flex items-center gap-1.5">
+                  <FaClock size={11} style={{ color: '#D4A84F' }} />
+                  {event.time}
+                </span>
+              )}
+              {event.isOnline ? (
+                <span className="flex items-center gap-1.5 text-blue-300">
+                  <FaVideo size={11} />
+                  Online
+                </span>
+              ) : event.location ? (
+                <span className="flex items-center gap-1.5">
+                  <FaMapMarkerAlt size={11} style={{ color: '#D4A84F' }} />
+                  {event.location}
+                </span>
+              ) : null}
+              {event.maxParticipants && (
+                <span className="flex items-center gap-1.5">
+                  <FaUsers size={11} />
+                  Max {event.maxParticipants}
+                </span>
+              )}
+              <span className={\lex items-center gap-1 font-bold \\}>
+                {isFreeEvent ? 'Free' : (
+                  <>
+                    <FaRupeeSign size={11} />
+                    {event.price?.toLocaleString?.() ?? event.price}
+                  </>
+                )}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Expandable details overlaying at bottom */}
+        <AnimatePresence initial={false}>
+          {expanded && (
+            <motion.div
+              key="details"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+              className="relative z-20 overflow-hidden bg-[#010D1E]/95 backdrop-blur-xl border-t border-white/10"
+            >
+              <div className="p-6 space-y-4">
+                {event.description && (
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: '#D4A84F' }}>
+                      About
+                    </p>
+                    <p className="text-sm text-white/80 leading-relaxed whitespace-pre-line">
+                      {event.description}
+                    </p>
+                  </div>
+                )}
+
+                {event.venue && (
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: '#D4A84F' }}>Venue</p>
+                    <p className="text-sm text-white/80 flex items-start gap-2">
+                      <FaMapMarkerAlt className="mt-0.5 shrink-0" size={12} style={{ color: '#D4A84F' }} />
+                      {event.venue}
+                    </p>
+                  </div>
+                )}
+
+                {event.schedule && (
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: '#D4A84F' }}>Schedule</p>
+                    <p className="text-sm text-white/80 flex items-start gap-2">
+                      <FaClock className="mt-0.5 shrink-0" size={12} style={{ color: '#D4A84F' }} />
+                      {event.schedule}
+                    </p>
+                  </div>
+                )}
+
+                {event.registrationDetails && (
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: '#D4A84F' }}>Registration</p>
+                    <p className="text-sm text-white/80 flex items-start gap-2">
+                      <FaCheckCircle className="mt-0.5 shrink-0" size={12} style={{ color: '#D4A84F' }} />
+                      {event.registrationDetails}
+                    </p>
+                  </div>
+                )}
+
+                {event.additionalInfo && (
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: '#D4A84F' }}>Additional Information</p>
+                    <p className="text-sm text-white/80 leading-relaxed">{event.additionalInfo}</p>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Expand Toggle Button */}
+        <div className="relative z-20 w-full bg-[#010D1E]/95 backdrop-blur-md border-t border-white/10 px-6 py-3 flex items-center justify-between">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleExpand();
+            }}
+            className="w-full flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest text-[#D4A84F] hover:text-[#f6e1b1] transition-colors focus:outline-none"
+          >
+            {expanded ? 'Hide Details' : 'View Full Details'}
+            <motion.div
+              animate={{ rotate: expanded ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <FaChevronDown size={10} />
+            </motion.div>
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+;
+    
+    eventsContent = eventsContent.substring(0, eventCardStart) + newEventCard + eventsContent.substring(timelineViewStart);
+    fs.writeFileSync('c:/anubhudhi foundation/Anubhuthi_foundation_FE/src/pages/EventsPage.jsx', eventsContent);
+    console.log('EventsPage updated!');
+  } else {
+    console.log('TimelineView function not found');
+  }
+} else {
+  console.log('EventCard function not found');
+}
