@@ -36,6 +36,7 @@ import duringRestorationImage from '../assets/during-restoration.png.png';
 import afterRestorationImage from '../assets/after-restoration.png.png';
 import communityCultureImage from '../assets/community-culture.png.png';
 import legalBg from '../assets/legal.jpeg';
+import anubhuthiLogo from '../assets/logo-1.png';
 
 const revealViewport = { once: true, amount: 0.2 };
 
@@ -1295,6 +1296,125 @@ export function LegalPage() {
             <div className="hidden md:block"></div>
 
           </div>
+        </div>
+      </section>
+
+      {/* Legal Documents Section */}
+      <section className="py-20 sm:py-24 bg-[#011126]">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={{
+              hidden: { opacity: 0, y: 30 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+            }}
+            className="text-center mb-16"
+          >
+            <p className="uppercase tracking-[6px] text-[#e7ad43] text-sm mb-4 font-semibold">
+              Documents
+            </p>
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
+              Legal Documents
+            </h2>
+            <p className="text-gray-300 max-w-2xl mx-auto text-lg">
+              Access our official registration and compliance documents.
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.15,
+                  delayChildren: 0.1,
+                },
+              },
+            }}
+          >
+            {[
+              {
+                title: "MoA",
+                description: "Memorandum of Association of Anubhuthi Foundation.",
+                url: "/documents/MoA.pdf",
+              },
+              {
+                title: "AoA",
+                description: "Articles of Association governing the organization.",
+                url: "/documents/AoA.pdf",
+              },
+              {
+                title: "Company Incorporation Certificate",
+                description: "Official certificate of incorporation issued by MCA.",
+                url: "/documents/Certificate of Incorporation.pdf",
+              },
+              {
+                title: "Section 8 NGO License",
+                description: "License granted under Section 8 of the Companies Act.",
+                url: "/documents/Section 8 NGO license.pdf",
+              },
+            ].map((doc, index) => (
+              <motion.div
+                key={index}
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+                }}
+                className="relative overflow-hidden bg-[#FAF9F6] border border-[#e7ad43]/40 rounded-xl p-6 md:p-8 text-left group hover:-translate-y-1 hover:border-[#e7ad43] transition-all duration-400 shadow-[0_4px_15px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_25px_rgba(231,173,67,0.2)] flex flex-col h-full"
+              >
+                {/* Subtle Background Watermark */}
+                <img 
+                  src={anubhuthiLogo} 
+                  alt="" 
+                  className="absolute -right-8 -bottom-8 w-56 h-56 opacity-[0.10] pointer-events-none grayscale mix-blend-multiply group-hover:opacity-[0.15] transition-opacity duration-500"
+                />
+
+                <div className="relative z-10 flex flex-col h-full">
+                  <div className="flex items-start justify-between mb-6">
+                    {/* Verified Badge */}
+                    <div className="flex items-center gap-1.5 bg-[#e7ad43]/15 px-2.5 py-1 rounded-sm border border-[#e7ad43]/30">
+                      <svg className="w-3.5 h-3.5 text-[#e7ad43]" fill="currentColor" viewBox="0 0 24 24">
+                        <path fillRule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
+                      </svg>
+                      <span className="text-[#021B3A] text-[10px] font-bold uppercase tracking-[0.1em]">
+                        Verified
+                      </span>
+                    </div>
+
+                    {/* Official Certificate Icon */}
+                    <svg className="w-9 h-9 text-[#e7ad43]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9zm3.75 11.625a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                    </svg>
+                  </div>
+                  
+                  <h3 className="font-serif text-[22px] md:text-2xl font-bold text-[#021B3A] mb-3 leading-tight group-hover:text-[#e7ad43] transition-colors duration-300">
+                    {doc.title}
+                  </h3>
+                  
+                  <p className="text-[#021B3A]/75 text-sm mb-8 flex-grow leading-relaxed font-medium">
+                    {doc.description}
+                  </p>
+                  
+                  <button
+                    onClick={() => window.open(doc.url, "_blank")}
+                    className="mt-auto w-full py-2.5 px-4 rounded border border-[#e7ad43] bg-transparent text-[#021B3A] text-sm font-bold tracking-wide hover:bg-[#e7ad43] hover:text-white transition-all duration-300 flex items-center justify-between group/btn shadow-sm hover:shadow-md"
+                  >
+                    <span>View Official Copy</span>
+                    <svg className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                    </svg>
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 

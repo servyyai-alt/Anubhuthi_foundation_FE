@@ -274,8 +274,8 @@ export default function ContactPage() {
     {
       icon: FaEnvelope,
       title: 'Email',
-      details: 'gurunana180@gmail.com',
-      link: 'mailto:gurunana180@gmail.com'
+      details: 'admin@anubhuthi.org',
+      link: 'mailto:admin@anubhuthi.org'
     },
     {
       icon: FaPhone,
@@ -728,7 +728,7 @@ export default function ContactPage() {
                 <div className="mt-8 md:mt-0 space-y-4 text-xs font-light text-gray-300 relative z-10">
                   <div className="flex items-center gap-3">
                     <FaEnvelope className="text-orange-400" />
-                    <span>gurunana180@gmail.com</span>
+                    <span>admin@anubhuthi.org</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <FaPhone className="text-orange-400" />
