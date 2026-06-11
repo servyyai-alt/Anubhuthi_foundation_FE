@@ -80,7 +80,7 @@ export const orgSchema = {
     '@type': 'ContactPoint',
     telephone: '+91-63815-86747',
     contactType: 'customer service',
-    email: 'gurunana180@gmail.com',
+    email: 'admin@anubhuthi.org',
   },
   sameAs: [
     'https://facebook.com/anubhuthifoundation',
