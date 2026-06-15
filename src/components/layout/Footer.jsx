@@ -118,13 +118,26 @@ export default function Footer() {
             </ul>
             <div className="mt-8 pt-6 border-t border-[#021B3A]">
               <ul className="space-y-2">
-                {['Legal & Compliance', 'Privacy Policy', 'Terms of Service'].map(item => (
-                  <li key={item}>
-                    <Link to="/legal" className="text-[#9fb3c8] hover:text-[#e7ad43] text-sm transition-colors">
-                      {item}
-                    </Link>
-                  </li>
-                ))}
+                <li>
+                  <Link to="/legal" className="text-[#9fb3c8] hover:text-[#e7ad43] text-sm transition-colors">
+                    Legal & Compliance
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/privacy-policy" className="text-[#9fb3c8] hover:text-[#e7ad43] text-sm transition-colors">
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/terms-and-conditions" className="text-[#9fb3c8] hover:text-[#e7ad43] text-sm transition-colors">
+                    Terms & Conditions
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/disclaimer" className="text-[#9fb3c8] hover:text-[#e7ad43] text-sm transition-colors">
+                    Disclaimer
+                  </Link>
+                </li>
                 <li>
                   <Link to="/admin/login" className="text-[#9fb3c8] hover:text-[#e7ad43] text-sm transition-colors mt-2 inline-block">
                     Admin Login

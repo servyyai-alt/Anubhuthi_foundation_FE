@@ -25,6 +25,9 @@ import EventsPage from './pages/EventsPage';
 import TestimonialsPage from './pages/TestimonialsPage';
 import MediaPage from './pages/MediaPage';
 import { AboutPage, PhilosophyPage, DNIAcademyPage, TempleRestorationPage, LegalPage } from './pages/StaticPages';
+import TermsAndConditions from './pages/TermsAndConditions';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import Disclaimer from './pages/Disclaimer';
 
 // Admin
 import AdminLogin from './pages/admin/AdminLogin';
@@ -82,6 +85,9 @@ export default function App() {
             <Route path="/media" element={<PublicLayout><MediaPage /></PublicLayout>} />
             <Route path="/contact" element={<PublicLayout><ContactPage /></PublicLayout>} />
             <Route path="/legal" element={<PublicLayout><LegalPage /></PublicLayout>} />
+            <Route path="/terms-and-conditions" element={<PublicLayout><TermsAndConditions /></PublicLayout>} />
+            <Route path="/privacy-policy" element={<PublicLayout><PrivacyPolicy /></PublicLayout>} />
+            <Route path="/disclaimer" element={<PublicLayout><Disclaimer /></PublicLayout>} />
 
             {/* Admin routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
